@@ -6,6 +6,7 @@ export default function Welcome({ auth }) {
             <header className="flex justify-between items-center p-6 max-w-7xl mx-auto">
                 <h1 className="text-3xl font-bold text-[#FF2D20]">Liftify</h1>
                 <nav className="flex gap-4">
+                     <Navbar auth={auth} />
                     {auth.user ? (
                         <Link
                             href={route('dashboard')}
