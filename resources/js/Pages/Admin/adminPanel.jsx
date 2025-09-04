@@ -1,16 +1,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
   import { Link } from '@inertiajs/react';
-  import Sidebar from '@/Components/Sidebar';
+  import Sidebar from '@/Components/SideBar';
 
-export default function Dashboard({ auth }) {
+export default function adminPanel({ auth }) {
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard" />
+            <Head title="Admin" />
         
             <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
-                 <Sidebar auth={auth} />
-              
+             <Sidebar auth={auth} />
+
                 <main className="flex-1 p-8">
                     <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
                         Welcome, {auth.user.name}!

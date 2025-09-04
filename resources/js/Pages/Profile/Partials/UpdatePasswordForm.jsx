@@ -47,32 +47,32 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white">
                     Update Password
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-gray-600 dark:text-white">
                     Ensure your account is using a long, random password to stay
                     secure.
                 </p>
             </header>
 
-            <form onSubmit={updatePassword} className="mt-6 space-y-6">
+            <form onSubmit={updatePassword} className="mt-6 space-y-6 dark:text-white">
                 <div>
-                    <InputLabel
+                    <InputLabel className='dark:text-white'
                         htmlFor="current_password"
                         value="Current Password"
                     />
 
-                    <TextInput
+                    <TextInput 
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
                         onChange={(e) =>
                             setData('current_password', e.target.value)
-                        }
+                        }   
                         type="password"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full dark:text-white"
                         autoComplete="current-password"
                     />
 
@@ -91,7 +91,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
                         type="password"
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full dark:text-white"
                         autoComplete="new-password"
                     />
 
