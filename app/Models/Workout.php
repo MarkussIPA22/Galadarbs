@@ -7,15 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Workout extends Model
 {
     protected $fillable = [
-
         'user_id',
         'name',
         'description',
         'muscle_groups',
     ];
 
-     protected $casts = [
-        'muscle_groups' => 'array', 
+    protected $casts = [
+        'muscle_groups' => 'array',
     ];
 
+    // Add many-to-many relation
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class);
+    }
 }

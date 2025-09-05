@@ -14,7 +14,7 @@ export default function AuthenticatedLayout({ children }) {
 
     return (
         <div className={darkMode ? 'dark' : ''}>
-            <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
+            <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
                 {}
                 <div className="p-4 flex justify-end">
                     <label htmlFor="dark-mode-toggle" className="flex items-center cursor-pointer">

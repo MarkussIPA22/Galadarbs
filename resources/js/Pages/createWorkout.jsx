@@ -31,7 +31,7 @@ export default function CreateWorkout({ auth }) {
             <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
                 <Sidebar auth={auth} />
 
-                {/* Main Content */}
+                {}
                 <main className="flex-1 p-8">
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
                         <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
@@ -40,7 +40,7 @@ export default function CreateWorkout({ auth }) {
 
                         <form onSubmit={submit} className="flex flex-col gap-4">
 
-                            {/* Workout Name */}
+                            {}
                             <input
                                 type="text"
                                 value={data.name}
@@ -50,8 +50,9 @@ export default function CreateWorkout({ auth }) {
                             />
                             {errors.name && <p className="text-red-500">{errors.name}</p>}
 
-                            {/* Muscle Groups */}
+                            {}
                             <div className="flex flex-col gap-2">
+                                <span className="font-medium">Muscle Groups:</span>
                                 {['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Legs', 'Abs', 'Full Body'].map((muscle) => (
                                     <label key={muscle} className="flex items-center gap-2">
                                         <input
@@ -67,7 +68,7 @@ export default function CreateWorkout({ auth }) {
                             </div>
                             {errors.muscle_groups && <p className="text-red-500">{errors.muscle_groups}</p>}
 
-                            {/* Description */}
+                            {}
                             <textarea
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
@@ -75,7 +76,7 @@ export default function CreateWorkout({ auth }) {
                                 className="border border-gray-300 dark:border-gray-600 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-colors"
                             />
 
-                            {/* Submit Button */}
+                            {}
                             <button
                                 type="submit"
                                 disabled={processing}

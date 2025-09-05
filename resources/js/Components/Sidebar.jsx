@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Sidebar({ auth }) {
     return (
-        <aside className="w-64 bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-700 p-6 transition-colors">
+        <aside className="w-64 bg-white dark:bg-gray-900  p-6 ">
             <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-100">
                 Menu
             </h2>
@@ -21,8 +21,8 @@ export default function Sidebar({ auth }) {
                     Create Workout
                 </Link>
 
-                <Link
-                    href="#"
+                 <Link
+                     href="/my-workouts"
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                     My Workouts
@@ -44,12 +44,6 @@ export default function Sidebar({ auth }) {
                     </Link>
                 )}
 
-                <Link
-                    href="#"
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                    Settings
-                </Link>
             </nav>
         </aside>
     );

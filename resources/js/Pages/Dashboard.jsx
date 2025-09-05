@@ -8,7 +8,7 @@ export default function Dashboard({ auth }) {
         <AuthenticatedLayout>
             <Head title="Dashboard" />
         
-            <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
+            <div className="flex min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
                  <Sidebar auth={auth} />
               
                 <main className="flex-1 p-8">
@@ -22,19 +22,19 @@ export default function Dashboard({ auth }) {
                             <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
                                 Workouts Created
                             </h3>
-                            <p className="text-2xl font-bold">12</p>
+                            <p className="text-2xl font-bold"></p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
                             <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
                                 Completed Workouts
                             </h3>
-                            <p className="text-2xl font-bold">34</p>
+                            <p className="text-2xl font-bold"></p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
                             <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
                                 Next Workout
                             </h3>
-                            <p className="text-2xl font-bold">Leg Day</p>
+                            <p className="text-2xl font-bold"></p>
                         </div>
                     </div>
 
