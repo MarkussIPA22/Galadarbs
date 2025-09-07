@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Workout;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Exercise;
+
 
 class WorkoutController extends Controller
 {
@@ -40,14 +43,13 @@ class WorkoutController extends Controller
         ]);
     }
 
-   public function edit(Workout $workout)
+  public function edit(Workout $workout)
 {
-    // eager load exercises
-    $workout->load('exercises');
+    $exercises = Exercise::orderBy('name')->get();
 
-    return inertia('EditWorkout', [
-        'workout' => $workout,
-        'exercises' => \App\Models\Exercise::orderBy('name')->get(), // all exercises for selection
+    return Inertia::render('Workouts/Edit', [
+        'workout' => $workout->load('exercises'),
+        'exercises' => $exercises,
     ]);
 }
 
@@ -55,25 +57,23 @@ class WorkoutController extends Controller
 public function update(Request $request, Workout $workout)
 {
     $request->validate([
-        'name' => 'required|string|max:255',
+        'name' => 'required',
         'description' => 'nullable|string',
-        'muscle_groups' => 'nullable|array',
-        'muscle_groups.*' => 'string',
+        'muscle_groups' => 'required|array',
         'exercises' => 'nullable|array',
-        'exercises.*' => 'exists:exercises,id',
     ]);
 
     $workout->update([
         'name' => $request->name,
         'description' => $request->description,
-        'muscle_groups' => $request->muscle_groups ?? [],
+        'muscle_groups' => $request->muscle_groups,
     ]);
 
     if ($request->has('exercises')) {
         $workout->exercises()->sync($request->exercises);
     }
 
-    return redirect()->route('workouts.index')->with('success', 'Workout updated!');
+    return redirect()->route('workouts.edit', $workout->id)->with('success', 'Workout updated!');
 }
 
 

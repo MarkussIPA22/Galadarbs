@@ -24,24 +24,26 @@ class ExerciseController extends Controller
         return Inertia::render('Exercises/Create'); // React page
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|unique:exercises,name',
-            'image' => 'nullable|image|max:2048'
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|unique:exercises,name',
+        'muscle_group' => 'required|string', // <- validate muscle group
+        'image' => 'nullable|image|max:2048'
+    ]);
 
-        $path = null;
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('exercises', 'public');
-        }
-
-        $exercise = Exercise::create([
-            'name' => $request->name,
-            'image_path' => $path,
-        ]);
-
-        // Return Inertia response for React
-        return redirect()->back()->with('success', 'Exercise added!');
+    $path = null;
+    if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('exercises', 'public');
     }
+
+    Exercise::create([
+        'name' => $request->name,
+        'muscle_group' => $request->muscle_group, // <- save muscle group
+        'image_path' => $path,
+    ]);
+
+    return redirect()->back()->with('success', 'Exercise added!');
+}
+
 }
