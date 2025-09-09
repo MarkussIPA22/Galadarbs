@@ -14,7 +14,7 @@ export default function EditWorkout({ auth, workout, exercises }) {
   const [newMuscle, setNewMuscle] = useState('');
   const [filter, setFilter] = useState(''); // muscle group filter
 
-  const muscleGroups = ['Back', 'Chest', 'Legs', 'Arms', 'Shoulders', 'Core'];
+  const muscleGroups = ['Back', 'Chest', 'Biceps', 'Triceps', 'Shoulders', 'Legs', 'Abs', ];
 
   const addMuscleGroup = () => {
     const trimmed = newMuscle.trim();
@@ -153,7 +153,7 @@ export default function EditWorkout({ auth, workout, exercises }) {
           <img
             src={`/storage/${exercise.image_path}`}
             alt={exercise.name}
-            className="w-24 h-24 object-contain"
+            className="w-36 -36 object-cover rounded"
           />
         ) : (
           <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
@@ -178,6 +178,17 @@ export default function EditWorkout({ auth, workout, exercises }) {
               >
                 Save Changes
               </button>
+
+            <div className="flex justify-end mt-6 gap-4">
+          <button
+         type="button"
+         onClick={() => window.location.href = route('workouts.start', workout.id)}
+         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      >
+     Start Workout
+    </button>
+    </div>
+
               <Link
                 href={route('workouts.index')}
                 className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900"

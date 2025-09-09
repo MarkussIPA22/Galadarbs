@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Bench Press",
+    "muscle_group": "Chest",
+    "description": "A compound exercise for chest, shoulders, and triceps.",
+    "image_path": ""
+  },
+  {
+    "name": "Lat Pulldown",
+    "muscle_group": "Back",
+    "description": "Targets the latissimus dorsi and upper back muscles.",
+    "image_path": ""
+  },
+  {
+    "name": "Squat",
+    "muscle_group": "Legs",
+    "description": "A compound movement that works quads, hamstrings, and glutes.",
+    "image_path": ""
+  },
+
+   {
+    "name": "Tricep Pushdown",
+    "muscle_group": "Triceps",
+    "description": "Isolates the triceps muscles using a cable machine.",
+    "image_path": ""
+  }
+
+
+]

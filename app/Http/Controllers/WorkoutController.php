@@ -6,7 +6,7 @@ use App\Models\Workout;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Exercise;
-
+use App\Models\WorkoutLog;
 
 class WorkoutController extends Controller
 {
@@ -53,6 +53,19 @@ class WorkoutController extends Controller
     ]);
 }
 
+public function start(Workout $workout)
+{
+    $workout->load('exercises');
+
+    $latest_log = WorkoutLog::where('workout_id', $workout->id)
+                    ->latest()
+                    ->first();
+
+    return Inertia::render('Workouts/StartWorkout', [
+        'workout' => $workout,
+        'latest_log' => $latest_log,
+    ]);
+}
 
 public function update(Request $request, Workout $workout)
 {
@@ -76,5 +89,24 @@ public function update(Request $request, Workout $workout)
     return redirect()->route('workouts.edit', $workout->id)->with('success', 'Workout updated!');
 }
 
+
+public function complete(Request $request, Workout $workout)
+{
+    $request->validate([
+        'exercises' => 'required|array',
+        'exercises.*.sets' => 'required|array',
+        'exercises.*.sets.*.reps' => 'required|integer|min:0',
+        'exercises.*.sets.*.weight' => 'required|numeric|min:0',
+    ]);
+
+    WorkoutLog::create([
+        'user_id' => auth()->id(),
+        'workout_id' => $workout->id,
+        'exercises' => $request->exercises, // <-- this must be here
+    ]);
+
+    return redirect()->route('workouts.start', $workout->id)
+        ->with('success', 'Workout saved!');
+}
 
 }
