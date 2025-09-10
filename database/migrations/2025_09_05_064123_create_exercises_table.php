@@ -8,13 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('exercises', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('muscle_group'); // added column
-            $table->string('image_path')->nullable();
-            $table->timestamps();
-        });
+       Schema::create('exercises', function (Blueprint $table) {
+    $table->id();
+    $table->string('name')->unique();
+    $table->string('muscle_group');
+    $table->string('image_path')->nullable();
+    $table->text('description')->nullable();
+    $table->timestamps();
+});
     }
 
     public function down(): void

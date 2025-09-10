@@ -109,4 +109,14 @@ public function complete(Request $request, Workout $workout)
         ->with('success', 'Workout saved!');
 }
 
+public function end(Workout $workout)
+{
+    // Mark the workout as completed
+    $workout->completed_at = now(); // set the timestamp
+    $workout->save();
+
+    return redirect()->route('workouts.show', $workout->id)
+                     ->with('success', 'Workout completed!');
+}
+
 }

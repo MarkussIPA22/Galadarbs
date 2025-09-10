@@ -75,7 +75,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
             {exerciseData.map((ex, exIndex) => (
               <div
                 key={ex.id}
-                className="p-6  dark:bg-black "
+                className="p-6  dark:bg-gray-900 "
               >
                 <h2 className="font-semibold mb-4 text-lg">
                   {ex.name}{' '}
@@ -87,7 +87,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                 {ex.sets.map((set, setIndex) => (
                   <div
                     key={setIndex}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4 p-2  dark:bg-black rounded"
+                    className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4 p-2  dark:bg-gray-900 rounded"
                   >
                     <div className="text-center md:text-left">
                       <span className="font-medium text-gray-700 dark:text-gray-300">

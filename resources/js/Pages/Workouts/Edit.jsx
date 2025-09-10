@@ -149,17 +149,17 @@ export default function EditWorkout({ auth, workout, exercises }) {
           onChange={() => toggleExercise(exercise.id)}
           className="mb-1"
         />
-        {exercise.image_path ? (
-          <img
-            src={`/storage/${exercise.image_path}`}
-            alt={exercise.name}
-            className="w-36 -36 object-cover rounded"
-          />
-        ) : (
-          <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
-            No Image
-          </div>
-        )}
+       {exercise.image_path ? (
+  <img
+    src={exercise.image_path} // remove /storage/
+    alt={exercise.name}
+    className="w-36 h-36 object-cover rounded"
+  />
+) : (
+  <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
+    No Image
+  </div>
+)}
         <span className="text-sm">{exercise.name}</span>
         <span className="text-xs text-gray-500">{exercise.muscle_group}</span>
       </label>

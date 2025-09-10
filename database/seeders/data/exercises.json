@@ -3,27 +3,60 @@
     "name": "Bench Press",
     "muscle_group": "Chest",
     "description": "A compound exercise for chest, shoulders, and triceps.",
-    "image_path": ""
-  },
-  {
-    "name": "Lat Pulldown",
-    "muscle_group": "Back",
-    "description": "Targets the latissimus dorsi and upper back muscles.",
-    "image_path": ""
+    "image_path": "https://via.placeholder.com/300x200?text=Bench+Press"
   },
   {
     "name": "Squat",
     "muscle_group": "Legs",
     "description": "A compound movement that works quads, hamstrings, and glutes.",
-    "image_path": ""
+    "image_path": "https://via.placeholder.com/300x200?text=Squat"
   },
-
-   {
+  {
+    "name": "Bicep Curl",
+    "muscle_group": "Biceps",
+    "description": "Isolates the biceps muscles using dumbbells or barbell.",
+    "image_path": "https://via.placeholder.com/300x200?text=Bicep+Curl"
+  },
+  {
     "name": "Tricep Pushdown",
     "muscle_group": "Triceps",
     "description": "Isolates the triceps muscles using a cable machine.",
-    "image_path": ""
+    "image_path": "https://via.placeholder.com/300x200?text=Tricep+Pushdown"
+  },
+  {
+    "name": "Lat Pulldown",
+    "muscle_group": "Back",
+    "description": "Targets the latissimus dorsi and upper back muscles.",
+    "image_path": "https://via.placeholder.com/300x200?text=Lat+Pulldown"
+  },
+  {
+    "name": "Shoulder Press",
+    "muscle_group": "Shoulders",
+    "description": "Targets deltoid muscles and triceps.",
+    "image_path": "https://via.placeholder.com/300x200?text=Shoulder+Press"
+  },
+  {
+    "name": "Leg Curl",
+    "muscle_group": "Legs",
+    "description": "Isolates the hamstrings.",
+    "image_path": "https://via.placeholder.com/300x200?text=Leg+Curl"
+  },
+  {
+    "name": "Plank",
+    "muscle_group": "Abs",
+    "description": "Strengthens core muscles.",
+    "image_path": "https://via.placeholder.com/300x200?text=Plank"
+  },
+  {
+    "name": "Dumbbell Row",
+    "muscle_group": "Back",
+    "description": "Targets upper and mid-back muscles.",
+    "image_path": "https://via.placeholder.com/300x200?text=Dumbbell+Row"
+  },
+  {
+    "name": "Lateral Raise",
+    "muscle_group": "Shoulders",
+    "description": "Isolates lateral deltoids.",
+    "image_path": "https://via.placeholder.com/300x200?text=Lateral+Raise"
   }
-
-
 ]
