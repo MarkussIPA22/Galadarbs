@@ -26,7 +26,8 @@ class WorkoutController extends Controller
             'muscle_groups' => $request->muscle_groups,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Workout created!');
+        // ✅ Redirect to "My Workouts" instead of dashboard
+        return redirect()->route('workouts.index')->with('success', 'Workout created!');
     }
 
     public function create()
@@ -43,80 +44,89 @@ class WorkoutController extends Controller
         ]);
     }
 
-  public function edit(Workout $workout)
-{
-    $exercises = Exercise::orderBy('name')->get();
+    public function edit(Workout $workout)
+    {
+        $exercises = Exercise::orderBy('name')->get();
 
-    return Inertia::render('Workouts/Edit', [
-        'workout' => $workout->load('exercises'),
-        'exercises' => $exercises,
-    ]);
-}
-
-public function start(Workout $workout)
-{
-    $workout->load('exercises');
-
-    $latest_log = WorkoutLog::where('workout_id', $workout->id)
-                    ->latest()
-                    ->first();
-
-    return Inertia::render('Workouts/StartWorkout', [
-        'workout' => $workout,
-        'latest_log' => $latest_log,
-    ]);
-}
-
-public function update(Request $request, Workout $workout)
-{
-    $request->validate([
-        'name' => 'required',
-        'description' => 'nullable|string',
-        'muscle_groups' => 'required|array',
-        'exercises' => 'nullable|array',
-    ]);
-
-    $workout->update([
-        'name' => $request->name,
-        'description' => $request->description,
-        'muscle_groups' => $request->muscle_groups,
-    ]);
-
-    if ($request->has('exercises')) {
-        $workout->exercises()->sync($request->exercises);
+        return Inertia::render('Workouts/Edit', [
+            'workout' => $workout->load('exercises'),
+            'exercises' => $exercises,
+        ]);
     }
 
-    return redirect()->route('workouts.edit', $workout->id)->with('success', 'Workout updated!');
-}
+    public function start(Workout $workout)
+    {
+        $workout->load('exercises');
+
+        $latest_log = WorkoutLog::where('workout_id', $workout->id)
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->with('exerciseSets')
+            ->first();
+
+        return Inertia::render('Workouts/StartWorkout', [
+            'workout' => $workout,
+            'latest_log' => $latest_log,
+        ]);
+    }
+
+    public function update(Request $request, Workout $workout)
+    {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'nullable|string',
+            'muscle_groups' => 'required|array',
+            'exercises' => 'nullable|array',
+        ]);
+
+        $workout->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'muscle_groups' => $request->muscle_groups,
+        ]);
+
+        if ($request->has('exercises')) {
+            $workout->exercises()->sync($request->exercises);
+        }
+
+        return redirect()->route('workouts.edit', $workout->id)
+            ->with('success', 'Workout updated!');
+    }
+
+    public function complete(Request $request, Workout $workout)
+    {
+        $request->validate([
+            'exercises' => 'required|array',
+            'exercises.*.sets' => 'required|array',
+            'exercises.*.sets.*.reps' => 'required|integer|min:0',
+            'exercises.*.sets.*.weight' => 'required|numeric|min:0',
+        ]);
+
+        WorkoutLog::create([
+            'user_id' => auth()->id(),
+            'workout_id' => $workout->id,
+            'exercises' => $request->exercises,
+        ]);
+
+        return redirect()->route('workouts.start', $workout->id)
+            ->with('success', 'Workout saved!');
+    }
+
+    public function end(Workout $workout)
+    {
+        $workout->completed_at = now();
+        $workout->save();
+
+        return redirect()->route('workouts.show', $workout->id)
+            ->with('success', 'Workout completed!');
+    }
 
 
-public function complete(Request $request, Workout $workout)
-{
-    $request->validate([
-        'exercises' => 'required|array',
-        'exercises.*.sets' => 'required|array',
-        'exercises.*.sets.*.reps' => 'required|integer|min:0',
-        'exercises.*.sets.*.weight' => 'required|numeric|min:0',
-    ]);
+    public function destroy(Workout $workout)
+    {
+        $workout->delete();
 
-    WorkoutLog::create([
-        'user_id' => auth()->id(),
-        'workout_id' => $workout->id,
-        'exercises' => $request->exercises, // <-- this must be here
-    ]);
-
-    return redirect()->route('workouts.start', $workout->id)
-        ->with('success', 'Workout saved!');
-}
-
-public function end(Workout $workout)
-{
-    // Mark the workout as completed
-    $workout->completed_at = now(); // set the timestamp
-    $workout->save();
-
-    return redirect()->route('workouts.show', $workout->id)
-                     ->with('success', 'Workout completed!');
-}
-
+        return redirect()->route('workouts.index')
+            ->with('success', 'Workout deleted!');
+    }
 }

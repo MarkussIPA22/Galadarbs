@@ -1,38 +1,69 @@
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Sidebar({ auth }) {
+    const { i18n } = useTranslation();
+
     return (
-        <aside className="w-64 bg-white dark:bg-gray-900  p-6 ">
+        <aside className="w-64 bg-white dark:bg-gray-900 p-6">
             <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-100">
                 Menu
             </h2>
+
+            {/* Language Switcher */}
+            <div className="flex gap-2 mb-6">
+                {/* English */}
+                <button
+                    onClick={() => i18n.changeLanguage('en')}
+                    className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                    <img
+                        src="/flags/english_flag.png"
+                        alt="EN"
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
+                </button>
+
+                {/* Latvian */}
+                <button
+                    onClick={() => i18n.changeLanguage('lv')}
+                    className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+                >
+                    <img
+                        src="/flags/latvia_flag.png"
+                        alt="LV"
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
+                </button>
+            </div>
+
             <nav className="flex flex-col gap-3">
                 <Link
                     href="/dashboard"
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                    Dashboard
+                    {i18n.t('dashboard')}
                 </Link>
 
                 <Link
                     href={route('workouts.create')}
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                    Create Workout
+                    {i18n.t('create_workout')}
                 </Link>
 
-                 <Link
-                     href="/my-workouts"
+                <Link
+                    href="/my-workouts"
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                    My Workouts
+                    {i18n.t('my_workouts')}
                 </Link>
 
                 <Link
                     href="/profile"
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                    Profile
+                    {i18n.t('profile')}
                 </Link>
 
                 {auth.user?.is_admin && (
@@ -40,10 +71,9 @@ export default function Sidebar({ auth }) {
                         href={route('admin.dashboard')}
                         className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
-                        Admin Panel
+                        {i18n.t('admin_panel')}
                     </Link>
                 )}
-
             </nav>
         </aside>
     );

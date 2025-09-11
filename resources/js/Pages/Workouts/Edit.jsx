@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useForm, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
+import { useTranslation } from 'react-i18next';
 
 export default function EditWorkout({ auth, workout, exercises }) {
+  const { t } = useTranslation(); // Use translation hook
   const { data, setData, put, processing, errors } = useForm({
     name: workout.name || '',
     description: workout.description || '',
@@ -11,21 +13,15 @@ export default function EditWorkout({ auth, workout, exercises }) {
     exercises: workout.exercises.map((e) => e.id) || [],
   });
 
-  const [newMuscle, setNewMuscle] = useState('');
-  const [filter, setFilter] = useState(''); // muscle group filter
+  const [filter, setFilter] = useState('');
+  const muscleGroups = ['Back', 'Chest', 'Biceps', 'Triceps', 'Shoulders', 'Legs', 'Abs'];
 
-  const muscleGroups = ['Back', 'Chest', 'Biceps', 'Triceps', 'Shoulders', 'Legs', 'Abs', ];
-
-  const addMuscleGroup = () => {
-    const trimmed = newMuscle.trim();
-    if (trimmed && !data.muscle_groups.includes(trimmed)) {
-      setData('muscle_groups', [...data.muscle_groups, trimmed]);
-      setNewMuscle('');
+  const toggleMuscleGroup = (group) => {
+    if (data.muscle_groups.includes(group)) {
+      setData('muscle_groups', data.muscle_groups.filter((m) => m !== group));
+    } else {
+      setData('muscle_groups', [...data.muscle_groups, group]);
     }
-  };
-
-  const removeMuscleGroup = (muscle) => {
-    setData('muscle_groups', data.muscle_groups.filter((m) => m !== muscle));
   };
 
   const toggleExercise = (id) => {
@@ -41,10 +37,13 @@ export default function EditWorkout({ auth, workout, exercises }) {
     put(route('workouts.update', workout.id));
   };
 
-  // Filter exercises based on the selected muscle group
-  const filteredExercises = filter
-    ? exercises.filter((exercise) => exercise.muscle_group.toLowerCase() === filter.toLowerCase())
-    : exercises;
+  const filteredExercises = exercises.filter(
+    (exercise) =>
+      data.muscle_groups
+        .map((m) => m.toLowerCase())
+        .includes(exercise.muscle_group.toLowerCase()) &&
+      (filter ? exercise.muscle_group.toLowerCase() === filter.toLowerCase() : true)
+  );
 
   return (
     <AuthenticatedLayout>
@@ -52,11 +51,12 @@ export default function EditWorkout({ auth, workout, exercises }) {
         <Sidebar auth={auth} />
 
         <main className="flex-1 p-6">
-          <h1 className="text-2xl font-bold mb-6">Edit Workout</h1>
+          <h1 className="text-2xl font-bold mb-6">{t('edit_workout')}</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Workout Name */}
             <div>
-              <label className="block text-gray-700 dark:text-gray-200">Workout Name</label>
+              <label className="block text-gray-700 dark:text-gray-200">{t('workout_name')}</label>
               <input
                 type="text"
                 value={data.name}
@@ -66,9 +66,9 @@ export default function EditWorkout({ auth, workout, exercises }) {
               {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             </div>
 
-        
+            {/* Description */}
             <div>
-              <label className="block text-gray-700 dark:text-gray-200">Description</label>
+              <label className="block text-gray-700 dark:text-gray-200">{t('description')}</label>
               <textarea
                 value={data.description}
                 onChange={(e) => setData('description', e.target.value)}
@@ -77,123 +77,108 @@ export default function EditWorkout({ auth, workout, exercises }) {
               {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             </div>
 
-         
+            {/* Muscle Groups Multi-Select */}
             <div>
-              <label className="block text-gray-700 dark:text-gray-200">Muscle Groups</label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={newMuscle}
-                  onChange={(e) => setNewMuscle(e.target.value)}
-                  className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
-                  placeholder="Add muscle group"
-                />
-                <button
-                  type="button"
-                  onClick={addMuscleGroup}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Add
-                </button>
-              </div>
-              <ul className="flex flex-wrap gap-2">
-                {data.muscle_groups.map((muscle, index) => (
-                  <li
-                    key={index}
-                    className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center gap-2"
+              <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('muscle_groups')}</label>
+              <div className="flex flex-wrap gap-2">
+                {muscleGroups.map((group) => (
+                  <button
+                    type="button"
+                    key={group}
+                    onClick={() => toggleMuscleGroup(group)}
+                    className={`px-3 py-1 rounded-full border ${
+                      data.muscle_groups.includes(group)
+                        ? 'bg-blue-600 text-white border-blue-600'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
+                    }`}
                   >
-                    {muscle}
-                    <button
-                      type="button"
-                      onClick={() => removeMuscleGroup(muscle)}
-                      className="text-red-500 text-sm"
-                    >
-                      ✕
-                    </button>
-                  </li>
+                    {t(group.toLowerCase())}
+                  </button>
                 ))}
-              </ul>
+              </div>
               {errors.muscle_groups && <p className="text-red-500 text-sm">{errors.muscle_groups}</p>}
             </div>
 
-          
-            <div className="mb-2">
-              <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
-                Filter Exercises by Muscle Group
-              </label>
-              <select
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="border p-2 rounded dark:bg-gray-700 dark:text-gray-200"
-              >
-                <option value="">All</option>
-                {muscleGroups.map((group) => (
-                  <option key={group} value={group}>{group}</option>
+            {/* Optional Filter */}
+            {data.muscle_groups.length > 1 && (
+              <div className="mb-2">
+                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
+                  {t('muscle_groups')} ({t('exercises')})
+                </label>
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="border p-2 rounded dark:bg-gray-700 dark:text-gray-200"
+                >
+                  <option value="">{t('all')}</option>
+                  {data.muscle_groups.map((group) => (
+                    <option key={group} value={group}>
+                      {t(group.toLowerCase())}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Exercises Grid */}
+            <div>
+              <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('exercises')}</label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {filteredExercises.map((exercise) => (
+                  <label
+                    key={exercise.id}
+                    className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={data.exercises.includes(exercise.id)}
+                      onChange={() => toggleExercise(exercise.id)}
+                      className="mb-1"
+                    />
+                    {exercise.image_path ? (
+                      <img
+                        src={exercise.image_path}
+                        alt={exercise.name}
+                        className="w-36 h-36 object-cover rounded"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
+                        {t('no_image')}
+                      </div>
+                    )}
+                    <span className="text-sm">{exercise.name}</span>
+                    <span className="text-xs text-gray-500">{t(exercise.muscle_group.toLowerCase())}</span>
+                  </label>
                 ))}
-              </select>
+              </div>
+              {errors.exercises && <p className="text-red-500 text-sm">{errors.exercises}</p>}
             </div>
 
-          
-          
-<div>
-  <label className="block text-gray-700 dark:text-gray-200 mb-2">Exercises</label>
-  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-    {filteredExercises.map((exercise) => (
-      <label
-        key={exercise.id}
-        className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700"
-      >
-        <input
-          type="checkbox"
-          checked={data.exercises.includes(exercise.id)}
-          onChange={() => toggleExercise(exercise.id)}
-          className="mb-1"
-        />
-       {exercise.image_path ? (
-  <img
-    src={exercise.image_path} // remove /storage/
-    alt={exercise.name}
-    className="w-36 h-36 object-cover rounded"
-  />
-) : (
-  <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
-    No Image
-  </div>
-)}
-        <span className="text-sm">{exercise.name}</span>
-        <span className="text-xs text-gray-500">{exercise.muscle_group}</span>
-      </label>
-    ))}
-  </div>
-  {errors.exercises && <p className="text-red-500 text-sm">{errors.exercises}</p>}
-</div>
-
-
-       
+            {/* Buttons */}
             <div className="flex gap-4">
               <button
                 type="submit"
                 disabled={processing}
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
               >
-                Save Changes
+                {t('save_changes')}
               </button>
 
-            <div className="flex justify-end mt-6 gap-4">
-          <button
-         type="button"
-         onClick={() => window.location.href = route('workouts.start', workout.id)}
-         className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-      >
-     Start Workout
-    </button>
-    </div>
+              <div className="flex justify-end mt-6 gap-4">
+                <button
+                  type="button"
+                  onClick={() => (window.location.href = route('workouts.start', workout.id))}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  {t('start_workout')}
+                </button>
+              </div>
 
               <Link
                 href={route('workouts.index')}
                 className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900"
               >
-                Cancel
+                {t('cancel')}
               </Link>
             </div>
           </form>

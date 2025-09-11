@@ -26,7 +26,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     })
   );
 
-  // Handle change for reps or weight
   const handleSetChange = (exIndex, setIndex, field, value) => {
     const newData = [...exerciseData];
     newData[exIndex].sets[setIndex][field] = value; // keep as string for input

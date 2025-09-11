@@ -21,7 +21,7 @@ class WorkoutLog extends Model
     }
 
     public function exerciseSets()
-    {
-        return $this->hasMany(ExerciseSet::class);
-    }
+{
+    return $this->hasMany(ExerciseSet::class)->orderBy('id');
+}
 }

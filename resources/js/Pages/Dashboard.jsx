@@ -18,19 +18,20 @@ export default function Dashboard({ auth }) {
     setCompletedDates(dates);
   }, [workouts]);
 
+  const tileClassName = ({ date, view }) => {
+    if (view === 'month') {
+      const isCompleted = completedDates.some(
+        (d) =>
+          d.getFullYear() === date.getFullYear() &&
+          d.getMonth() === date.getMonth() &&
+          d.getDate() === date.getDate()
+      );
+      if (isCompleted) return 'completed-workout';
+    }
+    return '';
+  };
 
-const tileClassName = ({ date, view }) => {
-  if (view === 'month') {
-    const isCompleted = completedDates.some(
-      (d) =>
-        d.getFullYear() === date.getFullYear() &&
-        d.getMonth() === date.getMonth() &&
-        d.getDate() === date.getDate()
-    );
-    if (isCompleted) return 'completed-workout';
-  }
-  return '';
-};
+  const completedWorkouts = workouts.filter((w) => w.completed_at);
 
   return (
     <AuthenticatedLayout>
@@ -56,9 +57,7 @@ const tileClassName = ({ date, view }) => {
               <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
                 Completed Workouts
               </h3>
-              <p className="text-2xl font-bold">
-                {workouts.filter((w) => w.completed_at).length}
-              </p>
+              <p className="text-2xl font-bold">{completedWorkouts.length}</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
@@ -72,13 +71,38 @@ const tileClassName = ({ date, view }) => {
           </div>
 
           {/* Calendar */}
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto mb-10">
             <Calendar
               onChange={setValue}
               value={value}
               tileClassName={tileClassName}
               className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-lg shadow-md"
             />
+          </div>
+
+          {/* Completed Workouts List */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+              Completed Workouts
+            </h2>
+
+            {completedWorkouts.length > 0 ? (
+              <ul className="space-y-3">
+                {completedWorkouts.map((w) => (
+                  <li
+                    key={w.id}
+                    className="flex justify-between items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg"
+                  >
+                    <span className="font-medium">{w.name}</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(w.completed_at).toLocaleDateString()}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500 dark:text-gray-400">No workouts completed yet.</p>
+            )}
           </div>
         </main>
       </div>
