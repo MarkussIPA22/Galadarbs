@@ -74,6 +74,14 @@ export default function Sidebar({ auth }) {
                         {i18n.t('admin_panel')}
                     </Link>
                 )}
+                    
+                <Link
+                    href={route('logout')}
+                    method="post"
+                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                    {i18n.t('logout')}
+                </Link>
             </nav>
         </aside>
     );

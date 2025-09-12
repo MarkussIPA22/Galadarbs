@@ -42,7 +42,7 @@ export default function CreateWorkout({ auth }) {
                         </h2>
 
                         <form onSubmit={submit} className="flex flex-col gap-4">
-                            {/* Workout Name */}
+                           
                             <input
                                 type="text"
                                 value={data.name}
@@ -52,7 +52,7 @@ export default function CreateWorkout({ auth }) {
                             />
                             {errors.name && <p className="text-red-500">{errors.name}</p>}
 
-                            {/* Muscle Groups */}
+                         
                             <div className="flex flex-col gap-2">
                                 <span className="font-medium">{t('muscle_groups')}:</span>
                                 {muscleOptions.map((muscle) => (

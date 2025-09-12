@@ -10,14 +10,14 @@ class ExerciseController extends Controller
 {
     public function index()
 {
-    $workouts = auth()->user()->workouts()->with('exercises')->get();
-    $exercises = Exercise::orderBy('name')->get(); // <-- this is needed
+    $exercises = Exercise::orderBy('name')->get();
 
-    return Inertia::render('MyWorkouts', [
-        'workouts' => $workouts,
+    return Inertia::render('Admin/adminPanel', [
+        'auth' => auth()->user(),
         'exercises' => $exercises,
     ]);
 }
+
 
     public function create()
     {
@@ -45,5 +45,18 @@ public function store(Request $request)
 
     return redirect()->back()->with('success', 'Exercise added!');
 }
+
+public function destroy(Exercise $exercise)
+{
+    // If the exercise has an image, delete it from storage
+    if ($exercise->image_path && \Storage::disk('public')->exists($exercise->image_path)) {
+        \Storage::disk('public')->delete($exercise->image_path);
+    }
+
+    $exercise->delete();
+
+    return redirect()->back()->with('success', 'Exercise deleted!');
+}
+
 
 }

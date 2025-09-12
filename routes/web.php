@@ -56,12 +56,12 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('/admin', function () {
-        return Inertia::render('Admin/adminPanel');
-    })->name('admin.dashboard');
+    // Use the controller to render AdminPanel
+    Route::get('/admin', [ExerciseController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/exercises/create', [ExerciseController::class, 'create']);
-    Route::post('/exercises', [ExerciseController::class, 'store']);
+    Route::get('/exercises/create', [ExerciseController::class, 'create'])->name('exercises.create');
+    Route::post('/exercises', [ExerciseController::class, 'store'])->name('exercises.store');
+    Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
 });
 
 // Public exercises view

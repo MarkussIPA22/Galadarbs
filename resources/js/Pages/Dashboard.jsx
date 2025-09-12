@@ -3,10 +3,12 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
-import '@/../css/calendar.css'; 
+import '@/../css/calendar.css';
 import { Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Dashboard({ auth }) {
+  const { t } = useTranslation();
   const workouts = auth.user.workouts || [];
   const [value, setValue] = useState(new Date());
   const [completedDates, setCompletedDates] = useState([]);
@@ -35,37 +37,36 @@ export default function Dashboard({ auth }) {
 
   return (
     <AuthenticatedLayout>
-      <Head title="Dashboard" />
+      <Head title={t('dashboard')} />
       <div className="flex min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
         <Sidebar auth={auth} />
 
         <main className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-            Welcome, {auth.user.name}!
+            {t('Welcome')}, {auth.user.name}!
           </h1>
 
-          {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
-                Workouts Created
+                {t('workouts_created')}
               </h3>
               <p className="text-2xl font-bold">{workouts.length}</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
-                Completed Workouts
+                {t('completed_workouts')}
               </h3>
               <p className="text-2xl font-bold">{completedWorkouts.length}</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-gray-700 dark:text-gray-200">
-                Next Workout
+                {t('next_workout')}
               </h3>
               <p className="text-2xl font-bold">
-                {workouts.find((w) => !w.completed_at)?.name || 'No workouts yet'}
+                {workouts.find((w) => !w.completed_at)?.name || t('no_workouts_yet')}
               </p>
             </div>
           </div>
@@ -83,7 +84,7 @@ export default function Dashboard({ auth }) {
           {/* Completed Workouts List */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
-              Completed Workouts
+              {t('completed_workouts')}
             </h2>
 
             {completedWorkouts.length > 0 ? (
@@ -101,7 +102,9 @@ export default function Dashboard({ auth }) {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-500 dark:text-gray-400">No workouts completed yet.</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                {t('no_completed_workouts')}
+              </p>
             )}
           </div>
         </main>
