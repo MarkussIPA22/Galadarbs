@@ -8,55 +8,80 @@ use Inertia\Inertia;
 
 class ExerciseController extends Controller
 {
+    // -----------------------------
+    // PUBLIC METHODS (anyone can view)
+    // -----------------------------
+
+    // Public exercise list
     public function index()
-{
-    $exercises = Exercise::orderBy('name')->get();
+    {
+        $exercises = Exercise::orderBy('name')->get();
 
-    return Inertia::render('Admin/adminPanel', [
-        'auth' => auth()->user(),
-        'exercises' => $exercises,
-    ]);
-}
+        return Inertia::render('Exercises/Index', [
+            'exercises' => $exercises,
+        ]);
+    }
 
+    // Show a single exercise (public)
+    public function show(Exercise $exercise)
+    {
+        return Inertia::render('Exercises/Show', [
+            'exercise' => $exercise
+        ]);
+    }
 
+    // -----------------------------
+    // ADMIN METHODS (admins only)
+    // -----------------------------
+
+    // Admin panel index
+    public function adminIndex()
+    {
+        $exercises = Exercise::orderBy('name')->get();
+
+        return Inertia::render('Admin/adminPanel', [
+            'auth' => auth()->user(),
+            'exercises' => $exercises,
+        ]);
+    }
+
+    // Show create form
     public function create()
     {
-        return Inertia::render('Exercises/Create'); // React page
+        return Inertia::render('Exercises/Create');
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|unique:exercises,name',
-        'muscle_group' => 'required|string', // <- validate muscle group
-        'image' => 'nullable|image|max:2048'
-    ]);
+    // Store a new exercise
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:exercises,name',
+            'muscle_group' => 'required|string',
+            'image' => 'nullable|image|max:2048'
+        ]);
 
-    $path = null;
-    if ($request->hasFile('image')) {
-        $path = $request->file('image')->store('exercises', 'public');
+        $path = $request->hasFile('image') 
+            ? $request->file('image')->store('exercises', 'public') 
+            : null;
+
+        Exercise::create([
+            'name' => $request->name,
+            'muscle_group' => $request->muscle_group,
+            'image_path' => $path,
+        ]);
+
+        return redirect()->back()->with('success', 'Exercise added!');
     }
 
-    Exercise::create([
-        'name' => $request->name,
-        'muscle_group' => $request->muscle_group, // <- save muscle group
-        'image_path' => $path,
-    ]);
+    // Delete an exercise
+    public function destroy(Exercise $exercise)
+    {
+        if ($exercise->image_path && \Storage::disk('public')->exists($exercise->image_path)) {
+            \Storage::disk('public')->delete($exercise->image_path);
+        }
 
-    return redirect()->back()->with('success', 'Exercise added!');
-}
+        $exercise->delete();
 
-public function destroy(Exercise $exercise)
-{
-    // If the exercise has an image, delete it from storage
-    if ($exercise->image_path && \Storage::disk('public')->exists($exercise->image_path)) {
-        \Storage::disk('public')->delete($exercise->image_path);
+        return redirect()->back()->with('success', 'Exercise deleted!');
     }
-
-    $exercise->delete();
-
-    return redirect()->back()->with('success', 'Exercise deleted!');
-}
-
-
 }

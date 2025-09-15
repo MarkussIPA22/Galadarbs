@@ -40,6 +40,14 @@ export default function MyWorkouts({ auth }) {
                   </div>
 
                   <div className="ml-4 flex gap-2">
+
+                      <Link
+                      href={route('workouts.start', workout.id)}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    >
+                      {t('Start Workout')}
+                    </Link>
+
                     <Link
                       href={route('workouts.edit', workout.id)}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -53,6 +61,8 @@ export default function MyWorkouts({ auth }) {
                     >
                       {t('delete')}
                     </button>
+
+                   
                   </div>
                 </li>
               ))}

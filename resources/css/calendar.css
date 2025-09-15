@@ -1,16 +1,9 @@
-/* Make completed workout dates green */
-.react-calendar__tile.completed-workout {
-  background: #22c55e !important; /* Tailwind green-500 hex */
+/* Highlight completed workout days */
+.completed-workout {
+  background-color: #4ade80 !important; /* green */
+  border-radius: 50%;
   color: white !important;
-  border-radius: 50% !important;
+  font-weight: bold;
 }
 
-/* Optional: Hover effect */
-.react-calendar__tile.completed-workout:hover {
-  background: #16a34a !important; /* Tailwind green-600 hex */
-}
-
-
-.react-calendar__tile--now {
-    background: #22c55e;
-}
+/* If the day is completed AND active, keep it green (not blue) */

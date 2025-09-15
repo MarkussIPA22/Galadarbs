@@ -6,25 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-  public function up(): void
-{
-   Schema::create('workout_logs', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('workout_id')->constrained()->onDelete('cascade');
-    $table->foreignId('user_id')->constrained()->onDelete('cascade'); // add this
-    $table->json('exercises'); // keep as JSON
-    $table->timestamps();
-});
+    public function up(): void
+    {
+        Schema::create('workout_logs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('workout_id')->nullable()->constrained()->nullOnDelete(); // keep nullable
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // delete logs if user deleted
+            $table->json('exercises'); // store sets/reps
+            $table->timestamps();
+        });
+    }
 
-}
-
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('workout_logs');

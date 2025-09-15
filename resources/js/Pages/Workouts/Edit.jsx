@@ -5,7 +5,7 @@ import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
 
 export default function EditWorkout({ auth, workout, exercises }) {
-  const { t } = useTranslation(); // Use translation hook
+  const { t } = useTranslation();
   const { data, setData, put, processing, errors } = useForm({
     name: workout.name || '',
     description: workout.description || '',
@@ -125,7 +125,7 @@ export default function EditWorkout({ auth, workout, exercises }) {
               <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('exercises')}</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {filteredExercises.map((exercise) => (
-                  <label
+                  <div
                     key={exercise.id}
                     className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700"
                   >
@@ -146,9 +146,16 @@ export default function EditWorkout({ auth, workout, exercises }) {
                         {t('no_image')}
                       </div>
                     )}
-                    <span className="text-sm">{exercise.name}</span>
+                    {/* ✅ Clickable name */}
+                    <Link
+  href={route('exercises.show', exercise.id)}
+  className="text-sm font-medium text-blue-600 hover:underline"
+>
+  {exercise.name}
+</Link>
+
                     <span className="text-xs text-gray-500">{t(exercise.muscle_group.toLowerCase())}</span>
-                  </label>
+                  </div>
                 ))}
               </div>
               {errors.exercises && <p className="text-red-500 text-sm">{errors.exercises}</p>}

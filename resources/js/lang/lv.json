@@ -13,7 +13,7 @@
   "abs": "Vēdera muskuļi",
   "full_body": "Viss ķermenis",
   "my_workouts": "Mani treniņi",
-  "no_workouts_yet": "Vēl nav treniņu. Izveido savu pirmo treniņu!",
+  "No workouts yet": "Vēl nav treniņu. Izveido savu pirmo treniņu!",
   "edit_workout": "Rediģēt treniņu",
   "description": "Apraksts",
   "save_changes": "Saglabāt izmaiņas",
@@ -23,15 +23,16 @@
   "login": "Ienākt",
   "register": "Reģistrēties",
   "dashboard": "Informācijas panelis",
-  "start_workout": "Sākt treniņu",
+  "Start Workout": "Sākt treniņu",
   "exercises": "Vingrinājumi",
   "cancel": "Atcelt",
   "edit": "Rediģēt",
   "delete": "Dzēst",
   "Welcome": "Laipni lūdzam",
 
-  "workouts_created": "Izveidotie treniņi",
-  "completed_workouts": "Pabeigtie treniņi",
-  "next_workout": "Nākamais treniņš",
-  "no_completed_workouts": "Vēl nav pabeigtu treniņu"
+
+  "Workouts Created": "Izveidotie treniņi",
+  "completed Workouts": "Pabeigtie treniņi",
+  "Next workout": "Nākamais treniņš",
+  "no completed workouts": "Vēl nav pabeigtu treniņu"
 }

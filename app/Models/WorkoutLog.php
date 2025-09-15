@@ -12,16 +12,18 @@ class WorkoutLog extends Model
     protected $fillable = ['workout_id', 'user_id', 'exercises'];
 
     protected $casts = [
-        'exercises' => 'array', // automatically cast JSON to array
+        'exercises' => 'array',
     ];
 
     public function workout()
     {
-        return $this->belongsTo(Workout::class);
+        return $this->belongsTo(Workout::class)->withDefault([
+            'name' => 'Deleted Workout', // fallback for deleted workouts
+        ]);
     }
 
     public function exerciseSets()
-{
-    return $this->hasMany(ExerciseSet::class)->orderBy('id');
-}
+    {
+        return $this->hasMany(ExerciseSet::class)->orderBy('id');
+    }
 }

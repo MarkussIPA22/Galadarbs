@@ -30,10 +30,10 @@ class WorkoutController extends Controller
         return redirect()->route('workouts.index')->with('success', 'Workout created!');
     }
 
-    public function create()
-    {
-        return inertia('CreateWorkout');
-    }
+public function create()
+{
+    return Inertia::render('Workouts/CreateWorkout');
+}
 
     public function index()
     {
@@ -129,4 +129,29 @@ class WorkoutController extends Controller
         return redirect()->route('workouts.index')
             ->with('success', 'Workout deleted!');
     }
+
+   public function dashboard()
+{
+    $user = auth()->user();
+
+    // Existing workouts
+    $workouts = Workout::where('user_id', $user->id)->get();
+
+    // All completed logs (even if workout is deleted)
+    $completedLogs = \App\Models\WorkoutLog::where('user_id', $user->id)
+        ->with('workout:id,name') // fallback will apply for deleted workouts
+        ->orderBy('created_at', 'desc')
+        ->get(['id', 'workout_id', 'created_at']);
+
+    return Inertia::render('Dashboard', [
+        'auth' => ['user' => $user],
+        'workouts' => $workouts,
+        'completedLogs' => $completedLogs,
+    ]);
+}
+
+
+
+
+
 }

@@ -1,17 +1,46 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
 
 export default function GuestLayout({ children }) {
-    return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+    const [darkMode, setDarkMode] = useState(
+        localStorage.getItem('darkMode') === 'true' || false
+    );
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
+    useEffect(() => {
+        localStorage.setItem('darkMode', darkMode);
+    }, [darkMode]);
+
+    return (
+        <div className={darkMode ? 'dark' : ''}>
+            <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors px-4">
+                
+                {/* Dark Mode Toggle */}
+                <div className="absolute top-6 right-6">
+                    <label htmlFor="dark-mode-toggle" className="flex items-center cursor-pointer">
+                        <div className="relative">
+                            <input
+                                id="dark-mode-toggle"
+                                type="checkbox"
+                                className="sr-only"
+                                checked={darkMode}
+                                onChange={() => setDarkMode(!darkMode)}
+                            />
+                            <div className="w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full shadow-inner transition-colors"></div>
+                            <div
+                                className={`dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 top-0 transition-transform ${
+                                    darkMode ? 'translate-x-full bg-indigo-500' : ''
+                                }`}
+                            ></div>
+                        </div>
+                        <span className="ml-3 text-gray-700 dark:text-gray-200 font-medium">
+                            {darkMode ? 'Dark' : 'Light'}
+                        </span>
+                    </label>
+                </div>
+
+                {/* Centered Card */}
+                <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 transition-colors">
+                    {children}
+                </div>
             </div>
         </div>
     );
