@@ -6,4 +6,7 @@
   font-weight: bold;
 }
 
-/* If the day is completed AND active, keep it green (not blue) */
+.dark .react-calendar__tile:hover {
+  background: #374151 !important; 
+  color: #d1d5db !important;      
+}

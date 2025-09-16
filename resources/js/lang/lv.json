@@ -11,10 +11,12 @@
   "triceps": "Tricepsi",
   "legs": "Kājas",
   "abs": "Vēdera muskuļi",
+
   "full_body": "Viss ķermenis",
   "my_workouts": "Mani treniņi",
   "No workouts yet": "Vēl nav treniņu. Izveido savu pirmo treniņu!",
   "edit_workout": "Rediģēt treniņu",
+  "save_workout": "Saglabāt treniņu",
   "description": "Apraksts",
   "save_changes": "Saglabāt izmaiņas",
   "admin_panel": "Administratora panelis",
@@ -33,6 +35,15 @@
 
   "Workouts Created": "Izveidotie treniņi",
   "completed Workouts": "Pabeigtie treniņi",
+  "Completed Workouts": "Pabeigtie treniņi",
+  "Next Workout": "Nākamais treniņš",  
+  "previous_workout": "Iepriekšējais treniņš",
+  "this_workout": "Šis treniņš",
+  "reps": "atkārtojumi",
+  "weight_kg": "svars (kg)",
+  "add_set": "Pievienot piegājienu",
+  "set": "piegājiens",
   "Next workout": "Nākamais treniņš",
+  "start_workout" : "Sākt treniņu",
   "no completed workouts": "Vēl nav pabeigtu treniņu"
 }

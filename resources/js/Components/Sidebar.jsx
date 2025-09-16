@@ -10,9 +10,9 @@ export default function Sidebar({ auth }) {
                 Menu
             </h2>
 
-            {/* Language Switcher */}
+           
             <div className="flex gap-2 mb-6">
-                {/* English */}
+               
                 <button
                     onClick={() => i18n.changeLanguage('en')}
                     className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -24,7 +24,7 @@ export default function Sidebar({ auth }) {
                     />
                 </button>
 
-                {/* Latvian */}
+               
                 <button
                     onClick={() => i18n.changeLanguage('lv')}
                     className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -66,14 +66,22 @@ export default function Sidebar({ auth }) {
                     {i18n.t('profile')}
                 </Link>
 
-                {auth.user?.is_admin && (
-                    <Link
-                        href={route('admin.dashboard')}
-                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                        {i18n.t('admin_panel')}
-                    </Link>
-                )}
+              {auth.user?.is_admin === 1 && (
+    <Link
+        href={route('admin.dashboard')}
+        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+    >
+        {i18n.t('admin_panel')}
+    </Link>
+)}
+
+
+                <Link
+                    href="/exercises"
+                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                    {i18n.t('exercises')}
+                </Link>
                     
                 <Link
                     href={route('logout')}
@@ -82,6 +90,8 @@ export default function Sidebar({ auth }) {
                 >
                     {i18n.t('logout')}
                 </Link>
+
+
             </nav>
         </aside>
     );

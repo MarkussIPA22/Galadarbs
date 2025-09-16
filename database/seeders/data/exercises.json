@@ -2,61 +2,91 @@
   {
     "id": 1,
     "name": "Bench Press",
+    "name_lv": "Spiešana guļus",
     "muscle_group": "Chest",
-    "description": "A compound exercise that targets the chest, shoulders, and triceps by pressing a barbell away from the chest while lying on a bench."
+    "muscle_group_lv": "Krūtis",
+    "description": "A compound exercise that targets the chest, shoulders, and triceps by pressing a barbell away from the chest while lying on a bench.",
+    "description_lv": "Kombinēta vingrinājuma krūtīm, pleciem un tricepsiem, nospiežot stieni prom no krūtīm guļus uz soliņa."
   },
   {
     "id": 2,
     "name": "Squat",
+    "name_lv": "Piekare",
     "muscle_group": "Legs",
-    "description": "A lower body exercise that primarily targets the quadriceps, hamstrings, and glutes by bending the knees and hips to lower the body, then returning to standing."
+    "muscle_group_lv": "Kājas",
+    "description": "A lower body exercise that primarily targets the quadriceps, hamstrings, and glutes by bending the knees and hips to lower the body, then returning to standing.",
+    "description_lv": "Vingrinājums apakšējai ķermeņa daļai, kas galvenokārt trenē kvadricepsus, hamstringus un sēžas muskuļus, saliecot ceļus un gurnus."
   },
   {
     "id": 3,
     "name": "Deadlift",
+    "name_lv": "Vilciens no grīdas",
     "muscle_group": "Back",
-    "description": "A compound movement that works the back, glutes, and hamstrings by lifting a barbell from the ground to hip level."
+    "muscle_group_lv": "Mugura",
+    "description": "A compound movement that works the back, glutes, and hamstrings by lifting a barbell from the ground to hip level.",
+    "description_lv": "Kombinēts vingrinājums mugurai, sēžam un hamstringiem, paceļot stieni no grīdas līdz gurnu līmenim."
   },
   {
     "id": 4,
     "name": "Shoulder Press",
+    "name_lv": "Plecu spiešana",
     "muscle_group": "Shoulders",
-    "description": "An upper body exercise that targets the deltoids by pressing a weight overhead from shoulder height."
+    "muscle_group_lv": "Pleci",
+    "description": "An upper body exercise that targets the deltoids by pressing a weight overhead from shoulder height.",
+    "description_lv": "Augšējās ķermeņa daļas vingrinājums, kas trenē deltveida muskuļus, spiežot svaru virs galvas no plecu līmeņa."
   },
   {
     "id": 5,
     "name": "Pull-Up",
+    "name_lv": "Paaugstināšanās",
     "muscle_group": "Back",
-    "description": "A bodyweight exercise that targets the upper back and biceps by pulling the body upward while hanging from a bar."
+    "muscle_group_lv": "Mugura",
+    "description": "A bodyweight exercise that targets the upper back and biceps by pulling the body upward while hanging from a bar.",
+    "description_lv": "Vingrinājums ar savu svaru, kas trenē augšējo muguru un bicepsus, paceļot ķermeni uz augšu, karājoties pie stieņa."
   },
   {
     "id": 6,
     "name": "Bicep Curl",
+    "name_lv": "Bicepsa cirtiena",
     "muscle_group": "Arms",
-    "description": "An isolation exercise that targets the biceps by curling a weight toward the shoulder."
+    "muscle_group_lv": "Rokas",
+    "description": "An isolation exercise that targets the biceps by curling a weight toward the shoulder.",
+    "description_lv": "Izolēts vingrinājums bicepsiem, paceļot svaru uz plecu."
   },
   {
     "id": 7,
     "name": "Tricep Dip",
+    "name_lv": "Tricepsa dips",
     "muscle_group": "Arms",
-    "description": "A bodyweight exercise that targets the triceps by lowering and raising the body using parallel bars or a bench."
+    "muscle_group_lv": "Rokas",
+    "description": "A bodyweight exercise that targets the triceps by lowering and raising the body using parallel bars or a bench.",
+    "description_lv": "Vingrinājums ar savu svaru, kas trenē tricepsus, pazeminot un pacelot ķermeni, izmantojot paralēlas stieņus vai soliņu."
   },
   {
     "id": 8,
     "name": "Lunge",
+    "name_lv": "Izklupiens",
     "muscle_group": "Legs",
-    "description": "A lower body exercise that targets the quadriceps, hamstrings, and glutes by stepping forward and lowering the hips."
+    "muscle_group_lv": "Kājas",
+    "description": "A lower body exercise that targets the quadriceps, hamstrings, and glutes by stepping forward and lowering the hips.",
+    "description_lv": "Apakšējās ķermeņa daļas vingrinājums, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, sperot soli uz priekšu un nolaidot gurnus."
   },
   {
     "id": 9,
     "name": "Plank",
+    "name_lv": "Planka",
     "muscle_group": "Core",
-    "description": "An isometric core exercise that involves maintaining a push-up position to strengthen the abdominals and lower back."
+    "muscle_group_lv": "Vēders",
+    "description": "An isometric core exercise that involves maintaining a push-up position to strengthen the abdominals and lower back.",
+    "description_lv": "Izometrisks kodola vingrinājums, kas ietver atspiešanās pozīcijas uzturēšanu, lai stiprinātu vēdera un apakšējās muguras muskuļus."
   },
   {
     "id": 10,
     "name": "Lat Pulldown",
+    "name_lv": "Lat pulldown",
     "muscle_group": "Back",
-    "description": "A machine exercise that targets the latissimus dorsi by pulling a bar down toward the chest."
+    "muscle_group_lv": "Mugura",
+    "description": "A machine exercise that targets the latissimus dorsi by pulling a bar down toward the chest.",
+    "description_lv": "Vingrinājums ar ierīci, kas trenē platās muguras muskuļus, velkot stieni uz krūtīm."
   }
 ]

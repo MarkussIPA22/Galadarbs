@@ -5,36 +5,57 @@ namespace App\Http\Controllers;
 use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Favorite;
+
 
 class ExerciseController extends Controller
 {
-    // -----------------------------
-    // PUBLIC METHODS (anyone can view)
-    // -----------------------------
 
-    // Public exercise list
-    public function index()
-    {
-        $exercises = Exercise::orderBy('name')->get();
+   
+  public function index()
+{
+    $locale = app()->getLocale(); // "en" or "lv"
 
-        return Inertia::render('Exercises/Index', [
-            'exercises' => $exercises,
-        ]);
+    $exercises = Exercise::all()->map(function($ex) use ($locale) {
+        return [
+            'id' => $ex->id,
+            'name' => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
+            'description' => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
+            'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
+            'image_path' => $ex->image_path,
+        ];
+    });
+
+    return Inertia::render('Exercises/Index', [
+        'exercises' => $exercises,
+    ]);
+}
+
+public function show(Exercise $exercise)
+{
+    $locale = app()->getLocale();
+
+    $isFavorite = false;
+    if (auth()->check()) {
+        $isFavorite = \App\Models\Favorite::where('user_id', auth()->id())
+            ->where('exercise_id', $exercise->id)
+            ->exists();
     }
 
-    // Show a single exercise (public)
-    public function show(Exercise $exercise)
-    {
-        return Inertia::render('Exercises/Show', [
-            'exercise' => $exercise
-        ]);
-    }
+    return Inertia::render('Exercises/Show', [
+        'exercise' => [
+            'id' => $exercise->id,
+            'name' => $locale === 'lv' && $exercise->name_lv ? $exercise->name_lv : $exercise->name,
+            'description' => $locale === 'lv' && $exercise->description_lv ? $exercise->description_lv : $exercise->description,
+            'muscle_group' => $locale === 'lv' && $exercise->muscle_group_lv ? $exercise->muscle_group_lv : $exercise->muscle_group,
+            'image_path' => $exercise->image_path,
+        ],
+        'isFavorite' => $isFavorite,
+        'auth' => auth()->user()
+    ]);
+}
 
-    // -----------------------------
-    // ADMIN METHODS (admins only)
-    // -----------------------------
-
-    // Admin panel index
+   
     public function adminIndex()
     {
         $exercises = Exercise::orderBy('name')->get();
@@ -45,13 +66,11 @@ class ExerciseController extends Controller
         ]);
     }
 
-    // Show create form
     public function create()
     {
         return Inertia::render('Exercises/Create');
     }
 
-    // Store a new exercise
     public function store(Request $request)
     {
         $request->validate([
@@ -67,7 +86,11 @@ class ExerciseController extends Controller
         Exercise::create([
             'name' => $request->name,
             'muscle_group' => $request->muscle_group,
+            'description' => $request->description,
             'image_path' => $path,
+            'name_lv' => $request->name_lv,
+            'muscle_group_lv' => $request->muscle_group_lv,
+            'description_lv' => $request->description_lv,
         ]);
 
         return redirect()->back()->with('success', 'Exercise added!');
@@ -84,4 +107,29 @@ class ExerciseController extends Controller
 
         return redirect()->back()->with('success', 'Exercise deleted!');
     }
+
+    public function toggleFavorite(Exercise $exercise)
+{
+    $user = auth()->user();
+
+    $favorite = Favorite::where('user_id', $user->id)
+        ->where('exercise_id', $exercise->id)
+        ->first();
+
+    if ($favorite) {
+        $favorite->delete();
+        return back()->with('success', 'Exercise removed from favorites.');
+    }
+
+    Favorite::create([
+        'user_id' => $user->id,
+        'exercise_id' => $exercise->id,
+    ]);
+
+    return back()->with('success', 'Exercise added to favorites!');
+}
+
+
+
+
 }
