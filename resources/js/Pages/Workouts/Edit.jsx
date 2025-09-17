@@ -4,7 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
 
-export default function EditWorkout({ auth, workout, exercises }) {
+export default function EditWorkout({ auth, workout, exercises, favoriteExercises }) {
   const { t } = useTranslation();
   const { data, setData, put, processing, errors } = useForm({
     name: workout.name || '',
@@ -14,7 +14,18 @@ export default function EditWorkout({ auth, workout, exercises }) {
   });
 
   const [filter, setFilter] = useState('');
-  const muscleGroups = ['Back', 'Chest', 'Biceps', 'Triceps', 'Shoulders', 'Legs', 'Abs'];
+  const [showFavorites, setShowFavorites] = useState(false);
+
+  // Normalize and translate muscle groups
+  const muscleGroups = [
+    ...new Set(exercises.map((e) => e.muscle_group.toLowerCase())),
+    'favorites'
+  ];
+
+  const displayMuscleGroup = (group) => {
+    if (group === 'favorites') return t('favorites');
+    return t(group);
+  };
 
   const toggleMuscleGroup = (group) => {
     if (data.muscle_groups.includes(group)) {
@@ -37,13 +48,14 @@ export default function EditWorkout({ auth, workout, exercises }) {
     put(route('workouts.update', workout.id));
   };
 
-  const filteredExercises = exercises.filter(
-    (exercise) =>
-      data.muscle_groups
-        .map((m) => m.toLowerCase())
-        .includes(exercise.muscle_group.toLowerCase()) &&
-      (filter ? exercise.muscle_group.toLowerCase() === filter.toLowerCase() : true)
-  );
+  // Filter exercises based on muscle group selection and favorites toggle
+  const filteredExercises = exercises.filter((exercise) => {
+    const isFavorite = favoriteExercises.includes(exercise.id);
+    const matchesFavorites = showFavorites && isFavorite;
+    const matchesMuscleGroup = data.muscle_groups.includes(exercise.muscle_group.toLowerCase());
+    const matchesFilter = filter ? exercise.muscle_group.toLowerCase() === filter : true;
+    return (matchesFavorites || matchesMuscleGroup) && matchesFilter;
+  });
 
   return (
     <AuthenticatedLayout>
@@ -77,29 +89,39 @@ export default function EditWorkout({ auth, workout, exercises }) {
               {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             </div>
 
-            {/* Muscle Groups Multi-Select */}
+            {/* Muscle Groups + Favorites Toggle */}
             <div>
               <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('muscle_groups')}</label>
               <div className="flex flex-wrap gap-2">
                 {muscleGroups.map((group) => (
                   <button
-                    type="button"
                     key={group}
-                    onClick={() => toggleMuscleGroup(group)}
+                    type="button"
+                    onClick={() => {
+                      if (group === 'favorites') {
+                        setShowFavorites(!showFavorites);
+                      } else {
+                        toggleMuscleGroup(group);
+                      }
+                    }}
                     className={`px-3 py-1 rounded-full border ${
-                      data.muscle_groups.includes(group)
+                      group === 'favorites'
+                        ? showFavorites
+                          ? 'bg-yellow-500 text-white border-yellow-500'
+                          : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
+                        : data.muscle_groups.includes(group)
                         ? 'bg-blue-600 text-white border-blue-600'
                         : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
                     }`}
                   >
-                    {t(group.toLowerCase())}
+                    {displayMuscleGroup(group)}
                   </button>
                 ))}
               </div>
               {errors.muscle_groups && <p className="text-red-500 text-sm">{errors.muscle_groups}</p>}
             </div>
 
-            {/* Optional Filter */}
+            {/* Optional Dropdown Filter */}
             {data.muscle_groups.length > 1 && (
               <div className="mb-2">
                 <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
@@ -113,7 +135,7 @@ export default function EditWorkout({ auth, workout, exercises }) {
                   <option value="">{t('all')}</option>
                   {data.muscle_groups.map((group) => (
                     <option key={group} value={group}>
-                      {t(group.toLowerCase())}
+                      {displayMuscleGroup(group)}
                     </option>
                   ))}
                 </select>
@@ -146,15 +168,15 @@ export default function EditWorkout({ auth, workout, exercises }) {
                         {t('no_image')}
                       </div>
                     )}
-                    {/* ✅ Clickable name */}
                     <Link
-  href={route('exercises.show', exercise.id)}
-  className="text-sm font-medium text-blue-600 hover:underline"
->
-  {exercise.name}
-</Link>
-
-                    <span className="text-xs text-gray-500">{t(exercise.muscle_group.toLowerCase())}</span>
+                      href={route('exercises.show', exercise.id)}
+                      className="text-sm font-medium text-blue-600 hover:underline"
+                    >
+                      {exercise.name}
+                    </Link>
+                    <span className="text-xs text-gray-500">
+                      {displayMuscleGroup(exercise.muscle_group.toLowerCase())}
+                    </span>
                   </div>
                 ))}
               </div>

@@ -30,22 +30,26 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validē ienākošo reģistrācijas pieprasījumu
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+        // Izveido jaunu lietotāju datubāzē
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        
+        // Izsauc reģistrācijas notikumu
         event(new Registered($user));
-
+        
+        // Automātiski pieslēdz lietotāju sistēmā pēc reģistrācijas
         Auth::login($user);
 
+        // Pāraida lietotāju uz informācijas paneli (dashboard)
         return redirect(route('dashboard', absolute: false));
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Tasks({ tasks, auth }) {
+export default function Tasks({ tasks = [], auth }) {
     const { data, setData, post, processing } = useForm({
         name: '',
         target: 0,
@@ -12,17 +12,6 @@ export default function Tasks({ tasks, auth }) {
     const handleCreateTask = (e) => {
         e.preventDefault();
         post(route('tasks.store'));
-    };
-
-    const handleAddProgress = (taskId, progress) => {
-        fetch(route('tasks.updateProgress', taskId), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ progress }),
-        }).then(() => window.location.reload());
     };
 
     return (
@@ -66,31 +55,6 @@ export default function Tasks({ tasks, auth }) {
                                 <p>Progress: {task.progress} / {task.target} kg</p>
                                 {task.completed && <span className="text-green-600 font-bold">Completed!</span>}
                             </div>
-
-                            {!task.completed && (
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        const progress = parseInt(e.target.progress.value, 10);
-                                        if (!isNaN(progress) && progress > 0) {
-                                            handleAddProgress(task.id, progress);
-                                            e.target.reset();
-                                        }
-                                    }}
-                                    className="flex gap-2"
-                                >
-                                    <input
-                                        type="number"
-                                        name="progress"
-                                        placeholder="kg lifted"
-                                        className="border p-1 rounded w-24"
-                                        min="1"
-                                    />
-                                    <button type="submit" className="bg-blue-600 text-white px-2 rounded">
-                                        Add
-                                    </button>
-                                </form>
-                            )}
                         </li>
                     ))}
                 </ul>
@@ -98,4 +62,3 @@ export default function Tasks({ tasks, auth }) {
         </AuthenticatedLayout>
     );
 }
-

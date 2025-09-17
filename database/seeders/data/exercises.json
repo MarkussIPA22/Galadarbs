@@ -11,7 +11,7 @@
   {
     "id": 2,
     "name": "Squat",
-    "name_lv": "Piekare",
+    "name_lv": "Pietupieni",
     "muscle_group": "Legs",
     "muscle_group_lv": "Kājas",
     "description": "A lower body exercise that primarily targets the quadriceps, hamstrings, and glutes by bending the knees and hips to lower the body, then returning to standing.",
@@ -20,7 +20,7 @@
   {
     "id": 3,
     "name": "Deadlift",
-    "name_lv": "Vilciens no grīdas",
+    "name_lv": "Vilkme",
     "muscle_group": "Back",
     "muscle_group_lv": "Mugura",
     "description": "A compound movement that works the back, glutes, and hamstrings by lifting a barbell from the ground to hip level.",
@@ -38,7 +38,7 @@
   {
     "id": 5,
     "name": "Pull-Up",
-    "name_lv": "Paaugstināšanās",
+    "name_lv": "Pievilkšanās",
     "muscle_group": "Back",
     "muscle_group_lv": "Mugura",
     "description": "A bodyweight exercise that targets the upper back and biceps by pulling the body upward while hanging from a bar.",
@@ -47,9 +47,9 @@
   {
     "id": 6,
     "name": "Bicep Curl",
-    "name_lv": "Bicepsa cirtiena",
-    "muscle_group": "Arms",
-    "muscle_group_lv": "Rokas",
+    "name_lv": "Bicepsa loks",
+    "muscle_group": "Biceps",
+    "muscle_group_lv": "Bicepsi",
     "description": "An isolation exercise that targets the biceps by curling a weight toward the shoulder.",
     "description_lv": "Izolēts vingrinājums bicepsiem, paceļot svaru uz plecu."
   },
@@ -57,8 +57,8 @@
     "id": 7,
     "name": "Tricep Dip",
     "name_lv": "Tricepsa dips",
-    "muscle_group": "Arms",
-    "muscle_group_lv": "Rokas",
+    "muscle_group": "Triceps",
+    "muscle_group_lv": "Tricepsi",
     "description": "A bodyweight exercise that targets the triceps by lowering and raising the body using parallel bars or a bench.",
     "description_lv": "Vingrinājums ar savu svaru, kas trenē tricepsus, pazeminot un pacelot ķermeni, izmantojot paralēlas stieņus vai soliņu."
   },
@@ -74,7 +74,7 @@
   {
     "id": 9,
     "name": "Plank",
-    "name_lv": "Planka",
+    "name_lv": "Planks",
     "muscle_group": "Core",
     "muscle_group_lv": "Vēders",
     "description": "An isometric core exercise that involves maintaining a push-up position to strengthen the abdominals and lower back.",

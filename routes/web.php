@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\WorkoutLogController;
+use App\Http\Controllers\TaskController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,19 +18,25 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin'      => Route::has('login'),
-        'canRegister'   => Route::has('register'),
-        'laravelVersion'=> Application::VERSION,
-        'phpVersion'    => PHP_VERSION,
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 
-// Anyone can view exercises
 Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggleFavorite'])
     ->name('exercises.favorite')
     ->middleware('auth');
+
+// Locale switcher
+Route::get('/locale/{lang}', function ($lang) {
+    session(['locale' => $lang]);
+    app()->setLocale($lang); // update immediately
+    return redirect()->back();
+})->name('locale.switch');
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +44,6 @@ Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggl
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified'])->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [WorkoutController::class, 'dashboard'])->name('dashboard');
 
@@ -55,11 +61,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Workout logs
     Route::post('/workout-logs', [WorkoutLogController::class, 'store'])->name('workout-logs.store');
+Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
 });
 
 /*
@@ -68,7 +80,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-
     // Admin panel
     Route::get('/admin', [ExerciseController::class, 'adminIndex'])->name('admin.dashboard');
 

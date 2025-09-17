@@ -3,22 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workout;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Exercise;
 use App\Models\WorkoutLog;
+use App\Models\Favorite;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class WorkoutController extends Controller
 {
     public function store(Request $request)
     {
+        //Validē datus no formas
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'muscle_groups' => 'required|array|min:1',
-            'muscle_groups.*' => 'string'
         ]);
 
+        //Izveido jaunu treniņu
         Workout::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
@@ -26,31 +28,47 @@ class WorkoutController extends Controller
             'muscle_groups' => $request->muscle_groups,
         ]);
 
-        // ✅ Redirect to "My Workouts" instead of dashboard
         return redirect()->route('workouts.index')->with('success', 'Workout created!');
     }
 
-public function create()
-{
-    return Inertia::render('Workouts/CreateWorkout');
-}
+    public function create()
+    {
+        return Inertia::render('Workouts/CreateWorkout');
+    }
 
     public function index()
     {
         $workouts = Workout::where('user_id', auth()->id())->get();
 
-        return inertia('myWorkouts', [
-            'workouts' => $workouts
+        return Inertia::render('Workouts/myWorkouts', [
+            'workouts' => $workouts,
         ]);
     }
 
     public function edit(Workout $workout)
     {
-        $exercises = Exercise::orderBy('name')->get();
+        $locale = app()->getLocale();
+
+        $exercises = Exercise::orderBy('name')->get()->map(function ($ex) use ($locale) {
+            return [
+                'id' => $ex->id,
+                'name' => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
+                'description' => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
+                'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
+                 'muscle_group_key' => $ex->muscle_group,
+                'image_path' => $ex->image_path,
+            ];
+        });
+
+        // Get favorite exercises for the logged-in user
+        $favoriteExercises = Favorite::where('user_id', auth()->id())
+            ->pluck('exercise_id')
+            ->toArray();
 
         return Inertia::render('Workouts/Edit', [
             'workout' => $workout->load('exercises'),
             'exercises' => $exercises,
+            'favoriteExercises' => $favoriteExercises, // ✅ pass favorites
         ]);
     }
 
@@ -121,7 +139,6 @@ public function create()
             ->with('success', 'Workout completed!');
     }
 
-
     public function destroy(Workout $workout)
     {
         $workout->delete();
@@ -130,28 +147,21 @@ public function create()
             ->with('success', 'Workout deleted!');
     }
 
-   public function dashboard()
-{
-    $user = auth()->user();
+    public function dashboard()
+    {
+        $user = auth()->user();
 
-    // Existing workouts
-    $workouts = Workout::where('user_id', $user->id)->get();
+        $workouts = Workout::where('user_id', $user->id)->get();
 
-    // All completed logs (even if workout is deleted)
-    $completedLogs = \App\Models\WorkoutLog::where('user_id', $user->id)
-        ->with('workout:id,name') // fallback will apply for deleted workouts
-        ->orderBy('created_at', 'desc')
-        ->get(['id', 'workout_id', 'created_at']);
+        $completedLogs = WorkoutLog::where('user_id', $user->id)
+            ->with('workout:id,name')
+            ->orderBy('created_at', 'desc')
+            ->get(['id', 'workout_id', 'created_at']);
 
-    return Inertia::render('Dashboard', [
-        'auth' => ['user' => $user],
-        'workouts' => $workouts,
-        'completedLogs' => $completedLogs,
-    ]);
-}
-
-
-
-
-
+        return Inertia::render('Dashboard', [
+            'auth' => ['user' => $user],
+            'workouts' => $workouts,
+            'completedLogs' => $completedLogs,
+        ]);
+    }
 }

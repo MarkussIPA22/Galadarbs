@@ -13,15 +13,25 @@ export default function Show({ exercise, auth, isFavorite }) {
     // Map exercise names to YouTube IDs
     const youtubeVideos = {
         "Bench Press": "gRVjAtPip0Y",
+        "Spiešana guļus": "gRVjAtPip0Y",
         "Squat": "aclHkVaku9U",
+        "Pietupieni": "aclHkVaku9U",
         "Deadlift": "op9kVnSso6Q",
+        "Vilkme": "op9kVnSso6Q",
         "Shoulder Press": "2yjwXTZQDDI",
+        "Plecu spiešana": "2yjwXTZQDDI",
         "Pull-Up": "eGo4IYlbE5g",
+        "Pievilkšanās": "eGo4IYlbE5g",
         "Bicep Curl": "ykJmrZ5v0Oo",
+        "Bicepsa loks": "ykJmrZ5v0Oo",
         "Tricep Dip": "0326dy_-CzM",
+        "Tricepsa dips": "0326dy_-CzM",
         "Lunge": "QOVaHwm-Q6U",
+        "Izklupieni": "QOVaHwm-Q6U",
         "Plank": "pSHjTRCQxIw",
+        "Planks": "pSHjTRCQxIw",
         "Lat Pulldown": "CAwf7n6Luuc",
+        "Lat vilkme": "CAwf7n6Luuc",
     };
 
     const videoId = youtubeVideos[exercise.name];

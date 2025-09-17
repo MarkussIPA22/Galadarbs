@@ -12,9 +12,9 @@ return new class extends Migration
    public function up()
 {
     Schema::table('exercises', function (Blueprint $table) {
-        $table->string('name_lv')->nullable();
-        $table->string('muscle_group_lv')->nullable();
-        $table->text('description_lv')->nullable();
+         $table->string('name_lv')->nullable();
+         $table->string('muscle_group_lv')->nullable();
+         $table->text('description_lv')->nullable();
     });
 }
 

@@ -1,8 +1,13 @@
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Sidebar({ auth }) {
     const { i18n } = useTranslation();
+
+    const switchLanguage = (lang) => {
+        i18n.changeLanguage(lang); // frontend translations
+        router.get(route('locale.switch', lang)); // backend locale sync
+    };
 
     return (
         <aside className="w-64 bg-white dark:bg-gray-900 p-6">
@@ -10,11 +15,9 @@ export default function Sidebar({ auth }) {
                 Menu
             </h2>
 
-           
             <div className="flex gap-2 mb-6">
-               
                 <button
-                    onClick={() => i18n.changeLanguage('en')}
+                    onClick={() => switchLanguage('en')}
                     className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 >
                     <img
@@ -24,9 +27,8 @@ export default function Sidebar({ auth }) {
                     />
                 </button>
 
-               
                 <button
-                    onClick={() => i18n.changeLanguage('lv')}
+                    onClick={() => switchLanguage('lv')}
                     className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 >
                     <img
@@ -66,15 +68,14 @@ export default function Sidebar({ auth }) {
                     {i18n.t('profile')}
                 </Link>
 
-              {auth.user?.is_admin === 1 && (
-    <Link
-        href={route('admin.dashboard')}
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-    >
-        {i18n.t('admin_panel')}
-    </Link>
-)}
-
+                {auth.user?.is_admin === 1 && (
+                    <Link
+                        href={route('admin.dashboard')}
+                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                        {i18n.t('admin_panel')}
+                    </Link>
+                )}
 
                 <Link
                     href="/exercises"
@@ -82,7 +83,14 @@ export default function Sidebar({ auth }) {
                 >
                     {i18n.t('exercises')}
                 </Link>
-                    
+
+                <Link 
+                href="/tasks"
+                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                    {i18n.t('tasks')}
+                </Link>
+
                 <Link
                     href={route('logout')}
                     method="post"
@@ -90,8 +98,6 @@ export default function Sidebar({ auth }) {
                 >
                     {i18n.t('logout')}
                 </Link>
-
-
             </nav>
         </aside>
     );
