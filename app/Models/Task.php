@@ -11,6 +11,7 @@ class Task extends Model
 
     protected $fillable = [
         'user_id',
+        'exercise_id',
         'name',
         'target',
         'progress',
@@ -25,6 +26,11 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function exercise()
+    {
+        return $this->belongsTo(Exercise::class);
     }
 
     // Add progress and mark completed if target reached

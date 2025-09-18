@@ -31,5 +31,20 @@
   "next_workout": "Nākamais treniņš",
   "previous_workout": "Iepriekšējais treniņš",
   "this_workout": "Šis treniņš",
-  "welcome": "Laipni lūdzam"
+  "welcome": "Laipni lūdzam",
+  "dashboard": "Informācijas panelis",  
+  "tasks": "Uzdevumi",
+  "profile": "Profils",
+  "logout": "Iziet",
+  "Workouts_Created": "Izveidotie treniņi",
+  "Completed_Workouts": "Pabeigtie treniņi",
+  "Next_Workout": "Nākamais treniņš",
+  "Welcome": "Laipni lūdzam",
+  "workout_description": "Treniņa apraksts",
+  "Start_Workout": "Sākt treniņu",
+  "excersise_name": "Vingrinājuma nosaukums"
+  
+  
+
+
 }

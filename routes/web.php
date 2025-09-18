@@ -1,67 +1,43 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\WorkoutLogController;
 use App\Http\Controllers\TaskController;
 use App\Http\Middleware\AdminMiddleware;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'       => Route::has('login'),
-        'canRegister'    => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion'     => PHP_VERSION,
-    ]);
-});
+// Public
+Route::get('/', fn() => redirect()->route('login'));
 
 Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
-Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggleFavorite'])
-    ->name('exercises.favorite')
-    ->middleware('auth');
+Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggleFavorite'])->name('exercises.favorite')->middleware('auth');
 
-// Locale switcher
 Route::get('/locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
-    app()->setLocale($lang); // update immediately
+    app()->setLocale($lang);
     return redirect()->back();
 })->name('locale.switch');
 
-/*
-|--------------------------------------------------------------------------
-| Authenticated Routes
-|--------------------------------------------------------------------------
-*/
+// Authenticated
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Dashboard
     Route::get('/dashboard', [WorkoutController::class, 'dashboard'])->name('dashboard');
 
     // Workouts
     Route::get('/my-workouts', [WorkoutController::class, 'index'])->name('workouts.index');
     Route::get('/workouts/create', [WorkoutController::class, 'create'])->name('workouts.create');
     Route::post('/workouts', [WorkoutController::class, 'store'])->name('workouts.store');
-    Route::get('/workouts/{workout}/edit', [WorkoutController::class, 'edit'])->name('workouts.edit');
+    Route::get('/workouts/{workout}/edit', [WorkoutController::class, 'edit'])->name('workouts.edit'); // points to Edit.jsx
     Route::put('/workouts/{workout}', [WorkoutController::class, 'update'])->name('workouts.update');
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
 
-    // Workout actions
     Route::get('/workouts/{workout}/start', [WorkoutController::class, 'start'])->name('workouts.start');
     Route::post('/workouts/{workout}/complete', [WorkoutController::class, 'complete'])->name('workouts.complete');
 
-    // Workout logs
+    // Tasks & Logs
     Route::post('/workout-logs', [WorkoutLogController::class, 'store'])->name('workout-logs.store');
-Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
+    Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -69,21 +45,15 @@ Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProg
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Tasks (authenticated)
 Route::middleware(['auth'])->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Admin-only Routes
-|--------------------------------------------------------------------------
-*/
+// Admin
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    // Admin panel
     Route::get('/admin', [ExerciseController::class, 'adminIndex'])->name('admin.dashboard');
-
-    // Manage exercises
     Route::get('/exercises/create', [ExerciseController::class, 'create'])->name('exercises.create');
     Route::post('/exercises', [ExerciseController::class, 'store'])->name('exercises.store');
     Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');

@@ -6,26 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-      Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('name'); // exercise name
-            $table->integer('target'); // target weight
-            $table->integer('progress')->default(0); // how much lifted
-            $table->date('date'); // daily task date
+            $table->foreignId('exercise_id')->nullable()->constrained()->onDelete('set null');
+             $table->string('name')->nullable();
+            $table->integer('target');
+            $table->integer('progress')->default(0);
             $table->boolean('completed')->default(false);
+            $table->date('date');
             $table->timestamps();
-});
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('tasks');

@@ -1,101 +1,52 @@
 import React from 'react';
-import { useForm } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import Sidebar from '@/Components/Sidebar';
+import { useTranslation } from 'react-i18next'; 
 
-export default function Tasks({ tasks, auth }) {
-    const { data, setData, post, processing } = useForm({
-        name: '',
-        target: 0,
-        date: new Date().toISOString().split('T')[0],
-    });
+export default function Index({ auth, exercises = [] }) {
+  const { t } = useTranslation(); 
 
-    const handleCreateTask = (e) => {
-        e.preventDefault();
-        post(route('tasks.store'));
-    };
+  return (
+    <AuthenticatedLayout>
+      <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+        <Sidebar auth={auth} />
+        <main className="flex-1 p-6">
+          <h1 className="text-2xl font-bold mb-6">{t('exercises')}</h1> 
 
-    const handleAddProgress = (taskId, progress) => {
-        fetch(route('tasks.updateProgress', taskId), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ progress }),
-        }).then(() => window.location.reload());
-    };
-
-    return (
-        <AuthenticatedLayout auth={auth}>
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">Daily Tasks</h1>
-
-                {/* Create Task Form */}
-                <form onSubmit={handleCreateTask} className="mb-6 flex gap-2">
-                    <input
-                        type="text"
-                        placeholder="Task Name"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        className="border p-2 rounded"
-                    />
-                    <input
-                        type="number"
-                        placeholder="Target kg"
-                        value={data.target}
-                        onChange={(e) => setData('target', e.target.value)}
-                        className="border p-2 rounded w-32"
-                    />
-                    <input
-                        type="date"
-                        value={data.date}
-                        onChange={(e) => setData('date', e.target.value)}
-                        className="border p-2 rounded"
-                    />
-                    <button type="submit" disabled={processing} className="bg-green-600 text-white px-4 rounded">
-                        Create
-                    </button>
-                </form>
-
-                {/* Task List */}
-                <ul className="space-y-4">
-                    {tasks.map((task) => (
-                        <li key={task.id} className="p-4 border rounded flex justify-between items-center">
-                            <div>
-                                <strong>{task.name}</strong>
-                                <p>Progress: {task.progress} / {task.target} kg</p>
-                                {task.completed && <span className="text-green-600 font-bold">Completed!</span>}
-                            </div>
-
-                            {!task.completed && (
-                                <form
-                                    onSubmit={(e) => {
-                                        e.preventDefault();
-                                        const progress = parseInt(e.target.progress.value, 10);
-                                        if (!isNaN(progress) && progress > 0) {
-                                            handleAddProgress(task.id, progress);
-                                            e.target.reset();
-                                        }
-                                    }}
-                                    className="flex gap-2"
-                                >
-                                    <input
-                                        type="number"
-                                        name="progress"
-                                        placeholder="kg lifted"
-                                        className="border p-1 rounded w-24"
-                                        min="1"
-                                    />
-                                    <button type="submit" className="bg-blue-600 text-white px-2 rounded">
-                                        Add
-                                    </button>
-                                </form>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </AuthenticatedLayout>
-    );
+          <table className="w-full border-collapse border border-gray-300 dark:border-gray-700">
+            <thead>
+              <tr className="bg-gray-200 dark:bg-gray-700">
+                <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">
+                  {t('excersise_name')} 
+                </th>
+                <th className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-left">
+                  {t('muscle_groups')} 
+                </th>
+                <th className="border border-gray-300 dark:border-gray-600 px-4 py-2">
+                  {t('actions')} 
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {exercises.map((exercise) => (
+                <tr key={exercise.id} className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{exercise.name}</td>
+                  <td className="border border-gray-300 dark:border-gray-600 px-4 py-2">{exercise.muscle_group}</td>
+                  <td className="border border-gray-300 dark:border-gray-600 px-4 py-2 text-center">
+                    <Link
+                      href={route('exercises.show', exercise.id)}
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      {t('view')} 
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </AuthenticatedLayout>
+  );
 }
-

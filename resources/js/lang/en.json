@@ -31,5 +31,16 @@
   "next_workout": "Next Workout",
   "previous_workout": "Previous Workout",
   "this_workout": "This Workout",
-  "welcome": "Welcome"
+  "Workouts_Created": "Workouts Created",
+  "Completed_Workouts": "Completed Workouts",
+  "Next_Workout": "Next Workout",
+  "No_workouts_yet": "No workouts yet",
+  "welcome": "Welcome",
+  "workout_description": "Workout Description",
+  "Start_Workout": "Start Workout",
+  "excersise_name": "Exercise Name"
+
+
+  
+
 }

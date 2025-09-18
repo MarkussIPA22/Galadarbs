@@ -16,20 +16,16 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
   const [filter, setFilter] = useState('');
   const [showFavorites, setShowFavorites] = useState(false);
 
-  // Normalize and translate muscle groups
   const muscleGroups = [
     ...new Set(exercises.map((e) => e.muscle_group.toLowerCase())),
     'favorites'
   ];
 
-  const displayMuscleGroup = (group) => {
-    if (group === 'favorites') return t('favorites');
-    return t(group);
-  };
+  const displayMuscleGroup = (group) => group === 'favorites' ? t('favorites') : t(group);
 
   const toggleMuscleGroup = (group) => {
     if (data.muscle_groups.includes(group)) {
-      setData('muscle_groups', data.muscle_groups.filter((m) => m !== group));
+      setData('muscle_groups', data.muscle_groups.filter(m => m !== group));
     } else {
       setData('muscle_groups', [...data.muscle_groups, group]);
     }
@@ -37,7 +33,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
 
   const toggleExercise = (id) => {
     if (data.exercises.includes(id)) {
-      setData('exercises', data.exercises.filter((exId) => exId !== id));
+      setData('exercises', data.exercises.filter(exId => exId !== id));
     } else {
       setData('exercises', [...data.exercises, id]);
     }
@@ -48,7 +44,6 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
     put(route('workouts.update', workout.id));
   };
 
-  // Filter exercises based on muscle group selection and favorites toggle
   const filteredExercises = exercises.filter((exercise) => {
     const isFavorite = favoriteExercises.includes(exercise.id);
     const matchesFavorites = showFavorites && isFavorite;
@@ -58,15 +53,13 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
   });
 
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout auth={auth}>
       <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
         <Sidebar auth={auth} />
-
         <main className="flex-1 p-6">
           <h1 className="text-2xl font-bold mb-6">{t('edit_workout')}</h1>
-
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Workout Name */}
+            {/* Name */}
             <div>
               <label className="block text-gray-700 dark:text-gray-200">{t('workout_name')}</label>
               <input
@@ -89,7 +82,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
             </div>
 
-            {/* Muscle Groups + Favorites Toggle */}
+            {/* Muscle Groups + Favorites */}
             <div>
               <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('muscle_groups')}</label>
               <div className="flex flex-wrap gap-2">
@@ -98,20 +91,13 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
                     key={group}
                     type="button"
                     onClick={() => {
-                      if (group === 'favorites') {
-                        setShowFavorites(!showFavorites);
-                      } else {
-                        toggleMuscleGroup(group);
-                      }
+                      if (group === 'favorites') setShowFavorites(!showFavorites);
+                      else toggleMuscleGroup(group);
                     }}
                     className={`px-3 py-1 rounded-full border ${
                       group === 'favorites'
-                        ? showFavorites
-                          ? 'bg-yellow-500 text-white border-yellow-500'
-                          : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
-                        : data.muscle_groups.includes(group)
-                        ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
+                        ? showFavorites ? 'bg-yellow-500 text-white border-yellow-500' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
+                        : data.muscle_groups.includes(group) ? 'bg-blue-600 text-white border-blue-600' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-400'
                     }`}
                   >
                     {displayMuscleGroup(group)}
@@ -121,12 +107,10 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               {errors.muscle_groups && <p className="text-red-500 text-sm">{errors.muscle_groups}</p>}
             </div>
 
-            {/* Optional Dropdown Filter */}
+            {/* Filter */}
             {data.muscle_groups.length > 1 && (
               <div className="mb-2">
-                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">
-                  {t('muscle_groups')} ({t('exercises')})
-                </label>
+                <label className="block text-gray-700 dark:text-gray-200 font-medium mb-1">{t('muscle_groups')} ({t('exercises')})</label>
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
@@ -134,9 +118,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
                 >
                   <option value="">{t('all')}</option>
                   {data.muscle_groups.map((group) => (
-                    <option key={group} value={group}>
-                      {displayMuscleGroup(group)}
-                    </option>
+                    <option key={group} value={group}>{displayMuscleGroup(group)}</option>
                   ))}
                 </select>
               </div>
@@ -147,36 +129,15 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('exercises')}</label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {filteredExercises.map((exercise) => (
-                  <div
-                    key={exercise.id}
-                    className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={data.exercises.includes(exercise.id)}
-                      onChange={() => toggleExercise(exercise.id)}
-                      className="mb-1"
-                    />
+                  <div key={exercise.id} className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700">
+                    <input type="checkbox" checked={data.exercises.includes(exercise.id)} onChange={() => toggleExercise(exercise.id)} className="mb-1" />
                     {exercise.image_path ? (
-                      <img
-                        src={exercise.image_path}
-                        alt={exercise.name}
-                        className="w-36 h-36 object-cover rounded"
-                      />
+                      <img src={exercise.image_path} alt={exercise.name} className="w-36 h-36 object-cover rounded" />
                     ) : (
-                      <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
-                        {t('no_image')}
-                      </div>
+                      <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">{t('no_image')}</div>
                     )}
-                    <Link
-                      href={route('exercises.show', exercise.id)}
-                      className="text-sm font-medium text-blue-600 hover:underline"
-                    >
-                      {exercise.name}
-                    </Link>
-                    <span className="text-xs text-gray-500">
-                      {displayMuscleGroup(exercise.muscle_group.toLowerCase())}
-                    </span>
+                    <Link href={route('exercises.show', exercise.id)} className="text-sm font-medium text-blue-600 hover:underline">{exercise.name}</Link>
+                    <span className="text-xs text-gray-500">{displayMuscleGroup(exercise.muscle_group.toLowerCase())}</span>
                   </div>
                 ))}
               </div>
@@ -185,30 +146,9 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
 
             {/* Buttons */}
             <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={processing}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
-              >
-                {t('save_changes')}
-              </button>
-
-              <div className="flex justify-end mt-6 gap-4">
-                <button
-                  type="button"
-                  onClick={() => (window.location.href = route('workouts.start', workout.id))}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  {t('start_workout')}
-                </button>
-              </div>
-
-              <Link
-                href={route('workouts.index')}
-                className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900"
-              >
-                {t('cancel')}
-              </Link>
+              <button type="submit" disabled={processing} className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50">{t('save_changes')}</button>
+              <button type="button" onClick={() => (window.location.href = route('workouts.start', workout.id))} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">{t('start_workout')}</button>
+              <Link href={route('workouts.index')} className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900">{t('cancel')}</Link>
             </div>
           </form>
         </main>

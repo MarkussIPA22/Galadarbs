@@ -94,7 +94,7 @@ export default function Sidebar({ auth }) {
                 <Link
                     href={route('logout')}
                     method="post"
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    className="p-2 rounded hover:bg-red-600 transition-colors"
                 >
                     {i18n.t('logout')}
                 </Link>

@@ -50,21 +50,21 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
             <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-sm sm:text-base text-gray-700 dark:text-gray-200">
-                {t('Workouts Created')}
+                {t('Workouts_Created')}
               </h3>
               <p className="text-xl sm:text-2xl font-bold">{workouts.length}</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-sm sm:text-base text-gray-700 dark:text-gray-200">
-                {t('Completed Workouts')}
+                {t('Completed_Workouts')}
               </h3>
               <p className="text-xl sm:text-2xl font-bold">{completedLogs.length}</p>
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md dark:shadow-gray-700 transition-colors">
               <h3 className="font-semibold mb-2 text-sm sm:text-base text-gray-700 dark:text-gray-200">
-                {t('Next Workout')}
+                {t('Next_Workout')}
               </h3>
               <p className="text-xl sm:text-2xl font-bold break-words">
                 {workouts.find((w) => !w.completed_at)?.name || t('No workouts yet')}
@@ -72,7 +72,7 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
             </div>
           </div>
 
-          {/* Calendar */}
+       
           <div className="w-full max-w-full sm:max-w-md mx-auto mb-10">
             <Calendar
               onChange={setValue}
@@ -82,7 +82,7 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
             />
           </div>
 
-          {/* Completed Workouts */}
+        
           <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md dark:shadow-gray-700">
             <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
               {t('completed workouts')}
