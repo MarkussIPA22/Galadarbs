@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function AuthenticatedLayout({ children }) {
     const user = usePage().props.auth.user;
+    const { t } = useTranslation(); // <-- i18n hook
 
     const [darkMode, setDarkMode] = useState(
         localStorage.getItem('darkMode') === 'true' || false
@@ -15,7 +17,7 @@ export default function AuthenticatedLayout({ children }) {
     return (
         <div className={darkMode ? 'dark' : ''}>
             <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
-                {}
+                
                 <div className="p-4 flex justify-end">
                     <label htmlFor="dark-mode-toggle" className="flex items-center cursor-pointer">
                         <div className="relative">
@@ -34,7 +36,7 @@ export default function AuthenticatedLayout({ children }) {
                             ></div>
                         </div>
                         <span className="ml-3 text-gray-700 dark:text-gray-200 font-medium">
-                            {darkMode ? 'Dark' : 'Light'}
+                            {darkMode ? t('Dark') : t('Light')} {/* <-- i18n */}
                         </span>
                     </label>
                 </div>

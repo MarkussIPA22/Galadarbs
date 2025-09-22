@@ -42,7 +42,29 @@
   "Welcome": "Laipni lūdzam",
   "workout_description": "Treniņa apraksts",
   "Start_Workout": "Sākt treniņu",
-  "excersise_name": "Vingrinājuma nosaukums"
+  "exercise_name": "Vingrinājuma nosaukums",
+  "actions": "Darbības",
+  "view": "Skatīt",
+  "no_tasks_for_today": "Šodien nav uzdevumu",
+  "create_new_task": "Izveidot jaunu uzdevumu",
+  "target_kg"  : "Mērķa svars (kg)",
+  "random_task" : "Izveidot nejaušu uzdevumu",
+  "Add_To_Favorites": "Pievienot favorītiem",
+  "back_to_exercises": "Atpakaļ pie vingrinājumiem",
+    "favorited": "Pievienots favorītiem",
+    "add_to_favorites": "Pievienot favorītiem",
+    "muscle_group": "Muskuļu grupa",
+    "tutorial_video": "Apmācības video",
+    "save_workout": "Saglabāt treniņu",
+    "rest_time": "Atpūtas laiks",
+    "create": "Izveidot",
+    "Dark": "Tumšais",
+    "Light": "Gaišais",
+    "no_completed_workouts": "Nav pabeigtu treniņu",
+    "Workout_Calendar": "Treniņu kalendārs"
+    
+  
+
   
   
 

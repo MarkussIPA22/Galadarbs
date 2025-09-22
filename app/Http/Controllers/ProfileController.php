@@ -17,12 +17,20 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
     public function edit(Request $request): Response
-    {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
-    }
+{
+    return Inertia::render('Profile/Edit', [
+        'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+        'status' => session('status'),
+        'user' => [
+            'id' => $request->user()->id,
+            'name' => $request->user()->name,
+            'email' => $request->user()->email,
+            'profile_pic_url' => $request->user()->profile_pic
+                ? asset('storage/' . $request->user()->profile_pic)
+                : null,
+        ],
+    ]);
+}
 
     /**
      * Update the user's profile information.
@@ -39,6 +47,21 @@ class ProfileController extends Controller
 
         return Redirect::route('profile.edit');
     }
+
+    public function updateProfilePic(Request $request)
+{
+    $request->validate([
+        'profile_pic' => ['required', 'image', 'max:2048'], // max 2MB
+    ]);
+
+    $user = $request->user();
+
+    $path = $request->file('profile_pic')->store('profile-pics', 'public');
+    $user->profile_pic = $path;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Profile picture updated!');
+}
 
     /**
      * Delete the user's account.

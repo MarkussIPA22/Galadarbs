@@ -38,7 +38,20 @@
   "welcome": "Welcome",
   "workout_description": "Workout Description",
   "Start_Workout": "Start Workout",
-  "excersise_name": "Exercise Name"
+  "exercise_name": "Exercise Name",
+  "no_tasks_for_today": "No tasks for today",
+  "create_new_task": "Create New Task",
+  "target_kg"  : "Target Weight (kg)",
+  "random_task" : "Create Random Task",
+  "back_to_exercises": "Back to Exercises",
+    "favorited": "Favorited",
+    "add_to_favorites": "Add to Favorites",
+    "muscle_group": "Muscle Group",
+    "tutorial_video": "Tutorial Video",
+    "save_workout": "Save Workout",
+    "no_completed_workouts": "No completed workouts",
+    "Wokout_Calendar": "Workout Calendar"
+    
 
 
   

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -29,6 +29,25 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     }))
   );
 
+  // Track rest timers for each exercise
+  const [restTimers, setRestTimers] = useState({}); // { exId: secondsLeft }
+
+  // Countdown effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRestTimers((prev) => {
+        const updated = { ...prev };
+        Object.keys(updated).forEach((id) => {
+          if (updated[id] > 0) {
+            updated[id] = updated[id] - 1;
+          }
+        });
+        return updated;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSetChange = (exIndex, setIndex, field, value) => {
     const newData = [...exerciseData];
     newData[exIndex].sets[setIndex][field] = value;
@@ -39,6 +58,13 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     const newData = [...exerciseData];
     newData[exIndex].sets.push({ reps: '', weight: '' });
     setExerciseData(newData);
+
+    
+    const exId = newData[exIndex].id;
+    setRestTimers((prev) => ({
+      ...prev,
+      [exId]: 180, // 3 minutes
+    }));
   };
 
   const handleRemoveSet = (exIndex, setIndex) => {
@@ -66,6 +92,13 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     Inertia.post(route('workout-logs.store'), workoutData);
   };
 
+  
+  const formatTime = (seconds) => {
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    return `${m}:${s}`;
+  };
+
   return (
     <AuthenticatedLayout>
       <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
@@ -78,6 +111,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
           <form onSubmit={handleSubmit} className="space-y-8">
             {exerciseData.map((ex, exIndex) => {
               const prevEx = previousExercises.find((p) => p.id === ex.id);
+              const timerValue = restTimers[ex.id] ?? 0;
 
               return (
                 <div key={ex.id} className="p-6 rounded-lg bg-gray-50 dark:bg-gray-800">
@@ -105,7 +139,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                     </div>
                   )}
 
-                  {/* Current workout sets (editable) */}
                   <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
                     {t('this_workout')}
                   </h3>
@@ -173,6 +206,13 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                   >
                     + {t('add_set')}
                   </button>
+
+                 
+                  {timerValue > 0 && (
+                    <div className="mt-3 text-center text-sm font-medium text-blue-500">
+                       {t('rest_time')}: {formatTime(timerValue)}
+                    </div>
+                  )}
                 </div>
               );
             })}

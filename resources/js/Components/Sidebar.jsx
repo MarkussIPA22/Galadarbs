@@ -9,23 +9,30 @@ export default function Sidebar({ auth }) {
         router.get(route('locale.switch', lang)); // backend locale sync
     };
 
-    return (
+   return (
+        // Sānjoslas komponente ar Tailwind CSS stilizāciju
         <aside className="w-64 bg-white dark:bg-gray-900 p-6">
+            {/* Sānjoslas virsraksts */}
             <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-100">
                 Menu
             </h2>
 
+           {/*so dalu prieks tailwind , un lidz button par i18*/}
             <div className="flex gap-2 mb-6">
                 <button
                     onClick={() => switchLanguage('en')}
+                    // Stils pogai ar valodas karogu
                     className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                 >
                     <img
                         src="/flags/english_flag.png"
                         alt="EN"
+                        // Stils attēlam 
                         className="absolute inset-0 w-full h-full object-cover"
                     />
                 </button>
+                
+                
 
                 <button
                     onClick={() => switchLanguage('lv')}
@@ -44,6 +51,7 @@ export default function Sidebar({ auth }) {
                     href="/dashboard"
                     className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
+                    {/*// atgriež "Dashboard" angļu valodā vai "Informācijas panelis" latviešu valodā, atkarībā no izvēlētās valodas*/}
                     {i18n.t('dashboard')}
                 </Link>
 

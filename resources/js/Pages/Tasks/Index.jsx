@@ -12,7 +12,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
     date: new Date().toISOString().split('T')[0],
   });
 
- 
+  // Create new task
   const handleCreateTask = (e) => {
     e.preventDefault();
     post(route('tasks.store'), {
@@ -25,19 +25,6 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
     });
   };
 
-  
-  const handleAddProgress = (taskId, progress) => {
-    fetch(route('tasks.updateProgress', taskId), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-      },
-      body: JSON.stringify({ progress }),
-    }).then(() => window.location.reload());
-  };
-
-  
   const handleRandomTask = () => {
     if (exercises.length === 0) return;
 
@@ -60,7 +47,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
             {t('tasks')}
           </h1>
 
-          
+        
           <div className="mb-4 flex justify-end">
             <button
               type="button"
@@ -71,7 +58,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
             </button>
           </div>
 
-        
+          
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
               {t('create_new_task')}
@@ -103,6 +90,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
               <input
                 type="date"
                 value={data.date}
+                min={new Date().toISOString().split('T')[0]}
                 onChange={(e) => setData('date', e.target.value)}
                 className="border p-2 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700"
                 required
@@ -118,7 +106,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
             </form>
           </div>
 
-         
+        
           <div className="space-y-4">
             {tasks.length === 0 ? (
               <div className="text-gray-500 italic text-center py-6 border border-dashed rounded-lg">
@@ -143,32 +131,6 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
                       </span>
                     )}
                   </div>
-
-                  {!task.completed && (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        const progress = parseInt(e.target.progress.value, 10);
-                        if (!isNaN(progress) && progress > 0) {
-                          handleAddProgress(task.id, progress);
-                          e.target.reset();
-                        }
-                      }}
-                      className="flex gap-2"
-                    >
-                      <input
-                        type="number"
-                        name="progress"
-                        placeholder={t('kg_lifted')}
-                        className="border p-1 rounded w-24"
-                        min="1"
-                        required
-                      />
-                      <button type="submit" className="bg-blue-600 text-white px-2 rounded">
-                        {t('add')}
-                      </button>
-                    </form>
-                  )}
                 </div>
               ))
             )}
