@@ -84,6 +84,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
                 onChange={(e) => setData('target', e.target.value)}
                 className="border p-2 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700"
                 min="1"
+                max={10000}
                 required
               />
 

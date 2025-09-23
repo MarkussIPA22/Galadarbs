@@ -5,8 +5,11 @@ import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Checkbox from '@/Components/Checkbox';
 import GuestLayout from '@/Layouts/GuestLayout';
+import { useTranslation } from 'react-i18next';
 
 export default function Login({ status, canResetPassword }) {
+    const { t } = useTranslation();
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -20,11 +23,12 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title={t('login')} />
 
             <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">
-                Welcome Back
+                {t('welcome_back')}
             </h1>
+
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600 text-center">
                     {status}
@@ -33,7 +37,7 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit} className="space-y-4">
                 <div>
-                    <InputLabel htmlFor="email" value="Email" className='dark:text-white' />
+                    <InputLabel htmlFor="email" value={t('email')} className="dark:text-white" />
                     <TextInput
                         id="email"
                         type="email"
@@ -48,7 +52,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="Password"className='dark:text-white' />
+                    <InputLabel htmlFor="password" value={t('password')} className="dark:text-white" />
                     <TextInput
                         id="password"
                         type="password"
@@ -68,7 +72,9 @@ export default function Login({ status, canResetPassword }) {
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="text-gray-700 dark:text-gray-200 text-sm">Remember me</span>
+                        <span className="text-gray-700 dark:text-gray-200 text-sm">
+                            {t('remember_me')}
+                        </span>
                     </label>
 
                     {canResetPassword && (
@@ -76,7 +82,7 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
                         >
-                            Forgot your password?
+                            {t('forgot_password')}
                         </Link>
                     )}
                 </div>
@@ -86,13 +92,13 @@ export default function Login({ status, canResetPassword }) {
                     className="w-full py-2 mt-2 text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg"
                     disabled={processing}
                 >
-                    Log in
+                    {t('login')}
                 </PrimaryButton>
 
                 <p className="mt-4 text-center text-gray-600 dark:text-gray-300 text-sm">
-                    Don’t have an account?{' '}
+                    {t('dont_have_account')}{' '}
                     <Link href={route('register')} className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                        Register
+                        {t('register')}
                     </Link>
                 </p>
             </form>

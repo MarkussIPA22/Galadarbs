@@ -9,28 +9,52 @@ class WorkoutLogController extends Controller
 {
     public function store(Request $request)
 {
-    // Flatten exercises
-    $exercises = [];
-    foreach ($request->exercises as $exercise) {
-        foreach ($exercise['sets'] as $set) {
-            $exercises[] = [
-                'name' => \App\Models\Exercise::find($exercise['id'])->name, // get name from DB
-                'weight' => $set['weight'],
-                'reps' => $set['reps'],
-            ];
-        }
-    }
+    $request->validate([
+        'workout_id' => 'required|exists:workouts,id',
+        'exercises' => 'required|array',
+        'exercises.*.id' => 'required|exists:exercises,id',
+        'exercises.*.sets' => 'required|array|min:1',
+        'exercises.*.sets.*.reps' => 'required|integer|min:0',
+        'exercises.*.sets.*.weight' => 'required|numeric|min:0',
+    ]);
 
-    // Now save as usual
+    // Store exercises exactly as frontend sends them
     $log = WorkoutLog::create([
         'workout_id' => $request->workout_id,
         'user_id' => auth()->id(),
-        'exercises' => $exercises,
+        'exercises' => $request->exercises, // <-- nested structure
     ]);
 
     $log->updateTasks();
 
     return redirect()->back()->with('success', 'Workout logged and tasks updated!');
 }
+
+    public function updateTasks()
+{
+    foreach ($this->exercises as $exercise) {
+        $exerciseModel = \App\Models\Exercise::find($exercise['id']);
+        if (!$exerciseModel) {
+            continue; // skip if exercise not found
+        }
+
+        foreach ($exercise['sets'] as $set) {
+            $exerciseName = strtolower($exerciseModel->name); // case-insensitive
+            $totalWeight = ($set['weight'] ?? 0) * ($set['reps'] ?? 0);
+
+            $tasks = Task::where('user_id', $this->user_id)
+                ->where('date', now()->toDateString())
+                ->whereRaw('LOWER(name) = ?', [$exerciseName])
+                ->get();
+
+            foreach ($tasks as $task) {
+                $task->addProgress($totalWeight);
+            }
+        }
+    }
+}
+
+
+
 
 }

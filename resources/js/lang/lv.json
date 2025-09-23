@@ -61,7 +61,24 @@
     "Dark": "Tumšais",
     "Light": "Gaišais",
     "no_completed_workouts": "Nav pabeigtu treniņu",
-    "Workout_Calendar": "Treniņu kalendārs"
+    "Workout_Calendar": "Treniņu kalendārs",
+    "deleted_workout": "Treniņš izdzēsts",
+    "Menu": "Izvēlne",
+    "login": "Pieslēgties",
+    "register": "Reģistrēties",
+    "email": "E-pasts",
+    "password": "Parole",
+    "remember_me": "Atcerēties mani",
+    "forgot_password": "Aizmirsāt paroli?",
+    "welcome_back": "Laipni lūdzam atpakaļ",
+    "name": "Vārds",
+    "confirm_password": "Apstiprināt paroli",
+    "already_registered": "Jau reģistrējies?",
+    "reset_password": "Atiestatīt paroli",
+    "dont_have_account": "Vai vēl neesi reģistrējies?",
+    "create_new_account": "Izveidot jaunu kontu"
+
+
     
   
 

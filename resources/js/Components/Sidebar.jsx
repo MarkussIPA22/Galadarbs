@@ -14,7 +14,7 @@ export default function Sidebar({ auth }) {
         <aside className="w-64 bg-white dark:bg-gray-900 p-6">
             {/* Sānjoslas virsraksts */}
             <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-                Menu
+               {i18n.t('Menu')}
             </h2>
 
            {/*so dalu prieks tailwind , un lidz button par i18*/}

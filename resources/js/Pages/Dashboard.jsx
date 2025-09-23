@@ -4,13 +4,13 @@ import 'react-calendar/dist/Calendar.css';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
 import '@/../css/calendar.css';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
-  const { t } = useTranslation();
   const [value, setValue] = useState(new Date());
   const [completedDates, setCompletedDates] = useState([]);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const dates = completedLogs.map((log) => new Date(log.created_at));
@@ -40,24 +40,17 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
       <Head title={t('dashboard')} />
 
       <div className="flex flex-col md:flex-row min-h-screen bg-white dark:bg-gray-900 transition-colors">
-       
         <div className="w-full md:w-64 flex-shrink-0">
           <Sidebar auth={auth} />
         </div>
 
-        {/* Main Content */}
         <main className="flex-1 p-6 lg:p-8 overflow-hidden">
-          {/* Header Section */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
-              <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 dark:from-white dark:via-purple-200 dark:to-white bg-clip-text text-transparent mb-2 sm:mb-0">
+              <h1 className="text-3xl lg:text-4xl font-bold text-emerald-500 dark:text-white mb-2 sm:mb-0">
                 {t('Welcome')}, {auth.user.name}
               </h1>
-              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium">
-               
-              </div>
             </div>
-           
           </div>
 
           {/* Stats Cards */}
@@ -99,69 +92,30 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
                 </div>
               </div>
             </div>
-
-            <div className="relative bg-gradient-to-br from-white to-purple-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 dark:border-slate-700/50 group overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-violet-600/5 dark:from-purple-400/5 dark:to-violet-400/5"></div>
-              <div className="relative flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    Completion Rate
-                  </p>
-                  <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
-                    {getCompletionRate()}%
-                  </p>
-                </div>
-                <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative bg-gradient-to-br from-white to-amber-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 dark:border-slate-700/50 group overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-600/5 dark:from-amber-400/5 dark:to-orange-400/5"></div>
-              <div className="relative flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                    {t('Next_Workout')}
-                  </p>
-                  <p className="text-lg font-semibold text-slate-900 dark:text-white mt-2 leading-tight">
-                    {workouts.find((w) => !w.completed_at)?.name || t('No workouts yet')}
-                  </p>
-                </div>
-                <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
           </div>
 
-         
+          {/* Calendar and Completed Workouts */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
             <div className="lg:col-span-1">
               <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
                   <svg className="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                   {t('Workout_Calendar')}
+                  {t('Workout_Calendar')}
                 </h2>
                 <div className="flex justify-center">
                   <Calendar
-                    onChange={setValue}
-                    value={value}
-                    tileClassName={tileClassName}
-                    className="w-full bg-transparent text-slate-900 dark:text-slate-200 border-0 shadow-none"
+                onChange={setValue}
+                value={value}
+                tileClassName={tileClassName}
+                locale={i18n.language === 'en' ? 'en-US' : 'lv-LV'}
+                className="w-full bg-transparent text-slate-900 dark:text-slate-200 border-0 shadow-none"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Recent Workouts Section */}
             <div className="lg:col-span-2">
               <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
                 <div className="flex items-center justify-between mb-6">
@@ -189,7 +143,17 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
                           <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full shadow-sm"></div>
                           <div>
                             <h3 className="font-semibold text-slate-900 dark:text-white">
-                              {log.workout?.name || t('deleted_workout')}
+                              {log.workout ? (
+                                <Link
+                                  href={route('workouts.start', log.workout.id)}
+                                  className="text-emerald-500 hover:underline"
+                                  preserveState
+                                >
+                                  {log.workout.name}
+                                </Link>
+                              ) : (
+                                t('deleted_workout')
+                              )}
                             </h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400">
                               Workout #{completedLogs.length - index}

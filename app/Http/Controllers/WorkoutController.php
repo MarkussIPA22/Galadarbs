@@ -60,7 +60,6 @@ class WorkoutController extends Controller
             ];
         });
 
-        // Get favorite exercises for the logged-in user
         $favoriteExercises = Favorite::where('user_id', auth()->id())
             ->pluck('exercise_id')
             ->toArray();

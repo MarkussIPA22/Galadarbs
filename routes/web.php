@@ -28,7 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-workouts', [WorkoutController::class, 'index'])->name('workouts.index');
     Route::get('/workouts/create', [WorkoutController::class, 'create'])->name('workouts.create');
     Route::post('/workouts', [WorkoutController::class, 'store'])->name('workouts.store');
-    Route::get('/workouts/{workout}/edit', [WorkoutController::class, 'edit'])->name('workouts.edit'); // points to Edit.jsx
+    Route::get('/workouts/{workout}/edit', [WorkoutController::class, 'edit'])->name('workouts.edit'); 
+    Route::get('/workouts/start/{workout}', [WorkoutController::class, 'start'])->name('workouts.start');
     Route::put('/workouts/{workout}', [WorkoutController::class, 'update'])->name('workouts.update');
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
 
@@ -47,7 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-// Tasks (authenticated)
+// Tasks 
 Route::middleware(['auth'])->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
