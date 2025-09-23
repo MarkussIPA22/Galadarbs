@@ -164,4 +164,13 @@ class WorkoutController extends Controller
             'completedLogs' => $completedLogs,
         ]);
     }
+
+    public function show(Workout $workout)
+{
+    return Inertia::render('Workouts/Show', [
+        'workout' => $workout,
+        // include any related logs or details here
+    ]);
+}
+
 }
