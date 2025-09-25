@@ -30,11 +30,7 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
     return '';
   };
 
-  const getCompletionRate = () => {
-    if (workouts.length === 0) return 0;
-    return Math.round((completedLogs.length / workouts.length) * 100);
-  };
-
+ 
   return (
     <AuthenticatedLayout>
       <Head title={t('dashboard')} />
@@ -53,7 +49,7 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
             </div>
           </div>
 
-          {/* Stats Cards */}
+         
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="relative bg-gradient-to-br from-white to-blue-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 dark:border-slate-700/50 group overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-600/5 dark:from-blue-400/5 dark:to-indigo-400/5"></div>
@@ -65,11 +61,6 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
                   <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
                     {workouts.length}
                   </p>
-                </div>
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
                 </div>
               </div>
             </div>
@@ -84,17 +75,12 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
                   <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
                     {completedLogs.length}
                   </p>
+                </div>                  
                 </div>
-                <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Calendar and Completed Workouts */}
+         
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
               <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">

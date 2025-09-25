@@ -4,9 +4,11 @@ import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
+import jsPDF from 'jspdf';
 
 export default function StartWorkout({ auth, workout, latest_log }) {
   const { t } = useTranslation();
+  const [finished, setFinished] = useState(false);
 
   // Prepare previous sets (just for display)
   const previousExercises = workout.exercises.map((ex) => {
@@ -15,32 +17,27 @@ export default function StartWorkout({ auth, workout, latest_log }) {
       id: ex.id,
       name: ex.name,
       muscle_group: ex.muscle_group,
-      prevSets: prevEx?.sets || [], // read-only
+      prevSets: prevEx?.sets || [],
     };
   });
 
-  // Start new workout data with no sets
   const [exerciseData, setExerciseData] = useState(
     workout.exercises.map((ex) => ({
       id: ex.id,
       name: ex.name,
       muscle_group: ex.muscle_group,
-      sets: [{ reps: '', weight: '' }], // start fresh
+      sets: [{ reps: '', weight: '' }],
     }))
   );
 
-  // Track rest timers for each exercise
-  const [restTimers, setRestTimers] = useState({}); // { exId: secondsLeft }
+  const [restTimers, setRestTimers] = useState({});
 
-  // Countdown effect
   useEffect(() => {
     const interval = setInterval(() => {
       setRestTimers((prev) => {
         const updated = { ...prev };
         Object.keys(updated).forEach((id) => {
-          if (updated[id] > 0) {
-            updated[id] = updated[id] - 1;
-          }
+          if (updated[id] > 0) updated[id] -= 1;
         });
         return updated;
       });
@@ -59,12 +56,8 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     newData[exIndex].sets.push({ reps: '', weight: '' });
     setExerciseData(newData);
 
-    
     const exId = newData[exIndex].id;
-    setRestTimers((prev) => ({
-      ...prev,
-      [exId]: 180, // 3 minutes
-    }));
+    setRestTimers((prev) => ({ ...prev, [exId]: 180 }));
   };
 
   const handleRemoveSet = (exIndex, setIndex) => {
@@ -82,21 +75,36 @@ export default function StartWorkout({ auth, workout, latest_log }) {
       workout_id: workout.id,
       exercises: exerciseData.map((ex) => ({
         id: ex.id,
-        sets: ex.sets.map((s) => ({
-          reps: parseInt(s.reps) || 0,
-          weight: parseFloat(s.weight) || 0,
-        })),
+        sets: ex.sets.map((s) => ({ reps: parseInt(s.reps) || 0, weight: parseFloat(s.weight) || 0 })),
       })),
     };
 
     Inertia.post(route('workout-logs.store'), workoutData);
   };
 
-  
   const formatTime = (seconds) => {
     const m = String(Math.floor(seconds / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
     return `${m}:${s}`;
+  };
+
+  // Generate PDF
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(`Workout: ${workout.name}`, 10, 20);
+
+    exerciseData.forEach((ex, exIndex) => {
+      doc.setFontSize(14);
+      doc.text(`${exIndex + 1}. ${ex.name} (${ex.muscle_group})`, 10, 30 + exIndex * 30);
+
+      ex.sets.forEach((set, setIndex) => {
+        doc.setFontSize(12);
+        doc.text(`Set ${setIndex + 1}: ${set.reps} reps × ${set.weight} kg`, 15, 38 + exIndex * 30 + setIndex * 6);
+      });
+    });
+
+    doc.save(`${workout.name.replace(/\s/g, '_')}.pdf`);
   };
 
   return (
@@ -104,9 +112,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
       <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
         <Sidebar auth={auth} />
         <main className="flex-1 p-6">
-          <h1 className="text-2xl font-bold mb-6">
-            {t('start_workout')}: {workout.name}
-          </h1>
+          <h1 className="text-2xl font-bold mb-6">{t('start_workout')}: {workout.name}</h1>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {exerciseData.map((ex, exIndex) => {
@@ -116,22 +122,14 @@ export default function StartWorkout({ auth, workout, latest_log }) {
               return (
                 <div key={ex.id} className="p-6 rounded-lg bg-gray-50 dark:bg-gray-800">
                   <h2 className="font-semibold mb-4 text-lg">
-                    {ex.name}{' '}
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      ({ex.muscle_group})
-                    </span>
+                    {ex.name} <span className="text-sm text-gray-500 dark:text-gray-400">({ex.muscle_group})</span>
                   </h2>
 
                   {prevEx?.prevSets?.length > 0 && (
                     <div className="mb-4">
-                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        {t('previous_workout')}
-                      </h3>
+                      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{t('previous_workout')}</h3>
                       {prevEx.prevSets.map((set, idx) => (
-                        <div
-                          key={idx}
-                          className="flex justify-between bg-gray-200 dark:bg-gray-700 p-2 rounded mb-2 text-sm"
-                        >
+                        <div key={idx} className="flex justify-between bg-gray-200 dark:bg-gray-700 p-2 rounded mb-2 text-sm">
                           <span>{t('set')} {idx + 1}</span>
                           <span>{set.reps} {t('reps')} @ {set.weight} kg</span>
                         </div>
@@ -139,78 +137,53 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                     </div>
                   )}
 
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                    {t('this_workout')}
-                  </h3>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{t('this_workout')}</h3>
                   {ex.sets.map((set, setIndex) => (
-                    <div
-                      key={setIndex}
-                      className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4"
-                    >
+                    <div key={setIndex} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4">
                       <div className="text-center md:text-left">
-                        <span className="font-medium text-gray-700 dark:text-gray-300">
-                          {t('set')} {setIndex + 1}
-                        </span>
+                        <span className="font-medium text-gray-700 dark:text-gray-300">{t('set')} {setIndex + 1}</span>
                       </div>
-
                       <div className="flex flex-col items-center">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {t('reps')}
-                        </label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('reps')}</label>
                         <input
                           type="number"
                           min="0"
                           placeholder={t('reps')}
                           value={set.reps}
-                          onChange={(e) =>
-                            handleSetChange(exIndex, setIndex, 'reps', e.target.value)
-                          }
+                          onChange={(e) => handleSetChange(exIndex, setIndex, 'reps', e.target.value)}
                           className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                          disabled={finished}
                         />
                       </div>
-
                       <div className="flex flex-col items-center">
-                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {t('weight_kg')}
-                        </label>
+                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('weight_kg')}</label>
                         <div className="flex items-center gap-2">
                           <input
                             type="number"
                             min="0"
                             placeholder={t('weight_kg')}
                             value={set.weight}
-                            onChange={(e) =>
-                              handleSetChange(exIndex, setIndex, 'weight', e.target.value)
-                            }
+                            onChange={(e) => handleSetChange(exIndex, setIndex, 'weight', e.target.value)}
                             className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                            disabled={finished}
                           />
                           {ex.sets.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveSet(exIndex, setIndex)}
+                            <button type="button" onClick={() => handleRemoveSet(exIndex, setIndex)}
                               className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
-                              title={t('remove_set')}
-                            >
-                              ✕
-                            </button>
+                              title={t('remove_set')} disabled={finished}>✕</button>
                           )}
                         </div>
                       </div>
                     </div>
                   ))}
 
-                  <button
-                    type="button"
-                    onClick={() => handleAddSet(exIndex)}
+                  <button type="button" onClick={() => handleAddSet(exIndex)}
                     className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
-                  >
-                    + {t('add_set')}
-                  </button>
+                    disabled={finished}>+ {t('add_set')}</button>
 
-                 
                   {timerValue > 0 && (
                     <div className="mt-3 text-center text-sm font-medium text-blue-500">
-                       {t('rest_time')}: {formatTime(timerValue)}
+                      {t('rest_time')}: {formatTime(timerValue)}
                     </div>
                   )}
                 </div>
@@ -218,18 +191,30 @@ export default function StartWorkout({ auth, workout, latest_log }) {
             })}
 
             <div className="flex gap-4 mt-6">
-              <button
-                type="submit"
+              <button type="submit"
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                {t('save_workout')}
-              </button>
-              <Link
-                href={route('workouts.index')}
+                disabled={finished}>{t('save_workout')}</button>
+
+              <Link href={route('workouts.index')}
                 className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900 transition-colors"
-              >
-                {t('cancel')}
-              </Link>
+                disabled={finished}>{t('cancel')}</Link>
+
+              {!finished && (
+                <button type="button" onClick={() => setFinished(true)}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                  {t('finish_workout')}
+                </button>
+              )}
+
+              {finished && (
+                <>
+                  <span className="px-6 py-2 bg-gray-500 text-white rounded-lg">{t('workout_finished')}</span>
+                  <button type="button" onClick={downloadPDF}
+                    className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors">
+                    {t('download_pdf')}
+                  </button>
+                </>
+              )}
             </div>
           </form>
         </main>

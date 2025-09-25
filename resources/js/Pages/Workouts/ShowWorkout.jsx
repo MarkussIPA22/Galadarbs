@@ -1,0 +1,52 @@
+import React from 'react';
+import { Head } from '@inertiajs/react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import Sidebar from '@/Components/Sidebar';
+
+export default function ShowWorkout({ auth, workout, latest_log }) {
+  return (
+    <AuthenticatedLayout auth={auth} header={`${workout?.name || 'Workout'} (Read-Only)`}>
+      <Head title={workout?.name || 'Workout'} />
+
+      <div className="flex min-h-screen">
+        <Sidebar auth={auth} />
+
+        <div className="flex-1 p-6 lg:p-8">
+          <h1 className="text-3xl font-bold mb-6">{workout?.name || 'Unknown Workout'}</h1>
+          <p className="text-slate-500 mb-6">{workout?.description || 'No description available.'}</p>
+
+          <div className="space-y-6">
+            {latest_log?.exercises?.length > 0 ? (
+              latest_log.exercises.map((exercise, idx) => (
+                <div key={idx} className="p-4 bg-slate-800/50 rounded-lg shadow">
+                  <h2 className="text-xl font-semibold">
+                    {exercise.name || 'Unknown Exercise'}
+                    {exercise.name_lv ? ` / ${exercise.name_lv}` : ''}
+                  </h2>
+                  <p className="text-sm text-slate-400">
+                    {exercise.muscle_group || 'Unknown Muscle Group'}
+                    {exercise.muscle_group_lv ? ` / ${exercise.muscle_group_lv}` : ''}
+                  </p>
+
+                  <div className="mt-2 space-y-1">
+                    {exercise.sets?.length > 0 ? (
+                      exercise.sets.map((set, setIdx) => (
+                        <div key={setIdx} className="text-sm text-slate-200">
+                          Set {setIdx + 1}: {set.reps} reps × {set.weight} kg
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-slate-400">No sets recorded.</p>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-slate-400">No exercises completed in this log yet.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  );
+}

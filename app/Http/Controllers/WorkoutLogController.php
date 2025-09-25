@@ -34,12 +34,11 @@ class WorkoutLogController extends Controller
 {
     foreach ($this->exercises as $exercise) {
         $exerciseModel = \App\Models\Exercise::find($exercise['id']);
-        if (!$exerciseModel) {
-            continue; // skip if exercise not found
-        }
+        if (!$exerciseModel) continue; // skip if exercise not found
+
+        $exerciseName = strtolower($exerciseModel->name); // ✅ get name from DB
 
         foreach ($exercise['sets'] as $set) {
-            $exerciseName = strtolower($exerciseModel->name); // case-insensitive
             $totalWeight = ($set['weight'] ?? 0) * ($set['reps'] ?? 0);
 
             $tasks = Task::where('user_id', $this->user_id)

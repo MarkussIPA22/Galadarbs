@@ -16,24 +16,32 @@ class WorkoutLog extends Model
         'exercises' => 'array', // JSON field: [{name, weight, reps}, ...]
     ];
 
-    // Relationship to parent workout
+   
     public function workout()
     {
         return $this->belongsTo(Workout::class);
     }
 
-    // Relationship to exercise sets
     public function exerciseSets()
     {
         return $this->hasMany(ExerciseSet::class);
     }
 
-    // Automatically update tasks when a workout log is saved
-    public function updateTasks()
+    public function user()
     {
-        foreach ($this->exercises as $exercise) {
-            $exerciseName = strtolower($exercise['name']); // case-insensitive
-            $totalWeight = $exercise['weight'] * $exercise['reps'];
+        return $this->belongsTo(User::class);
+    }
+
+    public function updateTasks()
+{
+    foreach ($this->exercises as $exercise) {
+        $exerciseModel = \App\Models\Exercise::find($exercise['id']);
+        if (!$exerciseModel) continue;
+
+        $exerciseName = strtolower($exerciseModel->name); // ✅ get name from DB
+
+        foreach ($exercise['sets'] as $set) {
+            $totalWeight = ($set['weight'] ?? 0) * ($set['reps'] ?? 0);
 
             $tasks = Task::where('user_id', $this->user_id)
                 ->where('date', now()->toDateString())
@@ -45,4 +53,6 @@ class WorkoutLog extends Model
             }
         }
     }
+}
+
 }

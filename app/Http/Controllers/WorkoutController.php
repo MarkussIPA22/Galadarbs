@@ -11,16 +11,15 @@ use Inertia\Inertia;
 
 class WorkoutController extends Controller
 {
+    // Create new workout
     public function store(Request $request)
     {
-        //Validē datus no formas
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'muscle_groups' => 'required|array|min:1',
         ]);
 
-        //Izveido jaunu treniņu
         Workout::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
@@ -55,7 +54,7 @@ class WorkoutController extends Controller
                 'name' => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
                 'description' => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
                 'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
-                 'muscle_group_key' => $ex->muscle_group,
+                'muscle_group_key' => $ex->muscle_group,
                 'image_path' => $ex->image_path,
             ];
         });
@@ -67,7 +66,7 @@ class WorkoutController extends Controller
         return Inertia::render('Workouts/Edit', [
             'workout' => $workout->load('exercises'),
             'exercises' => $exercises,
-            'favoriteExercises' => $favoriteExercises, // ✅ pass favorites
+            'favoriteExercises' => $favoriteExercises,
         ]);
     }
 
@@ -129,15 +128,6 @@ class WorkoutController extends Controller
             ->with('success', 'Workout saved!');
     }
 
-    public function end(Workout $workout)
-    {
-        $workout->completed_at = now();
-        $workout->save();
-
-        return redirect()->route('workouts.show', $workout->id)
-            ->with('success', 'Workout completed!');
-    }
-
     public function destroy(Workout $workout)
     {
         $workout->delete();
@@ -164,12 +154,45 @@ class WorkoutController extends Controller
         ]);
     }
 
-    public function show(Workout $workout)
+    
+    public function showWorkoutForUser(Workout $workout)
 {
-    return Inertia::render('Workouts/Show', [
+    $workout->load('exercises'); // Load workout -> exercises relationship
+
+    $locale = app()->getLocale(); // Get current locale ('en', 'lv', etc.)
+
+    // Get the latest log for this workout by the workout owner
+    $latest_log = WorkoutLog::where('workout_id', $workout->id)
+        ->where('user_id', $workout->user_id)
+        ->latest()
+        ->first();
+
+    if ($latest_log && !empty($latest_log->exercises)) {
+        $exerciseIds = collect($latest_log->exercises)->pluck('id');
+        $exerciseModels = \App\Models\Exercise::whereIn('id', $exerciseIds)->get()->keyBy('id');
+
+        $latest_log->exercises = collect($latest_log->exercises)->map(function($ex) use ($exerciseModels, $locale) {
+            $exercise = $exerciseModels->get($ex['id']);
+            return [
+                'id' => $ex['id'],
+                'name' => $exercise
+                    ? ($locale === 'lv' && $exercise->name_lv ? $exercise->name_lv : $exercise->name)
+                    : 'Unknown Exercise',
+                'muscle_group' => $exercise
+                    ? ($locale === 'lv' && $exercise->muscle_group_lv ? $exercise->muscle_group_lv : $exercise->muscle_group)
+                    : 'Unknown Muscle Group',
+                'sets' => $ex['sets'] ?? [],
+            ];
+        })->toArray();
+    }
+
+    return Inertia::render('Workouts/ShowWorkout', [
         'workout' => $workout,
-        // include any related logs or details here
+        'latest_log' => $latest_log,
+        'profileUser' => $workout->user,
+        'auth' => auth()->user(),
     ]);
 }
+
 
 }

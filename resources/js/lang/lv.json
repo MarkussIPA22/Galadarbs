@@ -76,7 +76,17 @@
     "already_registered": "Jau reģistrējies?",
     "reset_password": "Atiestatīt paroli",
     "dont_have_account": "Vai vēl neesi reģistrējies?",
-    "create_new_account": "Izveidot jaunu kontu"
+    "create_new_account": "Izveidot jaunu kontu",
+    "abs": "Presīte",
+    "full body" : "Viss ķermenis",
+    "All_Workouts": "Visi treniņi",
+    "users": "Lietotāji",
+    "Recent_Completed": "Nesen pabeigtie treniņi",
+    "Search_Users": "Meklēt lietotājus",
+    "Search": "Meklēt",
+    "View_Profile": "Skatīt profilu",
+    "Profile": "Profils"
+
 
 
     
