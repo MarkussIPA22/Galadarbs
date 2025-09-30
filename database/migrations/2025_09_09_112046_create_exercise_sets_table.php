@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('workout_log_id')->constrained()->cascadeOnDelete();
             $table->foreignId('exercise_id')->constrained()->cascadeOnDelete();
             $table->integer('reps');
-            $table->decimal('weight', 8, 2); // in kg
+            $table->decimal('weight', 8, 2); 
             $table->timestamps();
         });
     }

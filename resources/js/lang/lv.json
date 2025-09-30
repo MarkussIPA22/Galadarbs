@@ -85,7 +85,17 @@
     "Search_Users": "Meklēt lietotājus",
     "Search": "Meklēt",
     "View_Profile": "Skatīt profilu",
-    "Profile": "Profils"
+    "Profile": "Profils",
+    "finish_workout": "Pabeigt treniņu",
+    "workout_finished": "Treniņš pabeigts",
+    "download_pdf" : "Lejupielādēt PDF",
+    "Your_Workouts": "Tavi treniņi",
+    "workout_name_required": "Treniņa nosaukums ir obligāts",
+  "The_muscle_group_field_is_required." : "Muskuļa lauks ir obligāts.",
+  "notifications": "Paziņojumi",
+  "No_Workouts_Yet": "Vēl nav treniņu",
+  "No_Completed_Yet": "Vēl nav pabeigtu treniņu"
+   
 
 
 

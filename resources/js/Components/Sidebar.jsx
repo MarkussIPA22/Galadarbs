@@ -5,8 +5,8 @@ export default function Sidebar({ auth }) {
     const { i18n } = useTranslation();
 
     const switchLanguage = (lang) => {
-        i18n.changeLanguage(lang); // frontend translations
-        router.get(route('locale.switch', lang)); // backend locale sync
+        i18n.changeLanguage(lang);
+        router.get(route('locale.switch', lang)); 
     };
 
    return (
@@ -101,8 +101,8 @@ export default function Sidebar({ auth }) {
 
                 <Link
                 href="/users"
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
+                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                   > 
                     {i18n.t('users')}
                 </Link>
 

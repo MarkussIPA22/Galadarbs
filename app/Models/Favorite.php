@@ -14,7 +14,6 @@ class Favorite extends Model
         'exercise_id',
     ];
 
-    // Optional: relationships
     public function user()
     {
         return $this->belongsTo(User::class);

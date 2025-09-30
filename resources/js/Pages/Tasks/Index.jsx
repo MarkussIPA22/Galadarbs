@@ -12,7 +12,6 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
     date: new Date().toISOString().split('T')[0],
   });
 
-  // Create new task
   const handleCreateTask = (e) => {
     e.preventDefault();
     post(route('tasks.store'), {
@@ -22,18 +21,6 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
           target: '',
           date: new Date().toISOString().split('T')[0],
         }),
-    });
-  };
-
-  const handleRandomTask = () => {
-    if (exercises.length === 0) return;
-
-    const randomExercise = exercises[Math.floor(Math.random() * exercises.length)];
-    const randomTarget = Math.floor(Math.random() * 201) + 100; // 100kg to 300kg
-    setData({
-      ...data,
-      exercise_id: randomExercise.id,
-      target: randomTarget,
     });
   };
 
@@ -47,18 +34,8 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
             {t('tasks')}
           </h1>
 
-        
-          <div className="mb-4 flex justify-end">
-            <button
-              type="button"
-              onClick={handleRandomTask}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded transition"
-            >
-              {t('random_task')}
-            </button>
-          </div>
+         
 
-          
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
               {t('create_new_task')}
@@ -100,14 +77,13 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
               <button
                 type="submit"
                 disabled={processing}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition disabled:opacity-50"
+                className="bg-blue-600 hover:bg-blue-700  dark:bg-gradient-to-r dark:from-purple-700 dark:to-purple-900 text-white font-semibold px-4 py-2 rounded transition disabled:opacity-50"
               >
                 {t('create')}
               </button>
             </form>
           </div>
 
-        
           <div className="space-y-4">
             {tasks.length === 0 ? (
               <div className="text-gray-500 italic text-center py-6 border border-dashed rounded-lg">

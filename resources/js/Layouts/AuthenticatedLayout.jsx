@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function AuthenticatedLayout({ children }) {
     const user = usePage().props.auth.user;
-    const { t } = useTranslation(); // <-- i18n hook
+    const { t } = useTranslation(); 
 
     const [darkMode, setDarkMode] = useState(
         localStorage.getItem('darkMode') === 'true' || false
@@ -36,7 +36,7 @@ export default function AuthenticatedLayout({ children }) {
                             ></div>
                         </div>
                         <span className="ml-3 text-gray-700 dark:text-gray-200 font-medium">
-                            {darkMode ? t('Dark') : t('Light')} {/* <-- i18n */}
+                            {darkMode ? t('Dark') : t('Light')} 
                         </span>
                     </label>
                 </div>

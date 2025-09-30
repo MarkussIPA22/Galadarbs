@@ -19,7 +19,6 @@ export default function Index({ auth, exercises = [] }) {
         {/* Tiek izsaukts Sidebar, flex-shrink-0 prevents collapsing */}
         <Sidebar auth={auth} className="flex-shrink-0" /> 
 
-        {/* Main content */}
         <main className="flex-1 p-6 overflow-x-auto">
           <h1 className="text-2xl font-bold mb-6">{t('exercises')}</h1> 
 

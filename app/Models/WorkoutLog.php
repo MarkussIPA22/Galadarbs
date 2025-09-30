@@ -38,7 +38,7 @@ class WorkoutLog extends Model
         $exerciseModel = \App\Models\Exercise::find($exercise['id']);
         if (!$exerciseModel) continue;
 
-        $exerciseName = strtolower($exerciseModel->name); // ✅ get name from DB
+        $exerciseName = strtolower($exerciseModel->name); 
 
         foreach ($exercise['sets'] as $set) {
             $totalWeight = ($set['weight'] ?? 0) * ($set['reps'] ?? 0);

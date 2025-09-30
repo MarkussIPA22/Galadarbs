@@ -11,7 +11,6 @@ use Inertia\Inertia;
 
 class WorkoutController extends Controller
 {
-    // Create new workout
     public function store(Request $request)
     {
         $request->validate([
@@ -154,45 +153,13 @@ class WorkoutController extends Controller
         ]);
     }
 
-    
-    public function showWorkoutForUser(Workout $workout)
-{
-    $workout->load('exercises'); // Load workout -> exercises relationship
+    public function showWorkoutsForUser($userId)
+    {
+        $workouts = Workout::where('user_id', $userId)->get();
 
-    $locale = app()->getLocale(); // Get current locale ('en', 'lv', etc.)
-
-    // Get the latest log for this workout by the workout owner
-    $latest_log = WorkoutLog::where('workout_id', $workout->id)
-        ->where('user_id', $workout->user_id)
-        ->latest()
-        ->first();
-
-    if ($latest_log && !empty($latest_log->exercises)) {
-        $exerciseIds = collect($latest_log->exercises)->pluck('id');
-        $exerciseModels = \App\Models\Exercise::whereIn('id', $exerciseIds)->get()->keyBy('id');
-
-        $latest_log->exercises = collect($latest_log->exercises)->map(function($ex) use ($exerciseModels, $locale) {
-            $exercise = $exerciseModels->get($ex['id']);
-            return [
-                'id' => $ex['id'],
-                'name' => $exercise
-                    ? ($locale === 'lv' && $exercise->name_lv ? $exercise->name_lv : $exercise->name)
-                    : 'Unknown Exercise',
-                'muscle_group' => $exercise
-                    ? ($locale === 'lv' && $exercise->muscle_group_lv ? $exercise->muscle_group_lv : $exercise->muscle_group)
-                    : 'Unknown Muscle Group',
-                'sets' => $ex['sets'] ?? [],
-            ];
-        })->toArray();
+        return Inertia::render('Workouts/UserWorkouts', [
+            'workouts' => $workouts,
+            'user_id' => $userId,
+        ]);
     }
-
-    return Inertia::render('Workouts/ShowWorkout', [
-        'workout' => $workout,
-        'latest_log' => $latest_log,
-        'profileUser' => $workout->user,
-        'auth' => auth()->user(),
-    ]);
-}
-
-
 }

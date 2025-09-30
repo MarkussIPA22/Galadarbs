@@ -18,11 +18,10 @@ class WorkoutLogController extends Controller
         'exercises.*.sets.*.weight' => 'required|numeric|min:0',
     ]);
 
-    // Store exercises exactly as frontend sends them
     $log = WorkoutLog::create([
         'workout_id' => $request->workout_id,
         'user_id' => auth()->id(),
-        'exercises' => $request->exercises, // <-- nested structure
+        'exercises' => $request->exercises, 
     ]);
 
     $log->updateTasks();
@@ -34,9 +33,9 @@ class WorkoutLogController extends Controller
 {
     foreach ($this->exercises as $exercise) {
         $exerciseModel = \App\Models\Exercise::find($exercise['id']);
-        if (!$exerciseModel) continue; // skip if exercise not found
+        if (!$exerciseModel) continue; 
 
-        $exerciseName = strtolower($exerciseModel->name); // ✅ get name from DB
+        $exerciseName = strtolower($exerciseModel->name); 
 
         foreach ($exercise['sets'] as $set) {
             $totalWeight = ($set['weight'] ?? 0) * ($set['reps'] ?? 0);

@@ -33,7 +33,6 @@ class Task extends Model
         return $this->belongsTo(Exercise::class);
     }
 
-    // Add progress and mark completed if target reached
     public function addProgress(int $weight)
     {
         $this->progress += $weight;

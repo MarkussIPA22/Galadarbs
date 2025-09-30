@@ -11,7 +11,7 @@ class ExerciseController extends Controller
 {
     public function index()
     {
-        $locale = app()->getLocale(); // "en" or "lv"
+        $locale = app()->getLocale(); 
 
         $exercises = Exercise::orderBy('name')->get()->map(function ($ex) use ($locale) {
             return [

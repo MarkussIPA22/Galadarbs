@@ -2,6 +2,7 @@ import React from 'react';
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
+import SetsList from '@/Components/Workouts/SetList';
 
 export default function ShowWorkout({ auth, workout, latest_log }) {
   return (
@@ -29,15 +30,7 @@ export default function ShowWorkout({ auth, workout, latest_log }) {
                   </p>
 
                   <div className="mt-2 space-y-1">
-                    {exercise.sets?.length > 0 ? (
-                      exercise.sets.map((set, setIdx) => (
-                        <div key={setIdx} className="text-sm text-slate-200">
-                          Set {setIdx + 1}: {set.reps} reps × {set.weight} kg
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-slate-400">No sets recorded.</p>
-                    )}
+                    <SetsList sets={exercise.sets} />
                   </div>
                 </div>
               ))

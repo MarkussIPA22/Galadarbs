@@ -37,14 +37,13 @@ export default function Edit({ mustVerifyEmail, status, user, auth }) {
       <Head title="Profile" />
 
       <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-        {/* Sidebar */}
+        
         <Sidebar auth={auth} />
 
-        {/* Main content */}
+       
         <main className="flex-1 py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {/* Left column: Breeze forms */}
             <div className="md:col-span-2 space-y-6">
               <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
                 <UpdateProfileInformationForm
@@ -63,14 +62,18 @@ export default function Edit({ mustVerifyEmail, status, user, auth }) {
               </div>
             </div>
 
-            {/* Right column: Profile picture */}
+          
             <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow flex flex-col items-center">
               <h3 className="text-lg font-semibold mb-4">Profile Picture</h3>
+              
               <img
-                src={profilePic ? URL.createObjectURL(profilePic) : user.profile_pic_url || '/default-avatar.png'}
-                alt="Profile"
-                className="w-36 h-36 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600 mb-4"
-              />
+  src={profilePic 
+        ? URL.createObjectURL(profilePic) 
+        : user.profile_pic_url || '/storage/avatar/avatar.jpg'}
+  alt="Profile"
+  className="w-36 h-36 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600 mb-4"
+/>
+
               <input
                 type="file"
                 accept="image/*"

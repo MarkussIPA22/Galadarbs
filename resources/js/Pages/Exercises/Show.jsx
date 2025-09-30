@@ -10,9 +10,9 @@ export default function Show({ exercise, auth, isFavorite }) {
 
     const toggleFavorite = () => {
     post(route('exercises.favorite', exercise.id), {
-        preserveScroll: true, // keeps scroll position
+        preserveScroll: true,
         onSuccess: () => {  
-            // optionally do something after success
+           
         },
     });
 };
@@ -98,7 +98,6 @@ export default function Show({ exercise, auth, isFavorite }) {
                                         src={`https://www.youtube.com/embed/${videoId}`}
                                         title={exercise.name}
                                         className="absolute top-0 left-0 w-full h-full rounded-lg"
-                                        frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                     />

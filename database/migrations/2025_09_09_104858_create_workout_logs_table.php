@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('workout_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('workout_id')->nullable()->constrained()->nullOnDelete(); // keep nullable
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // delete logs if user deleted
-            $table->json('exercises'); // store sets/reps
+            $table->foreignId('workout_id')->nullable()->constrained()->nullOnDelete(); 
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->json('exercises'); 
             $table->timestamps();
         });
     }

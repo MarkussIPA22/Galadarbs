@@ -91,7 +91,6 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    // Public profile view
     public function show(User $user): Response
 {
     $workouts = Workout::where('user_id', $user->id)->get();
@@ -112,7 +111,7 @@ class ProfileController extends Controller
         ],
         'workouts' => $workouts,
         'completedLogs' => $completedLogs,
-        'auth' => auth()->user(), // ✅ pass logged-in user
+        'auth' => auth()->user(), 
     ]);
 }
 

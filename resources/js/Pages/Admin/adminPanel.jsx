@@ -48,14 +48,13 @@ export default function AdminPanel({ auth, exercises = [] }) {
     Welcome, {auth?.name || 'Admin'}!
 </h1>
 
-                    {/* Success Message */}
+                   
                     {successMessage && (
                         <div className="mb-4 p-3 bg-green-100 text-green-800 rounded">
                             {successMessage}
                         </div>
                     )}
 
-                    {/* Add Exercise Form */}
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700 max-w-md mb-10">
                         <h2 className="text-xl font-semibold mb-4">Add New Exercise</h2>
 
@@ -107,7 +106,6 @@ export default function AdminPanel({ auth, exercises = [] }) {
                         </form>
                     </div>
 
-                    {/* List of Exercises */}
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md dark:shadow-gray-700">
                         <h2 className="text-xl font-semibold mb-4">All Exercises</h2>
 

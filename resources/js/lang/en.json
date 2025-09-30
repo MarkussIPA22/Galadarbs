@@ -55,8 +55,13 @@
     "Search_Users": "Search Users",
     "Search": "Search",
     "users": "Users",
-    "View_Profile": "View Profile"
-    
+    "View_Profile": "View Profile",
+    "finish_workout": "Finish Workout",
+    "workout_finished": "Workout Finished",
+    "download_pdf" : "Download PDF",
+    "Your_Workouts": "Your Workouts",
+    "workout_name_required": "Workout name is required",
+  "The_muscle_group_field_is_required." : "The muscle group field is required."    
     
 
 
