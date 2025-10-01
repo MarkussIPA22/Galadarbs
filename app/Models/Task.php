@@ -17,10 +17,15 @@ class Task extends Model
         'progress',
         'date',
         'completed',
+        'streak',
+        'last_completed_at'
+
     ];
 
     protected $casts = [
-        'completed' => 'boolean',
+      'date' => 'date',
+    'last_completed_at' => 'datetime',
+    'completed' => 'boolean',
     ];
 
     public function user()
@@ -42,4 +47,8 @@ class Task extends Model
         }
         $this->save();
     }
+
+   
+
+
 }

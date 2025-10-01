@@ -89,7 +89,7 @@ export default function Login({ status, canResetPassword }) {
 
                 <PrimaryButton
                     type="submit"
-                    className="w-full py-2 mt-2 text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg"
+                    className="w-full py-2 mt-2 text-white bg-indigo-600 dark:bg-gradient-to-r dark:from-purple-700 dark:to-purple-900  hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 rounded-lg"
                     disabled={processing}
                 >
                     {t('login')}

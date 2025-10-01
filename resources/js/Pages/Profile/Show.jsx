@@ -66,11 +66,11 @@ export default function Show({ auth, profileUser, workouts, completedLogs }) {
                 <div className="space-y-3 max-h-96 overflow-y-auto">
                   {workouts.map((workout) => (
 
-               <Link
-  key={workout.id}
-  href={`/workouts/show/${workout.id}`} 
-  className="block p-4 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50 hover:shadow-md hover:scale-[1.02] transition-all duration-200 backdrop-blur-sm"
->
+                      <Link
+                    key={workout.id}
+                    href={route('workouts.show', workout.id)}
+                    className="block p-4 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50 hover:shadow-md hover:scale-[1.02] transition-all duration-200 backdrop-blur-sm"
+                      >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full shadow-sm"></div>
@@ -95,7 +95,7 @@ export default function Show({ auth, profileUser, workouts, completedLogs }) {
                   {getRecentWorkouts().map((log) => (
                     <Link
                       key={log.id}
-                      href={route('workouts.view', log.workout.id)}
+                      href={route('workouts.show', log.workout.id)}
                       className="block p-4 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50 hover:shadow-md transition-all duration-200 backdrop-blur-sm"
                     >
                       <div className="flex items-center justify-between">

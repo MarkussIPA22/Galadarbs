@@ -101,6 +101,11 @@ class ProfileController extends Controller
         ->take(10)
         ->get(['id', 'workout_id', 'created_at']);
 
+    $tasks = \App\Models\Task::where('user_id', $user->id)
+        ->where('completed', true)
+        ->orderBy('last_completed_at', 'desc')
+        ->get(['id', 'name', 'streak', 'last_completed_at']);
+
     return Inertia::render('Profile/Show', [
         'profileUser' => [
             'id' => $user->id,
@@ -111,8 +116,10 @@ class ProfileController extends Controller
         ],
         'workouts' => $workouts,
         'completedLogs' => $completedLogs,
+        'tasks' => $tasks, 
         'auth' => auth()->user(), 
     ]);
 }
+
 
 }

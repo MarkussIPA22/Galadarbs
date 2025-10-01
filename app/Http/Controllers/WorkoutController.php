@@ -12,22 +12,24 @@ use Inertia\Inertia;
 class WorkoutController extends Controller
 {
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'muscle_groups' => 'required|array|min:1',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'muscle_groups' => 'required|array|min:1',
+    ]);
 
-        Workout::create([
-            'user_id' => auth()->id(),
-            'name' => $request->name,
-            'description' => $request->description,
-            'muscle_groups' => $request->muscle_groups,
-        ]);
+    $workout = Workout::create([
+        'user_id' => auth()->id(),
+        'name' => $request->name,
+        'description' => $request->description,
+        'muscle_groups' => $request->muscle_groups,
+    ]);
 
-        return redirect()->route('workouts.index')->with('success', 'Workout created!');
-    }
+    return redirect()->route('workouts.edit', $workout->id)
+        ->with('success', 'Workout created! You can now add exercises.');
+}
+
 
     public function create()
     {
@@ -109,24 +111,34 @@ class WorkoutController extends Controller
     }
 
     public function complete(Request $request, Workout $workout)
-    {
-        $request->validate([
-            'exercises' => 'required|array',
-            'exercises.*.sets' => 'required|array',
-            'exercises.*.sets.*.reps' => 'required|integer|min:0',
-            'exercises.*.sets.*.weight' => 'required|numeric|min:0',
-        ]);
+{
+    $request->validate([
+        'exercises' => 'required|array',
+        'exercises.*.sets' => 'required|array',
+        'exercises.*.sets.*.reps' => 'required|integer|min:0',
+        'exercises.*.sets.*.weight' => 'required|numeric|min:0',
+    ]);
 
-        WorkoutLog::create([
-            'user_id' => auth()->id(),
-            'workout_id' => $workout->id,
-            'exercises' => $request->exercises,
-        ]);
+    $exercisesData = collect($request->exercises)->map(function ($ex) {
+        $exercise = \App\Models\Exercise::find($ex['id']); 
+        return [
+            'id' => $exercise->id,
+            'name' => $exercise->name,
+            'muscle_group' => $exercise->muscle_group,
+            'sets' => $ex['sets'] ?? [],
+        ];
+    })->toArray();
 
-        return redirect()->route('workouts.start', $workout->id)
-            ->with('success', 'Workout saved!');
-    }
+    WorkoutLog::create([
+        'user_id' => auth()->id(),
+        'workout_id' => $workout->id,
+        'exercises' => $exercisesData,
+    ]);
 
+    return redirect()->route('workouts.start', $workout->id)
+        ->with('success', 'Workout saved!');
+}
+  
     public function destroy(Workout $workout)
     {
         $workout->delete();
@@ -153,13 +165,56 @@ class WorkoutController extends Controller
         ]);
     }
 
-    public function showWorkoutsForUser($userId)
-    {
-        $workouts = Workout::where('user_id', $userId)->get();
+    public function show(Workout $workout)
+{
+    $workout->load('exercises');
 
-        return Inertia::render('Workouts/UserWorkouts', [
-            'workouts' => $workouts,
-            'user_id' => $userId,
-        ]);
+        $latestLog = WorkoutLog::where('workout_id', $workout->id)
+            ->latest()
+            ->first();
+
+    $exercises = [];
+    if ($latestLog) {
+        $exercises = collect($latestLog->exercises)->map(function ($ex) {
+            if (!isset($ex['name']) || !isset($ex['muscle_group'])) {
+                $exercise = \App\Models\Exercise::find($ex['id']);
+                if ($exercise) {
+                    $ex['name'] = $exercise->name;
+                    $ex['muscle_group'] = $exercise->muscle_group;
+                } else {
+                    $ex['name'] = 'Unknown Exercise';
+                    $ex['muscle_group'] = 'Unknown Muscle Group';
+                }
+            }
+            return $ex;
+        })->toArray();
     }
+
+    return Inertia::render('Workouts/ShowWorkout', [
+        'auth' => ['user' => auth()->user()],
+        'workout' => $workout,
+        'latest_log' => [
+            'exercises' => $exercises
+        ],
+    ]);
+}
+
+    public function showWorkoutsForUser($userId)
+{
+    $user = \App\Models\User::findOrFail($userId);
+
+    $workouts = Workout::where('user_id', $userId)->get();
+
+    $completedLogs = WorkoutLog::where('user_id', $userId)
+        ->with('workout')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return Inertia::render('Workouts/Show', [
+        'auth' => ['user' => auth()->user()],
+        'profileUser' => $user,
+        'workouts' => $workouts,
+        'completedLogs' => $completedLogs,
+    ]);
+}
 }

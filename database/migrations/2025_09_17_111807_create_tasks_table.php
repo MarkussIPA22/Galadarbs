@@ -16,6 +16,8 @@ return new class extends Migration
             $table->integer('target');
             $table->integer('progress')->default(0);
             $table->boolean('completed')->default(false);
+            $table->integer('streak')->default(0);
+            $table->date('last_completed_at')->nullable();
             $table->date('date');
             $table->timestamps();
         });

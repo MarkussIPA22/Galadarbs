@@ -1,8 +1,7 @@
 <?php
-
+use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExerciseController;
-use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\WorkoutLogController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\NotificationController;
@@ -12,17 +11,20 @@ use Illuminate\Support\Facades\Route;
 // Public
 Route::get('/', fn() => redirect()->route('login'));
 
+// Exercises (public)
 Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggleFavorite'])
     ->name('exercises.favorite')->middleware('auth');
 
+// Language switch
 Route::get('/locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
     app()->setLocale($lang);
     return redirect()->back();
 })->name('locale.switch');
 
+// Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
@@ -38,16 +40,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
     Route::post('/workouts/{workout}/complete', [WorkoutController::class, 'complete'])->name('workouts.complete');
 
-    // Show all workouts for a specific user
-    Route::get('/workouts/show/user/{user}', [WorkoutController::class, 'showWorkoutsForUser'])
+    // Show a single workout (read-only)
+    Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])
         ->name('workouts.show');
 
-    // Show a completed workout log
-    Route::get('/workouts/completed/{log}', [WorkoutController::class, 'showCompleted'])->name('workouts.completed');
+    // Show all workouts for a specific user
+    Route::get('/workouts/user/{user}', [WorkoutController::class, 'showWorkoutsForUser'])
+        ->name('workouts.showUser');
 
-    // Tasks & Logs
+    // Completed workout logs
+    Route::get('/workouts/completed/{log}', [WorkoutController::class, 'showCompleted'])
+        ->name('workouts.completed');
+
+    // Tasks & logs
     Route::post('/workout-logs', [WorkoutLogController::class, 'store'])->name('workout-logs.store');
     Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,13 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Other users' profiles
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/users', [ProfileController::class, 'index'])->name('users.index'); // search & list users
-});
-
-// Task routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
-    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('/users', [ProfileController::class, 'index'])->name('users.index'); 
 });
 
 // Admin routes

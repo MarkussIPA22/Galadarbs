@@ -6,20 +6,51 @@ use App\Models\Exercise;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class ExerciseController extends Controller
 {
+    private function resolveImagePath(Exercise $ex): ?string
+    {
+        $image = $ex->image_path ? trim($ex->image_path) : null;
+
+        if ($image) {
+            // Convert /storage/ to /exercises/ for public path
+            $image = str_replace('/storage/', '/exercises/', $image);
+
+            if (!Str::startsWith($image, '/')) {
+                $image = '/' . ltrim($image, '/');
+            }
+
+            if (!file_exists(public_path(ltrim($image, '/')))) {
+                $image = null;
+            }
+        }
+
+        if (!$image) {
+            $slug = Str::slug($ex->name);
+            $candidate = '/exercises/' . $slug . '.webp';
+            if (file_exists(public_path(ltrim($candidate, '/')))) {
+                $image = $candidate;
+            }
+        }
+
+        return $image ?: null;
+    }
+
     public function index()
     {
-        $locale = app()->getLocale(); 
+        $locale = app()->getLocale();
 
         $exercises = Exercise::orderBy('name')->get()->map(function ($ex) use ($locale) {
+            $normalizedPath = $this->resolveImagePath($ex);
+
             return [
                 'id'           => $ex->id,
                 'name'         => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
                 'description'  => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
                 'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
-                'image_path'   => $ex->image_path,
+                'image_path'   => $normalizedPath,
             ];
         });
 
@@ -32,6 +63,7 @@ class ExerciseController extends Controller
     public function show(Exercise $exercise)
     {
         $locale = app()->getLocale();
+        $normalizedPath = $this->resolveImagePath($exercise);
 
         $isFavorite = auth()->check()
             ? Favorite::where('user_id', auth()->id())
@@ -45,26 +77,11 @@ class ExerciseController extends Controller
                 'name'         => $locale === 'lv' && $exercise->name_lv ? $exercise->name_lv : $exercise->name,
                 'description'  => $locale === 'lv' && $exercise->description_lv ? $exercise->description_lv : $exercise->description,
                 'muscle_group' => $locale === 'lv' && $exercise->muscle_group_lv ? $exercise->muscle_group_lv : $exercise->muscle_group,
-                'image_path'   => $exercise->image_path,
+                'image_path'   => $normalizedPath,
             ],
             'isFavorite' => $isFavorite,
             'auth'       => auth()->user(),
         ]);
-    }
-
-    public function adminIndex()
-    {
-        $exercises = Exercise::orderBy('name')->get();
-
-        return Inertia::render('Admin/adminPanel', [
-            'auth'      => auth()->user(),
-            'exercises' => $exercises,
-        ]);
-    }
-
-    public function create()
-    {
-        return Inertia::render('Exercises/Create');
     }
 
     public function store(Request $request)
@@ -72,12 +89,19 @@ class ExerciseController extends Controller
         $request->validate([
             'name'         => 'required|unique:exercises,name',
             'muscle_group' => 'required|string',
-            'image'        => 'nullable|image|max:2048',
+            'image'        => 'nullable|image|max:4096',
+            'image_path'   => 'nullable|string',
         ]);
 
-        $path = $request->hasFile('image')
-            ? $request->file('image')->store('exercises', 'public')
-            : null;
+        $path = null;
+
+        if ($request->hasFile('image')) {
+            $filename = $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('exercises'), $filename);
+            $path = '/exercises/' . $filename;
+        } elseif ($request->image_path) {
+            $path = str_replace('/storage/', '/exercises/', $request->image_path);
+        }
 
         Exercise::create([
             'name'            => $request->name,
@@ -94,8 +118,8 @@ class ExerciseController extends Controller
 
     public function destroy(Exercise $exercise)
     {
-        if ($exercise->image_path && \Storage::disk('public')->exists($exercise->image_path)) {
-            \Storage::disk('public')->delete($exercise->image_path);
+        if ($exercise->image_path && file_exists(public_path(ltrim($exercise->image_path, '/')))) {
+            unlink(public_path(ltrim($exercise->image_path, '/')));
         }
 
         $exercise->delete();
@@ -106,10 +130,7 @@ class ExerciseController extends Controller
     public function toggleFavorite(Exercise $exercise)
     {
         $user = auth()->user();
-
-        $favorite = Favorite::where('user_id', $user->id)
-            ->where('exercise_id', $exercise->id)
-            ->first();
+        $favorite = Favorite::where('user_id', $user->id)->where('exercise_id', $exercise->id)->first();
 
         if ($favorite) {
             $favorite->delete();

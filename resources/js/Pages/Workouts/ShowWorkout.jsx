@@ -1,12 +1,12 @@
 import React from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
 import SetsList from '@/Components/Workouts/SetList';
 
 export default function ShowWorkout({ auth, workout, latest_log }) {
   return (
-    <AuthenticatedLayout auth={auth} header={`${workout?.name || 'Workout'} (Read-Only)`}>
+    <AuthenticatedLayout auth={auth} header={`${workout?.name || 'Workout'}`}>
       <Head title={workout?.name || 'Workout'} />
 
       <div className="flex min-h-screen">
@@ -20,9 +20,15 @@ export default function ShowWorkout({ auth, workout, latest_log }) {
             {latest_log?.exercises?.length > 0 ? (
               latest_log.exercises.map((exercise, idx) => (
                 <div key={idx} className="p-4 bg-slate-800/50 rounded-lg shadow">
+                  {/* Make exercise name a clickable link */}
                   <h2 className="text-xl font-semibold">
-                    {exercise.name || 'Unknown Exercise'}
-                    {exercise.name_lv ? ` / ${exercise.name_lv}` : ''}
+                    <Link
+                      href={route('exercises.show', exercise.id)}
+                      className="text-indigo-500 hover:underline"
+                    >
+                      {exercise.name || 'Unknown Exercise'}
+                      {exercise.name_lv ? ` / ${exercise.name_lv}` : ''}
+                    </Link>
                   </h2>
                   <p className="text-sm text-slate-400">
                     {exercise.muscle_group || 'Unknown Muscle Group'}

@@ -1,5 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
+import { route } from 'ziggy-js';
 
 export default function Sidebar({ auth }) {
     const { i18n } = useTranslation();
@@ -85,12 +86,9 @@ export default function Sidebar({ auth }) {
                     </Link>
                 )}
 
-                <Link
-                    href="/exercises"
-                    className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                >
-                    {i18n.t('exercises')}
-                </Link>
+                <Link href={route('exercises.index')}>
+    {i18n.t('exercises')}
+</Link>
 
                 <Link 
                 href="/tasks"
@@ -99,12 +97,7 @@ export default function Sidebar({ auth }) {
                     {i18n.t('tasks')}
                 </Link>
 
-                <Link
-                href="/users"
-                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                   > 
-                    {i18n.t('users')}
-                </Link>
+              
 
                 <Link
                     href={route('logout')}

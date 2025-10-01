@@ -4,6 +4,7 @@ export default function ExerciseCard({ exercise, selected, onToggle, displayMusc
   return (
     <div className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700 cursor-pointer">
       <input type="checkbox" checked={selected} onChange={onToggle} className="mb-1" />
+      
       {exercise.image_path ? (
         <img
           src={exercise.image_path}
@@ -15,15 +16,18 @@ export default function ExerciseCard({ exercise, selected, onToggle, displayMusc
           {t('no_image')}
         </div>
       )}
+      
       <Link
         href={route('exercises.show', exercise.id)}
         className="text-sm font-medium text-blue-600 hover:underline"
       >
         {exercise.name}
       </Link>
+      
       <span className="text-xs text-gray-500">
         {displayMuscleGroup(exercise.muscle_group.toLowerCase())}
       </span>
     </div>
   );
 }
+  

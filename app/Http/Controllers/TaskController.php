@@ -10,7 +10,7 @@ class TaskController extends Controller
 {
     public function index(Request $request)
 {
-    $exerciseName = $request->query('exercise'); // e.g., ?exercise=bench press
+    $exerciseName = $request->query('exercise');
 
     $tasks = Task::where('user_id', auth()->id())
         ->where('date', now()->toDateString())
@@ -52,14 +52,35 @@ class TaskController extends Controller
         return redirect()->back()->with('success', 'Task created!');
     }
 
-    public function updateProgress(Request $request, Task $task)
-    {
-        $request->validate([
-            'progress' => 'required|integer|min:1',
-        ]);
+   public function updateProgress(Request $request, Task $task)
+{
+    $request->validate([
+        'progress' => 'required|integer|min:1',
+    ]);
 
-        $task->addProgress($request->progress);
+    $task->addProgress($request->progress);
 
-        return response()->json(['success' => true, 'task' => $task]);
+    if ($task->progress >= $task->target && !$task->completed) {
+        $task->completed = true;
+
+        // Streak logic
+        if ($task->last_completed_at) {
+            $yesterday = now()->subDay()->toDateString();
+            if ($task->last_completed_at->toDateString() == $yesterday) {
+                $task->streak++;
+            } else {
+                $task->streak = 1; 
+            }
+        } else {
+            $task->streak = 1;
+        }
+
+        $task->last_completed_at = now();
     }
+
+    $task->save();
+
+    return response()->json(['success' => true, 'task' => $task]);
+}
+
 }
