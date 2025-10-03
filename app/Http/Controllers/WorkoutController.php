@@ -217,4 +217,38 @@ class WorkoutController extends Controller
         'completedLogs' => $completedLogs,
     ]);
 }
+
+
+   public function mostTrainedMuscles()
+{
+    $user = auth()->user();
+
+    $logs = \App\Models\WorkoutLog::where('user_id', $user->id)->get();
+
+    $muscleCounts = [];
+
+    foreach ($logs as $log) {
+        foreach ($log->exercises as $ex) {
+            $muscleGroup = $ex['muscle_group'] ?? null;
+
+            if (!$muscleGroup && isset($ex['id'])) {
+                $exercise = \App\Models\Exercise::find($ex['id']);
+                $muscleGroup = $exercise ? $exercise->muscle_group : 'Unknown';
+            }
+
+            if (!$muscleGroup) {
+                $muscleGroup = 'Unknown';
+            }
+
+            $muscleCounts[$muscleGroup] = ($muscleCounts[$muscleGroup] ?? 0) + 1;
+        }
+    }
+
+    return \Inertia\Inertia::render('Profile/MuscleStats', [
+        'auth' => ['user' => $user],
+        'muscleCounts' => $muscleCounts,
+    ]);
+}
+
+
 }

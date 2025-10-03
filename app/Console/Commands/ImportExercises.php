@@ -30,23 +30,22 @@ class ImportExercises extends Command
         foreach ($exercises as $ex) {
             $imagePath = $ex['image_path'] ?? null;
 
-            // Only replace /storage/ if it exists, otherwise leave path as-is
             if ($imagePath && str_starts_with($imagePath, '/storage/')) {
                 $imagePath = '/' . ltrim(str_replace('/storage/', '', $imagePath), '/');
             }
 
-            Exercise::updateOrCreate(
-                ['id' => $ex['id']],
-                [
-                    'name'            => $ex['name'],
-                    'name_lv'         => $ex['name_lv'] ?? null,
-                    'muscle_group'    => $ex['muscle_group'] ?? null,
-                    'muscle_group_lv' => $ex['muscle_group_lv'] ?? null,
-                    'description'     => $ex['description'] ?? null,
-                    'description_lv'  => $ex['description_lv'] ?? null,
-                    'image_path'      => $imagePath,
-                ]
-            );
+            // Use firstOrNew to preserve ID
+            $exercise = Exercise::firstOrNew(['id' => $ex['id']]);
+
+            $exercise->name            = $ex['name'];
+            $exercise->name_lv         = $ex['name_lv'] ?? null;
+            $exercise->muscle_group    = $ex['muscle_group'] ?? null;
+            $exercise->muscle_group_lv = $ex['muscle_group_lv'] ?? null;
+            $exercise->description     = $ex['description'] ?? null;
+            $exercise->description_lv  = $ex['description_lv'] ?? null;
+            $exercise->image_path      = $imagePath;
+
+            $exercise->save();
 
             $this->info("Processed exercise: {$ex['name']}");
         }

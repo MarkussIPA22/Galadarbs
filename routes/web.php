@@ -40,6 +40,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
     Route::post('/workouts/{workout}/complete', [WorkoutController::class, 'complete'])->name('workouts.complete');
 
+    // Muscle stats (new page)
+    Route::get('/muscles/stats', [WorkoutController::class, 'mostTrainedMuscles'])
+        ->name('muscles.stats');
+
     // Show a single workout (read-only)
     Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])
         ->name('workouts.show');

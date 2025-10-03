@@ -98,5 +98,106 @@
     "description": "A machine exercise that targets the latissimus dorsi by pulling a bar down toward the chest.",
     "description_lv": "Vingrinājums ar ierīci, kas trenē platās muguras muskuļus, velkot stieni uz krūtīm.",
     "image_path": "/storage/exercises/pulldown.webp"
+  },
+
+   {
+    "id": 11,
+    "name": "Incline Bench Press",
+    "name_lv": "Spiešana uz slīpa soliņa",
+    "muscle_group": "Chest",
+    "muscle_group_lv": "Krūtis",
+    "description": "A variation of the bench press performed on an inclined bench to target the upper chest and shoulders.",
+    "description_lv": "Bench press variācija uz slīpa soliņa, kas trenē augšējo krūšu daļu un plecus.",
+    "image_path": "/storage/exercises/incline-bench-press.webp"
+  },
+
+     {
+    "id": 12,
+    "name": "Cable Seated Row",
+    "name_lv": "Kabeļu sēdošais vilkums",
+    "muscle_group": "Back",
+    "muscle_group_lv": "Mugura",
+    "description": "A machine exercise that targets the middle back by pulling handles toward the torso.",
+    "description_lv": "Vingrinājums uz trenažiera, kas trenē vidējo muguras daļu, velkot rokturus pret ķermeni.",
+    "image_path": "/storage/exercises/cable-seated-row.webp"
+  },
+
+   {
+    "id": 14,
+    "name": "Dumbbell Lateral Raise",
+    "name_lv": "Hanteļu sānu pacelšana",
+    "muscle_group": "Shoulders",
+    "muscle_group_lv": "Pleci",
+    "description": "An isolation exercise for the lateral deltoids performed with dumbbells raised to the side.",
+    "description_lv": "Izolēts vingrinājums sānu deltveida muskuļiem, paceļot hanteles uz sāniem.",
+    "image_path": "/storage/exercises/lateral-raise.webp"
+  },
+
+  {
+    "id": 15,
+    "name": "Leg Press",
+    "name_lv": "Kāju spiešana",
+    "muscle_group": "Legs",
+    "muscle_group_lv": "Kājas",
+    "description": "A machine exercise that targets the quadriceps, hamstrings, and glutes by pushing a weighted platform away with the legs.",
+    "description_lv": "Vingrinājums uz trenažiera, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, spiežot svaru platformu ar kājām.",
+    "image_path": "/storage/exercises/leg-press.webp"
+  },
+  {
+    "id": 16,
+    "name": "Chest Fly",
+    "name_lv": "Krūšu atvērsšana",
+    "muscle_group": "Chest",
+    "muscle_group_lv": "Krūtis",
+    "description": "An isolation exercise targeting the chest by bringing dumbbells together in an arc while lying on a bench.",
+    "description_lv": "Izolēts vingrinājums krūtīm, paceļot hanteles kopā loka kustībā guļus uz soliņa.",
+    "image_path": "/storage/exercises/chest-fly.webp"
+  },
+  {
+    "id": 17,
+    "name": "Russian Twist",
+    "name_lv": "Krievu pagrieziens",
+    "muscle_group": "Core",
+    "muscle_group_lv": "Vēders",
+    "description": "A core exercise that targets the obliques by twisting the torso from side to side while seated.",
+    "description_lv": "Vēdera vingrinājums, kas trenē slīpos vēdera muskuļus, pagriežot torsu no vienas puses uz otru sēdus.",
+    "image_path": "/storage/exercises/russian-twist.webp"
+  },
+  {
+    "id": 18,
+    "name": "Hamstring Curl",
+    "name_lv": "Paceles cīpslas loks",
+    "muscle_group": "Legs",
+    "muscle_group_lv": "Kājas",
+    "description": "A machine exercise that isolates the hamstrings by curling the lower legs toward the glutes.",
+    "description_lv": "Vingrinājums uz trenažiera, kas izolē hamstringus, liekot apakšējās kājas pret sēžamvietu.",
+    "image_path": "/storage/exercises/hamstring-curl.webp"
+  },
+  {
+    "id": 19,
+    "name": "Dumbbell Shrugs",
+    "name_lv": "Hanteļu pacelšana pleciem",
+    "muscle_group": "Shoulders",
+    "muscle_group_lv": "Pleci",
+    "description": "An isolation exercise targeting the trapezius muscles by shrugging the shoulders while holding dumbbells.",
+    "description_lv": "Izolēts vingrinājums trapecveida muskuļiem, paceļot plecus, turot hanteles.",
+    "image_path": "/storage/exercises/shrug.webp"
+
+  },
+  {
+    "id": 20,
+    "name": "Mountain Climbers",
+    "name_lv": "Kalnu kāpēji",
+    "muscle_group": "Core",
+    "muscle_group_lv": "Vēders",
+    "description": "A dynamic bodyweight exercise that engages the core and legs by bringing knees toward the chest in a running motion.",
+    "description_lv": "Dinamiska vingrinājums ar savu svaru, kas trenē vēdera un kāju muskuļus, velkot ceļus uz krūtīm skriešanas kustībā.",
+    "image_path": "/storage/exercises/mountain-climber.webp"
   }
 ]
+
+
+
+
+
+

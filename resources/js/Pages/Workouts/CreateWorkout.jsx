@@ -78,15 +78,16 @@ export default function CreateWorkout({ auth }) {
                 <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('muscle_groups')}</label>
                 <div className="flex flex-wrap gap-2">
                   {muscleOptions.map((muscle) => (
-                    <MuscleGroupButton
-                      key={muscle}
-                      group={muscle}
-                      isActive={data.muscle_groups.includes(muscle)}
-                      isFavorite={muscle === 'favorites'}
-                      toggle={() => (muscle === 'favorites' ? toggleFavorites() : toggleMuscleGroup(muscle))}
-                      displayName={t(muscle)}
-                    />
-                  ))}
+  <MuscleGroupButton
+    key={muscle}
+    group={muscle}
+    isActive={data.muscle_groups.includes(muscle)}
+    isFavorite={muscle === 'favorites'}
+    toggle={() => (muscle === 'favorites' ? toggleFavorites() : toggleMuscleGroup(muscle))}
+    displayName={t(muscle.toLowerCase())} 
+  />
+))}
+
                 </div>
                 {errors.muscle_groups && <p className="text-red-500 text-sm">{errors.muscle_groups}</p>}
               </div>

@@ -28,11 +28,15 @@ export default function MyWorkouts({ auth }) {
               <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center">
                 {t("Your_Workouts")}
               </h2>
-              {workouts.length > 0 && (
-                <span className="text-sm text-slate-500 dark:text-slate-400 dark:bg-slate-700 px-3 py-1 rounded-full font-medium">
-                  {workouts.length} workout{workouts.length !== 1 ? "s" : ""}
-                </span>
-              )}
+         {workouts.length > 0 && (
+            <span className="text-sm text-slate-500 dark:text-slate-400 dark:bg-slate-700 px-3 py-1 rounded-full font-medium">
+              {workouts.length}{" "}
+              {workouts.length === 1
+            ? t("workout_number")
+            : t("workout_number_plural")}
+        </span>
+      )}
+
             </div>
 
          

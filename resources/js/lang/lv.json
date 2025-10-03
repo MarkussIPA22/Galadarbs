@@ -1,12 +1,13 @@
 {
+ 
   "chest": "Krūšu muskuļi",
   "back": "Muguras muskuļi",
   "shoulders": "Pleci",
   "biceps": "Bicepsi",
   "triceps": "Tricepsi",
   "legs": "Kājas",
-  "core": "Vēdera muskuļi",
-  "full_body": "Viss ķermenis",
+  "abs": "Vēdera muskuļi",
+  "full body": "Vesels ķermenis",
   "workout_name": "Treniņa nosaukums",
   "description": "Apraksts",
   "save_changes": "Saglabāt izmaiņas",
@@ -32,7 +33,7 @@
   "previous_workout": "Iepriekšējais treniņš",
   "this_workout": "Šis treniņš",
   "welcome": "Laipni lūdzam",
-  "dashboard": "Informācijas panelis",  
+  "Dashboard": "Informācijas panelis",  
   "tasks": "Uzdevumi",
   "profile": "Profils",
   "logout": "Iziet",
@@ -77,8 +78,6 @@
     "reset_password": "Atiestatīt paroli",
     "dont_have_account": "Vai vēl neesi reģistrējies?",
     "create_new_account": "Izveidot jaunu kontu",
-    "abs": "Presīte",
-    "full body" : "Viss ķermenis",
     "All_Workouts": "Visi treniņi",
     "users": "Lietotāji",
     "Recent_Completed": "Nesen pabeigtie treniņi",
@@ -94,8 +93,13 @@
   "The_muscle_group_field_is_required." : "Muskuļa lauks ir obligāts.",
   "notifications": "Paziņojumi",
   "No_Workouts_Yet": "Vēl nav treniņu",
-  "No_Completed_Yet": "Vēl nav pabeigtu treniņu"
-   
+  "No_Completed_Yet": "Vēl nav pabeigtu treniņu",
+   "Muscle_Stats" : "Treniņu statistika",
+    "Workout_breakdown": "Treniņu apskats",
+    "workout_stats": "Treniņu statistika",
+  "No_completed_workouts_yet": "Vēl nav pabeigtu treniņu",
+   "workout_number": "Treniņš",
+    "workout_number_plural": "Treniņi"
 
 
 

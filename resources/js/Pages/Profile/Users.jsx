@@ -29,14 +29,14 @@ export default function Users({ auth, users, query }) {
                 <div className="flex-1 p-6 lg:p-8 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-colors">
                   
                    
-                    <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6 mb-8">
+                    <div className="bg-white/70 backdrop-blur-sm dark:bg-gray-900 rounded-2xl  p-6 mb-8">
                         <form onSubmit={handleSubmit} className="flex gap-3">
                             <input
                                 type="text"
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
                                 placeholder={t('Search_Users')}
-                                className="flex-1 p-4 bg-white dark:bg-slate-700 border rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
+                                className="flex-1 p-4 bg-white dark:bg-gray-700 border rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 transition-all duration-200"
                             />
                             <button
                                 type="submit"

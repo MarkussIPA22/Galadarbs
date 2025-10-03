@@ -61,9 +61,13 @@
     "download_pdf" : "Download PDF",
     "Your_Workouts": "Your Workouts",
     "workout_name_required": "Workout name is required",
-  "The_muscle_group_field_is_required." : "The muscle group field is required."    
-    
-
+  "The_muscle_group_field_is_required." : "The muscle group field is required.",
+  "Muscle_Stats" : "Workout Stats",
+  "Workout_breakdown": "Workout Breakdown" ,
+  "workout_stats": "Workout Stats",
+  "No_completed_workouts_yet": "No completed workouts yet",
+ "workout_number": "Workout",
+    "workout_number_plural": "Workouts"
 
   
 
