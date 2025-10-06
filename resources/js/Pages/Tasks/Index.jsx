@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
+import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
 export default function Tasks({ tasks = [], exercises = [], auth }) {
   const { t } = useTranslation();
@@ -27,8 +27,7 @@ export default function Tasks({ tasks = [], exercises = [], auth }) {
   return (
     <AuthenticatedLayout auth={auth}>
       <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-        <Sidebar auth={auth} />
-
+        <ResponsiveSidebar auth={auth} />
         <main className="flex-1 p-6 max-w-6xl mx-auto">
           <h1 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-gray-100">
             {t('tasks')}

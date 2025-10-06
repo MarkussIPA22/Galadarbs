@@ -15,6 +15,7 @@ class Exercise extends Model
         'name_lv',
         'muscle_group_lv',
         'description_lv',
+        'video_url',
     ];
     
     public function workouts()

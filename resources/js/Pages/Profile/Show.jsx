@@ -1,8 +1,8 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
+import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
 export default function Show({ auth, profileUser, workouts, completedLogs }) {
   const { t } = useTranslation();
@@ -14,8 +14,7 @@ export default function Show({ auth, profileUser, workouts, completedLogs }) {
 
       <div className="flex min-h-screen">
       
-        <Sidebar auth={auth} />
-
+        <ResponsiveSidebar auth={auth} />
        
         <div className="flex-1 p-6 lg:p-8">
          

@@ -15,7 +15,6 @@ class ExerciseController extends Controller
         $image = $ex->image_path ? trim($ex->image_path) : null;
 
         if ($image) {
-            // Convert /storage/ to /exercises/ for public path
             $image = str_replace('/storage/', '/exercises/', $image);
 
             if (!Str::startsWith($image, '/')) {
@@ -78,43 +77,40 @@ class ExerciseController extends Controller
                 'description'  => $locale === 'lv' && $exercise->description_lv ? $exercise->description_lv : $exercise->description,
                 'muscle_group' => $locale === 'lv' && $exercise->muscle_group_lv ? $exercise->muscle_group_lv : $exercise->muscle_group,
                 'image_path'   => $normalizedPath,
+                'video_url'    => $exercise->video_url,
             ],
             'isFavorite' => $isFavorite,
             'auth'       => auth()->user(),
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'         => 'required|unique:exercises,name',
-            'muscle_group' => 'required|string',
-            'image'        => 'nullable|image|max:4096',
-            'image_path'   => 'nullable|string',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'name'         => 'required|unique:exercises,name',
+        'muscle_group' => 'required|string',
+        'image'        => 'nullable|image|max:4096',
+        'video_url'    => 'nullable|string',
+    ]);
 
-        $path = null;
+    $path = null;
 
-        if ($request->hasFile('image')) {
-            $filename = $request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('exercises'), $filename);
-            $path = '/exercises/' . $filename;
-        } elseif ($request->image_path) {
-            $path = str_replace('/storage/', '/exercises/', $request->image_path);
-        }
-
-        Exercise::create([
-            'name'            => $request->name,
-            'muscle_group'    => $request->muscle_group,
-            'description'     => $request->description,
-            'image_path'      => $path,
-            'name_lv'         => $request->name_lv,
-            'muscle_group_lv' => $request->muscle_group_lv,
-            'description_lv'  => $request->description_lv,
-        ]);
-
-        return redirect()->back()->with('success', 'Exercise added!');
+    if ($request->hasFile('image')) {
+        $filename = $request->file('image')->getClientOriginalName();
+        $request->file('image')->move(public_path('exercises'), $filename);
+        $path = '/exercises/' . $filename;
     }
+
+    $exercise = Exercise::create([
+        'name'         => $request->name,
+        'muscle_group' => $request->muscle_group,
+        'image_path'   => $path,
+        'video_url'    => $request->video_url,
+    ]);
+
+    return response()->json(['exercise' => $exercise]);
+}
+
 
     public function destroy(Exercise $exercise)
     {

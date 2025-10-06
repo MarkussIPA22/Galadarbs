@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Sidebar from '@/Components/Sidebar';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useForm } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import SubmitButton from '@/Components/Workouts/SubmitButton';
 import MuscleGroupButton from '@/Components/Muscles/MuscleGroupButton';
+import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
 export default function CreateWorkout({ auth }) {
   const { t } = useTranslation();
@@ -40,7 +40,7 @@ export default function CreateWorkout({ auth }) {
 
       <div className="flex flex-col md:flex-row min-h-screen bg-white dark:bg-gray-900 transition-colors">
         <div className="w-full md:w-64 flex-shrink-0">
-          <Sidebar auth={auth} />
+          <ResponsiveSidebar auth={auth} />
         </div>
 
         <main className="flex-1 p-6 lg:p-8 overflow-hidden">

@@ -61,7 +61,6 @@ export default function CompletedWorkoutsList({ completedLogs, title, emptyText,
                 </div>
             ) : (
                 <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 rounded-2xl mx-auto mb-4 flex items-center justify-center"></div>
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
                         {t('No_completed_workouts_yet')}
                     </h3>

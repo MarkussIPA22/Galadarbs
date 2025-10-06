@@ -1,8 +1,8 @@
 import { Link, useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
+import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
 export default function Users({ auth, users, query }) {
     const { t } = useTranslation();
@@ -24,8 +24,7 @@ export default function Users({ auth, users, query }) {
     return (
         <AuthenticatedLayout auth={auth} header={t('Members')}>
             <div className="flex min-h-screen">
-                <Sidebar auth={auth} />
-
+                <ResponsiveSidebar auth={auth} />
                 <div className="flex-1 p-6 lg:p-8 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-colors">
                   
                    

@@ -1,10 +1,12 @@
 <?php
+
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\WorkoutLogController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -40,13 +42,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
     Route::post('/workouts/{workout}/complete', [WorkoutController::class, 'complete'])->name('workouts.complete');
 
-    // Muscle stats (new page)
+    // Muscle stats
     Route::get('/muscles/stats', [WorkoutController::class, 'mostTrainedMuscles'])
         ->name('muscles.stats');
 
-    // Show a single workout (read-only)
-    Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])
-        ->name('workouts.show');
+    // Show a single workout
+    Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])->name('workouts.show');
 
     // Show all workouts for a specific user
     Route::get('/workouts/user/{user}', [WorkoutController::class, 'showWorkoutsForUser'])
@@ -75,10 +76,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Admin routes
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('/admin', [ExerciseController::class, 'adminIndex'])->name('admin.dashboard');
-    Route::get('/exercises/create', [ExerciseController::class, 'create'])->name('exercises.create');
-    Route::post('/exercises', [ExerciseController::class, 'store'])->name('exercises.store');
-    Route::delete('/exercises/{exercise}', [ExerciseController::class, 'destroy'])->name('exercises.destroy');
+    Route::get('/admin', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
+
+    // Add/delete exercises entirely in admin panel
+    Route::post('/admin/exercises', [AdminController::class, 'storeExercise'])
+        ->name('admin.exercises.store');
+    Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroyExercise'])
+        ->name('admin.exercises.destroy');
 });
 
 // Notifications

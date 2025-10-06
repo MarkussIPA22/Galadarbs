@@ -9,38 +9,32 @@ export default function Show({ exercise, auth, isFavorite }) {
     const { post, processing } = useForm();
 
     const toggleFavorite = () => {
-    post(route('exercises.favorite', exercise.id), {
-        preserveScroll: true,
-        onSuccess: () => {  
-           
-        },
-    });
-};
-
-    const youtubeVideos = {
-        "Bench Press": "gRVjAtPip0Y",
-        "Spiešana guļus": "gRVjAtPip0Y",
-        "Squat": "aclHkVaku9U",
-        "Pietupieni": "aclHkVaku9U",
-        "Deadlift": "op9kVnSso6Q",
-        "Vilkme": "op9kVnSso6Q",
-        "Shoulder Press": "2yjwXTZQDDI",
-        "Plecu spiešana": "2yjwXTZQDDI",
-        "Pull-Up": "eGo4IYlbE5g",
-        "Pievilkšanās": "eGo4IYlbE5g",
-        "Bicep Curl": "ykJmrZ5v0Oo",
-        "Bicepsa loks": "ykJmrZ5v0Oo",
-        "Tricep Dip": "0326dy_-CzM",
-        "Tricepsa dips": "0326dy_-CzM",
-        "Lunge": "QOVaHwm-Q6U",
-        "Izklupieni": "QOVaHwm-Q6U",
-        "Plank": "pSHjTRCQxIw",
-        "Planks": "pSHjTRCQxIw",
-        "Lat Pulldown": "CAwf7n6Luuc",
-        "Lat vilkme": "CAwf7n6Luuc",
+        post(route('exercises.favorite', exercise.id), {
+            preserveScroll: true,
+        });
     };
 
-    const videoId = youtubeVideos[exercise.name];
+    const getYouTubeVideoId = (url) => {
+        if (!url) return null;
+
+        try {
+            const urlObj = new URL(url);
+
+            if (urlObj.hostname.includes("youtube.com")) {
+                return urlObj.searchParams.get("v");
+            }
+
+            if (urlObj.hostname === "youtu.be") {
+                return urlObj.pathname.slice(1); // remove leading '/'
+            }
+        } catch (e) {
+            return null;
+        }
+
+        return null;
+    };
+
+    const videoId = getYouTubeVideoId(exercise.video_url);
 
     return (
         <AuthenticatedLayout auth={auth}>
@@ -51,12 +45,7 @@ export default function Show({ exercise, auth, isFavorite }) {
 
                 <main className="flex-1 p-8">
                     <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-2xl p-8">
-                        <Link
-                            href={route('exercises.index')}
-                            className="inline-block mb-6 text-indigo-600 dark:text-indigo-400 hover:underline"
-                        >
-                            ← {t('back_to_exercises')}
-                        </Link>
+                       
 
                         <div className="flex items-center justify-between">
                             <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
@@ -64,7 +53,7 @@ export default function Show({ exercise, auth, isFavorite }) {
                             </h1>
 
                             <button
-                            type="button"
+                                type="button"
                                 onClick={toggleFavorite}
                                 disabled={processing}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${

@@ -64,7 +64,7 @@
     "no_completed_workouts": "Nav pabeigtu treniņu",
     "Workout_Calendar": "Treniņu kalendārs",
     "deleted_workout": "Treniņš izdzēsts",
-    "Menu": "Izvēlne",
+    "menu": "Izvēlne",
     "login": "Pieslēgties",
     "register": "Reģistrēties",
     "email": "E-pasts",
@@ -99,7 +99,10 @@
     "workout_stats": "Treniņu statistika",
   "No_completed_workouts_yet": "Vēl nav pabeigtu treniņu",
    "workout_number": "Treniņš",
-    "workout_number_plural": "Treniņi"
+    "workout_number_plural": "Treniņi",
+  "Trenina_numurs": "Treniņš # ",
+    "confirm_delete": "Vai tiešām vēlaties izdzēst šo vingrinājumu? Šo darbību nevar atgriezt."
+  
 
 
 

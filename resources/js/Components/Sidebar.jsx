@@ -2,94 +2,69 @@ import { Link, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { route } from 'ziggy-js';
 
-export default function Sidebar({ auth }) {
-    const { i18n } = useTranslation();
+export default function Sidebar({ auth, isOpen, toggleSidebar }) {
+  const { i18n } = useTranslation();
 
-    const switchLanguage = (lang) => {
-        i18n.changeLanguage(lang);
-        router.get(route('locale.switch', lang)); 
-    };
+  const switchLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    router.get(route('locale.switch', lang));
+  };
 
-    const linkClasses =
-        "p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors";
+  const linkClasses =
+    "p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors";
 
-    return (
-        <aside className="w-64 bg-white dark:bg-gray-900 p-6">
-            <h2 className="text-xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-               {i18n.t('Menu')}
-            </h2>
+  return (
+    <>
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-gray-900 p-6 transform transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative md:h-auto md:top-auto md:left-auto`}
+      >
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={() => switchLanguage('en')}
+            className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            <img
+              src="/flags/english_flag.png"
+              alt="EN"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </button>
+          <button
+            onClick={() => switchLanguage('lv')}
+            className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          >
+            <img
+              src="/flags/latvia_flag.png"
+              alt="LV"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </button>
+        </div>
 
-            <div className="flex gap-2 mb-6">
-                <button
-                    onClick={() => switchLanguage('en')}
-                    className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                    <img
-                        src="/flags/english_flag.png"
-                        alt="EN"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                </button>
+        <nav className="flex flex-col gap-3">
+          <Link href="/dashboard" className={linkClasses}>{i18n.t('Dashboard')}</Link>
+          <Link href={route('workouts.create')} className={linkClasses}>{i18n.t('create_workout')}</Link>
+          <Link href="/my-workouts" className={linkClasses}>{i18n.t('my_workouts')}</Link>
+          <Link href="/profile" className={linkClasses}>{i18n.t('profile')}</Link>
 
-                <button
-                    onClick={() => switchLanguage('lv')}
-                    className="relative w-12 h-8 rounded overflow-hidden bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                >
-                    <img
-                        src="/flags/latvia_flag.png"
-                        alt="LV"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                </button>
-            </div>
+          {auth.user?.is_admin === 1 && (
+            <Link href={route('admin.dashboard')} className={linkClasses}>{i18n.t('admin_panel')}</Link>
+          )}
 
-            <nav className="flex flex-col gap-3">
-                <Link href="/dashboard" className={linkClasses}>
-                    {i18n.t('Dashboard')}
-                </Link>
+          <Link href="/tasks" className={linkClasses}>{i18n.t('tasks')}</Link>
+          <Link href="/users" className={linkClasses}>{i18n.t('users')}</Link>
+          <Link href="/muscles/stats" className={linkClasses}>{i18n.t('Muscle_Stats')}</Link>
+          <Link href={route('logout')} method="post" className={`${linkClasses} hover:bg-red-600`}>{i18n.t('logout')}</Link>
+        </nav>
+      </aside>
 
-                <Link href={route('workouts.create')} className={linkClasses}>
-                    {i18n.t('create_workout')}
-                </Link>
-
-                <Link href="/my-workouts" className={linkClasses}>
-                    {i18n.t('my_workouts')}
-                </Link>
-
-                <Link href="/profile" className={linkClasses}>
-                    {i18n.t('profile')}
-                </Link>
-
-                {auth.user?.is_admin === 1 && (
-                    <Link href={route('admin.dashboard')} className={linkClasses}>
-                        {i18n.t('admin_panel')}
-                    </Link>
-                )}
-
-                <Link href={route('exercises.index')} className={linkClasses}>
-                    {i18n.t('exercises')}
-                </Link>
-
-                <Link href="/tasks" className={linkClasses}>
-                    {i18n.t('tasks')}
-                </Link>
-
-                <Link href="/users" className={linkClasses}>
-                    {i18n.t('users')}
-                </Link>
-
-                <Link href="/muscles/stats" className={linkClasses}>
-                    {i18n.t('Muscle_Stats')}
-                </Link>
-
-                <Link
-                    href={route('logout')}
-                    method="post"
-                    className={`${linkClasses} hover:bg-red-600`}
-                >
-                    {i18n.t('logout')}
-                </Link>
-            </nav>
-        </aside>
-    );
+      {isOpen && (
+        <div
+          onClick={toggleSidebar}
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+        />
+      )}
+    </>
+  );
 }
