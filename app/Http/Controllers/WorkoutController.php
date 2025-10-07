@@ -148,22 +148,28 @@ class WorkoutController extends Controller
     }
 
     public function dashboard()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        $workouts = Workout::where('user_id', $user->id)->get();
+    $workouts = Workout::where('user_id', $user->id)->get();
 
-        $completedLogs = WorkoutLog::where('user_id', $user->id)
-            ->with('workout:id,name')
-            ->orderBy('created_at', 'desc')
-            ->get(['id', 'workout_id', 'created_at']);
+    $completedLogs = WorkoutLog::where('user_id', $user->id)
+        ->with('workout:id,name')
+        ->orderBy('created_at', 'desc')
+        ->get(['id', 'workout_id', 'created_at']);
 
-        return Inertia::render('Dashboard', [
-            'auth' => ['user' => $user],
-            'workouts' => $workouts,
-            'completedLogs' => $completedLogs,
-        ]);
-    }
+    $hasCompletedToday = WorkoutLog::where('user_id', $user->id)
+        ->whereDate('created_at', now()->toDateString())
+        ->exists();
+
+    return Inertia::render('Dashboard', [
+        'auth' => ['user' => $user],
+        'workouts' => $workouts,
+        'completedLogs' => $completedLogs,
+        'hasCompletedToday' => $hasCompletedToday,
+    ]);
+}
+
 
     public function show(Workout $workout)
 {

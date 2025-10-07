@@ -17,7 +17,7 @@ export default function Sidebar({ auth, isOpen, toggleSidebar }) {
     <>
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-gray-900 p-6 transform transition-transform duration-300 ease-in-out
-        ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative md:h-auto md:top-auto md:left-auto`}
+          ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative md:h-auto md:top-auto md:left-auto`}
       >
         <div className="flex gap-2 mb-6">
           <button
@@ -47,6 +47,8 @@ export default function Sidebar({ auth, isOpen, toggleSidebar }) {
           <Link href={route('workouts.create')} className={linkClasses}>{i18n.t('create_workout')}</Link>
           <Link href="/my-workouts" className={linkClasses}>{i18n.t('my_workouts')}</Link>
           <Link href="/profile" className={linkClasses}>{i18n.t('profile')}</Link>
+
+          <Link href="/max/calculate" className={linkClasses}>{i18n.t('One-Rep Max')}</Link>
 
           {auth.user?.is_admin === 1 && (
             <Link href={route('admin.dashboard')} className={linkClasses}>{i18n.t('admin_panel')}</Link>

@@ -42,13 +42,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
     }
   };
 
-  useEffect(() => {
-    console.log('Initial exercises from backend:', workout.exercises.map(e => e.id));
-  }, [workout]);
-
-  useEffect(() => {
-    console.log('Current selected exercises:', data.exercises);
-  }, [data.exercises]);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

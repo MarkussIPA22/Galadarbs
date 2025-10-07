@@ -8,14 +8,12 @@
   color: inherit !important;
 }
 
-/* Hover */
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background-color: rgba(16, 185, 129, 0.1) !important; /* emerald hover */
+  background-color: rgba(16, 185, 129, 0.1) !important; 
   border-radius: 8px;
 }
 
-/* Selected date (keep it subtle, no blue) */
 .react-calendar__tile--active {
   background-color: transparent !important;
   color: inherit !important;
@@ -23,21 +21,18 @@
   border-radius: 8px;
 }
 
-/* Today (no color highlight, just bold text) */
 .react-calendar__tile--now {
   background-color: transparent !important;
-  color: rgb(30 41 59) !important; /* slate-800 */
+  color: rgb(0, 255, 255) !important; 
   font-weight: bold;
 }
 
-/* Today + selected */
 .react-calendar__tile--now.react-calendar__tile--active {
   background-color: transparent !important;
-  color: rgb(30 41 59) !important;
+  color: rgb(0, 255, 255) !important;
   font-weight: bold;
 }
 
-/* Navigation buttons */
 .react-calendar__navigation button {
   color: inherit !important;
 }
@@ -48,7 +43,6 @@
   border-radius: 6px;
 }
 
-/* Weekdays */
 .react-calendar__month-view__weekdays__weekday {
   color: rgb(100 116 139) !important;
 }
@@ -57,16 +51,14 @@
   color: rgb(148 163 184) !important;
 }
 
-/* Completed workout days -> green highlight */
 .completed-workout {
-  background-color: rgb(16 185 129) !important; /* emerald-500 */
+  background-color: rgb(16 185 129) !important; 
   color: white !important;
   border-radius: 8px;
   font-weight: bold;
 }
 
-/* Dark mode completed workout */
 .dark .completed-workout {
-  background-color: rgb(5 150 105) !important; /* darker emerald */
+  background-color: rgb(5 150 105) !important; 
   color: white !important;
 }

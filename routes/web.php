@@ -9,6 +9,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia; 
+
 
 // Public
 Route::get('/', fn() => redirect()->route('login'));
@@ -56,6 +58,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Completed workout logs
     Route::get('/workouts/completed/{log}', [WorkoutController::class, 'showCompleted'])
         ->name('workouts.completed');
+
+        Route::get('/max/calculate', function () {
+    return Inertia::render('Max/Calculate');
+})->name('max.calculate');
 
     // Tasks & logs
     Route::post('/workout-logs', [WorkoutLogController::class, 'store'])->name('workout-logs.store');

@@ -8,7 +8,7 @@ import "@/../css/calendar.css";
 import { Head } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 
-export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
+  export default function Dashboard({ auth, workouts = [], completedLogs = [], hasCompletedToday = false }) {
   const [value, setValue] = useState(new Date());
   const [completedDates, setCompletedDates] = useState([]);
   const { t, i18n } = useTranslation();
@@ -17,19 +17,6 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
     const dates = completedLogs.map((log) => new Date(log.created_at));
     setCompletedDates(dates);
   }, [completedLogs]);
-
-  const tileClassName = ({ date, view }) => {
-    if (view === "month") {
-      const isCompleted = completedDates.some(
-        (d) =>
-          d.getFullYear() === date.getFullYear() &&
-          d.getMonth() === date.getMonth() &&
-          d.getDate() === date.getDate()
-      );
-      if (isCompleted) return "completed-workout";
-    }
-    return "";
-  };
 
   return (
     <AuthenticatedLayout>
@@ -49,6 +36,30 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
             </div>
           </div>
 
+              {!hasCompletedToday && (
+  <div className="relative flex items-start gap-4 rounded-xl   dark:from-slate-700/50 dark:to-slate-600/50  da p-5 shadow-sm mb-6">
+    <div className="flex-1">
+      <h3 className="font-semibold text-black dark:text-white text-lg">
+        {t("dont_forget_workout")}
+      </h3>
+      <p className="text-black dark:text-white text-sm mt-1">
+        {t("workout_not_completed")}
+      </p>
+    </div>
+
+    <div>
+      <a
+        href="my-workouts"
+        className="inline-flex items-center rounded-lg bg-yellow-600  dark:bg-gradient-to-r dark:from-purple-700 dark:to-purple-900  px-3 py-1.5 text-sm font-medium text-white shadow hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 transition"
+      >
+        {t("start_workout")}
+      </a>
+    </div>
+  </div>
+)}
+
+
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard
               title={t("Workouts_Created")}
@@ -67,7 +78,18 @@ export default function Dashboard({ auth, workouts = [], completedLogs = [] }) {
               <WorkoutCalendar
                 value={value}
                 onChange={setValue}
-                tileClassName={tileClassName}
+                tileClassName={({ date, view }) => {
+                  if (view === "month") {
+                    const isCompleted = completedDates.some(
+                      (d) =>
+                        d.getFullYear() === date.getFullYear() &&
+                        d.getMonth() === date.getMonth() &&
+                        d.getDate() === date.getDate()
+                    );
+                    if (isCompleted) return "completed-workout";
+                  }
+                  return "";
+                }}
                 title={t("Workout_Calendar")}
                 locale={i18n.language === "en" ? "en-US" : "lv-LV"}
               />

@@ -68,7 +68,13 @@
   "No_completed_workouts_yet": "No completed workouts yet",
  "workout_number": "Workout",
     "workout_number_plural": "Workouts",
-    "confirm_delete": "Are you sure you want to delete this exercise? This action cannot be undone."
+    "confirm_delete": "Are you sure you want to delete this exercise? This action cannot be undone.",
+  "dont_forget_workout": "Don't forget to finish a workout today!",
+  "workout_not_completed" :"You haven’t completed a workout yet. Stay consistent and log one today to keep your streak going.",
+  "calculate1RM": "Calculate one rep max",
+  "oneRepMaxCalculator" : "One Rep Max Calculator",
+  "estimated1RM": "Estimated One Rep Max: {max} kg",
+  "calc_fail": "Weight and Reps cannot be lower than 1."
 
   
 

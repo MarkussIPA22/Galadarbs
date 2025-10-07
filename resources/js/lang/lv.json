@@ -101,7 +101,14 @@
    "workout_number": "Treniņš",
     "workout_number_plural": "Treniņi",
   "Trenina_numurs": "Treniņš # ",
-    "confirm_delete": "Vai tiešām vēlaties izdzēst šo vingrinājumu? Šo darbību nevar atgriezt."
+    "confirm_delete": "Vai tiešām vēlaties izdzēst šo vingrinājumu? Šo darbību nevar atgriezt.",
+  "dont_forget_workout": "Neaizmirsti šodien pabeigt treniņu!",
+  "workout_not_completed" :"Jūs vēl neesat pabeidzis nevienu treniņu. Esi konsekvents un šodien reģistrē vienu, lai turpinātu savu sēriju.",
+  "calculate1RM": "Aprēķināt vienu atkārtojuma maksimumu",
+  "oneRepMaxCalculator" : "Viena atkārtojuma maksimuma kalkulators",
+  "estimated1RM": "Aptuvenais viena atkārtojuma maksimums: {max} kg",
+  "calc_fail": "Svars un atkārtojumi nevar būt mazāki par 1."
+
   
 
 
