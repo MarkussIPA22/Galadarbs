@@ -107,7 +107,21 @@
   "calculate1RM": "Aprēķināt vienu atkārtojuma maksimumu",
   "oneRepMaxCalculator" : "Viena atkārtojuma maksimuma kalkulators",
   "estimated1RM": "Aptuvenais viena atkārtojuma maksimums: {max} kg",
-  "calc_fail": "Svars un atkārtojumi nevar būt mazāki par 1."
+  "calc_fail": "Svars un atkārtojumi nevar būt mazāki par 1.",
+  "No_users_found" : "Neviens lietotājs nav atrasts.",
+  "welcome_admin": "Sveicināts, Administrators",
+  "add_new_exercise": "Pievienot jaunu vingrinājumu",
+  "all_exercises": "Visi vingrinājumi",
+  "filter_by_muscle_group": "Filtrēt pēc muskuļu grupas",
+  "all": "Visi",
+  "are_you_sure_delete": "Vai tiešām vēlaties dzēst šo vingrinājumu?",
+  "name_en": "Nosaukums (EN)",
+  "name_lv": "Nosaukums (LV)",
+  "muscle_group_en": "Muskuļu grupa (EN)",
+  "muscle_group_lv": "Muskuļu grupa (LV)",
+  "description_en": "Apraksts (EN)",
+  "description_lv": "Apraksts (LV)",
+  "save_exercise": "Saglabāt vingrinājumu"
 
   
 

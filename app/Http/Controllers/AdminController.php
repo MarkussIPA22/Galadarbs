@@ -11,20 +11,24 @@ class AdminController extends Controller
     public function adminIndex()
     {
         $exercises = Exercise::all();
-        return Inertia::render('Admin/adminPanel', [
+        return Inertia::render('Admin/exercises', [
             'exercises' => $exercises,
         ]);
     }
 
     public function storeExercise(Request $request)
     {
-        $request->validate([
-            'name'         => 'required|unique:exercises,name',
-            'muscle_group' => 'required|string',
-            'description'  => 'nullable|string',
-            'image'        => 'nullable|image|max:4096',
-            'video_url'    => 'nullable|string',
-        ]);
+       $request->validate([
+    'name'            => 'required|unique:exercises,name',
+    'name_lv'         => 'required|unique:exercises,name_lv',
+    'muscle_group'    => 'required|string',
+    'muscle_group_lv' => 'required|string',
+    'description'     => 'nullable|string',
+    'description_lv'  => 'nullable|string',
+    'image'           => 'nullable|image|max:4096',
+    'video_url'       => 'nullable|string',
+]);
+
 
         $path = null;
         if ($request->hasFile('image')) {
@@ -33,16 +37,20 @@ class AdminController extends Controller
             $path = '/exercises/' . $filename;
         }
 
-        Exercise::create([
-            'name'         => $request->name,
-            'muscle_group' => $request->muscle_group,
-            'description'  => $request->description ?? '',
-            'image_path'   => $path,
-            'video_url'    => $request->video_url,
-        ]);
+     Exercise::create([
+    'name'            => $request->name,
+    'name_lv'         => $request->name_lv,
+    'muscle_group'    => $request->muscle_group,
+    'muscle_group_lv' => $request->muscle_group_lv,
+    'description'     => $request->description ?? '',
+    'description_lv'  => $request->description_lv ?? '',
+    'image_path'      => $path,
+    'video_url'       => $request->video_url,
+]);
+
 
         $exercises = Exercise::all();
-        return Inertia::render('Admin/adminPanel', [
+        return Inertia::render('Admin/exercises', [
             'exercises' => $exercises,
         ])->with('successMessage', 'Exercise added successfully!');
     }
@@ -56,7 +64,7 @@ class AdminController extends Controller
         $exercise->delete();
 
         $exercises = Exercise::all();
-        return Inertia::render('Admin/adminPanel', [
+        return Inertia::render('Admin/exercises', [
             'exercises' => $exercises,
         ])->with('successMessage', 'Exercise deleted successfully!');
     }

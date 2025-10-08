@@ -1,33 +1,95 @@
-import { Link } from '@inertiajs/react';
+import React from 'react';
+import PreviousSets from '@/Components/Workouts/PreviousSets';
 
-export default function ExerciseCard({ exercise, selected, onToggle, displayMuscleGroup, t }) {
+export default function ExerciseCard({
+  exercise,
+  prevExercise,
+  exIndex,
+  handleSetChange,
+  handleAddSet,
+  handleRemoveSet,
+  finished,
+  t
+}) {
   return (
-    <div className="flex flex-col items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700 cursor-pointer">
-      <input type="checkbox" checked={selected} onChange={onToggle} className="mb-1" />
-      
-      {exercise.image_path ? (
-        <img
-          src={exercise.image_path}
-          alt={exercise.name}
-          className="w-36 h-36 object-cover rounded"
-        />
-      ) : (
-        <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 text-xs">
-          {t('no_image')}
-        </div>
-      )}
-      
-      <Link
-        href={route('exercises.show', exercise.id)}
-        className="text-sm font-medium text-blue-600 hover:underline"
-      >
+    <div className="p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+      <h2 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
         {exercise.name}
-      </Link>
-      
-      <span className="text-xs text-gray-500">
-        {displayMuscleGroup(exercise.muscle_group.toLowerCase())}
-      </span>
+        <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
+          ({exercise.muscle_group})
+        </span>
+      </h2>
+
+      <PreviousSets prevSets={prevExercise?.prevSets} t={t} />
+
+      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+        {t('this_workout')}
+      </h3>
+
+      {(exercise.sets || []).map((set, setIndex) => (
+        <div
+          key={setIndex}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center mb-4"
+        >
+          <div className="text-center md:text-left">
+            <span className="font-medium text-gray-700 dark:text-gray-300">
+              {t('set')} {setIndex + 1}
+            </span>
+          </div>
+          <div className="flex flex-col items-center">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('reps')}
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={set.reps}
+              onChange={(e) =>
+                handleSetChange(exIndex, setIndex, 'reps', e.target.value)
+              }
+              className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+              disabled={finished}
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              {t('weight_kg')}
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="0"
+                value={set.weight}
+                onChange={(e) =>
+                  handleSetChange(exIndex, setIndex, 'weight', e.target.value)
+                }
+                className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                disabled={finished}
+              />
+              {exercise.sets.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSet(exIndex, setIndex)}
+                  className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                  title={t('remove_set')}
+                  disabled={finished}
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() => handleAddSet(exIndex)}
+        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm"
+        disabled={finished}
+      >
+        + {t('add_set')}
+      </button>
     </div>
   );
 }
-  

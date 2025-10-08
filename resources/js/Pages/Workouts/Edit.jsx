@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
@@ -19,9 +19,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
   const [showFavorites, setShowFavorites] = useState(false);
 
   const muscleGroups = [...new Set(exercises.map((e) => e.muscle_group.toLowerCase())), 'favorites'];
-
-  const displayMuscleGroup = (group) =>
-    group === 'favorites' ? t('favorites') : t(group);
+  const displayMuscleGroup = (group) => group === 'favorites' ? t('favorites') : t(group);
 
   const toggleMuscleGroup = (group) => {
     if (data.muscle_groups.includes(group)) {
@@ -34,7 +32,6 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
   const toggleFavorites = () => setShowFavorites(!showFavorites);
 
   const toggleExercise = (id) => {
-    console.log('Toggling exercise:', id);
     if (data.exercises.includes(id)) {
       setData('exercises', data.exercises.filter((exId) => exId !== id));
     } else {
@@ -42,11 +39,8 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
     }
   };
 
-  
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Submitting workout data:', data);
     put(route('workouts.update', workout.id), {
       onError: (err) => console.log('Backend validation errors:', err),
       onSuccess: (res) => console.log('Update response:', res),
@@ -58,11 +52,9 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
     const matchesFavorites = showFavorites && isFavorite;
 
     const matchesFilter = filter === '' ? true : exercise.muscle_group.toLowerCase() === filter;
-
-    const matchesMuscleGroups =
-      data.muscle_groups.length === 0
-        ? true
-        : data.muscle_groups.includes(exercise.muscle_group.toLowerCase());
+    const matchesMuscleGroups = data.muscle_groups.length === 0
+      ? true
+      : data.muscle_groups.includes(exercise.muscle_group.toLowerCase());
 
     return (matchesFavorites || matchesMuscleGroups) && matchesFilter;
   });
@@ -85,15 +77,46 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               t={t}
               displayMuscleGroup={displayMuscleGroup}
             />
-            <ExercisesSelector
-              exercises={exercises}
-              data={data}
-              toggleExercise={toggleExercise}
-              filteredExercises={filteredExercises}
-              t={t}
-              displayMuscleGroup={displayMuscleGroup}
-            />
-            <div className="flex gap-4">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredExercises.map((exercise) => (
+                <div
+                  key={exercise.id}
+                  onClick={() => toggleExercise(exercise.id)}
+                  className={`cursor-pointer p-4 rounded-xl border transition-all duration-200 ${
+                    data.exercises.includes(exercise.id)
+                      ? 'border-emerald-500 shadow-lg bg-emerald-50 dark:bg-emerald-900'
+                      : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-md'
+                  }`}
+                >
+                 <div className="w-full h-32 mb-2 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+  {exercise.image_path ? (
+    <img
+      src={exercise.image_path}  
+      alt={exercise.name}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <span className="text-white font-bold text-xl">
+      {exercise.name.charAt(0)}
+    </span>
+  )}
+</div>
+
+
+                  <h3 className="text-center font-semibold text-gray-900 dark:text-white">
+                    {exercise.name}
+                  </h3>
+
+                 
+                  <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+                    {displayMuscleGroup(exercise.muscle_group.toLowerCase())}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-4 mt-4">
               <button
                 type="submit"
                 disabled={processing}
@@ -101,6 +124,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               >
                 {t('save_changes')}
               </button>
+
               <button
                 type="button"
                 onClick={() => (window.location.href = route('workouts.start', workout.id))}
@@ -108,6 +132,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
               >
                 {t('start_workout')}
               </button>
+
               <Link
                 href={route('workouts.index')}
                 className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900"

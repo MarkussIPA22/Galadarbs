@@ -12,23 +12,20 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia; 
 
 
-// Public
 Route::get('/', fn() => redirect()->route('login'));
 
-// Exercises (public)
+// Exercises 
 Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
 Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('exercises.show');
 Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggleFavorite'])
     ->name('exercises.favorite')->middleware('auth');
 
-// Language switch
 Route::get('/locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
     app()->setLocale($lang);
     return redirect()->back();
 })->name('locale.switch');
 
-// Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
@@ -48,7 +45,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/muscles/stats', [WorkoutController::class, 'mostTrainedMuscles'])
         ->name('muscles.stats');
 
-    // Show a single workout
     Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])->name('workouts.show');
 
     // Show all workouts for a specific user
@@ -75,7 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/update-pic', [ProfileController::class, 'updateProfilePic'])->name('profile.update.pic');
 
-    // Other users' profiles
+    // profiles
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/users', [ProfileController::class, 'index'])->name('users.index'); 
 });
@@ -84,7 +80,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'adminIndex'])->name('admin.dashboard');
 
-    // Add/delete exercises entirely in admin panel
+    // Add/delete admin
     Route::post('/admin/exercises', [AdminController::class, 'storeExercise'])
         ->name('admin.exercises.store');
     Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroyExercise'])

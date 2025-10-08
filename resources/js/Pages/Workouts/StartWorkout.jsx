@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Sidebar from '@/Components/Sidebar';
 import { useTranslation } from 'react-i18next';
 import jsPDF from 'jspdf';
-import PreviousSets from '@/Components/Workouts/PreviousSets';
-import ExerciseCard from '@/Components/Exercise/ExerciseCards';
-
+import ExerciseCard from '@/Components/Exercise/ExerciseCard';
 
 export default function StartWorkout({ auth, workout, latest_log }) {
   const { t } = useTranslation();
@@ -23,12 +21,15 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     };
   });
 
-  const [exerciseData, setExerciseData] = useState(
+  const [exerciseData, setExerciseData] = useState(() =>
     workout.exercises.map((ex) => ({
       id: ex.id,
       name: ex.name,
       muscle_group: ex.muscle_group,
-      sets: [{ reps: '', weight: '' }],
+      sets:
+        ex.sets && ex.sets.length > 0
+          ? ex.sets
+          : [{ reps: '', weight: '' }],
     }))
   );
 
@@ -58,7 +59,10 @@ export default function StartWorkout({ auth, workout, latest_log }) {
       workout_id: workout.id,
       exercises: exerciseData.map((ex) => ({
         id: ex.id,
-        sets: ex.sets.map((s) => ({ reps: parseInt(s.reps) || 0, weight: parseFloat(s.weight) || 0 })),
+        sets: ex.sets.map((s) => ({
+          reps: parseInt(s.reps) || 0,
+          weight: parseFloat(s.weight) || 0,
+        })),
       })),
     };
     Inertia.post(route('workout-logs.store'), workoutData);
@@ -71,7 +75,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     exerciseData.forEach((ex, exIndex) => {
       doc.setFontSize(14);
       doc.text(`${exIndex + 1}. ${ex.name} (${ex.muscle_group})`, 10, 30 + exIndex * 30);
-      ex.sets.forEach((set, setIndex) => {
+      (ex.sets || []).forEach((set, setIndex) => {
         doc.setFontSize(12);
         doc.text(
           `Set ${setIndex + 1}: ${set.reps} reps × ${set.weight} kg`,
@@ -85,12 +89,28 @@ export default function StartWorkout({ auth, workout, latest_log }) {
 
   return (
     <AuthenticatedLayout>
-      <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-        <Sidebar auth={auth} />
-        <main className="flex-1 p-6">
-          <h1 className="text-2xl font-bold mb-6">{t('start_workout')}: {workout.name}</h1>
+      <div className="flex flex-col md:flex-row min-h-screen bg-white dark:bg-gray-900 transition-colors">
+        <div className="w-full md:w-64 flex-shrink-0">
+          <Sidebar auth={auth} />
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+        <main className="flex-1 p-6 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              {t('start_workout')}: {workout.name}
+            </h1>
+            {!finished && (
+              <button
+                onClick={() => setFinished(true)}
+                className="px-6 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
+              >
+                {t('finish_workout')}
+              </button>
+            )}
+          </div>
+
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
             {exerciseData.map((ex, exIndex) => {
               const prevEx = previousExercises.find((p) => p.id === ex.id);
               return (
@@ -108,10 +128,10 @@ export default function StartWorkout({ auth, workout, latest_log }) {
               );
             })}
 
-            <div className="flex gap-4 mt-6">
+            <div className="flex flex-wrap gap-4 mt-4">
               <button
                 type="submit"
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
                 disabled={finished}
               >
                 {t('save_workout')}
@@ -119,29 +139,20 @@ export default function StartWorkout({ auth, workout, latest_log }) {
 
               <Link
                 href={route('workouts.index')}
-                className="px-6 py-2 bg-red-800 text-white rounded-lg hover:bg-red-900 transition-colors"
-                disabled={finished}
+                className="px-6 py-2 bg-red-800 text-white rounded-xl hover:bg-red-900 transition-colors"
               >
                 {t('cancel')}
               </Link>
 
-              {!finished && (
-                <button
-                  type="button"
-                  onClick={() => setFinished(true)}
-                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-                >
-                  {t('finish_workout')}
-                </button>
-              )}
-
               {finished && (
                 <>
-                  <span className="px-6 py-2 bg-gray-500 text-white rounded-lg">{t('workout_finished')}</span>
+                  <span className="px-6 py-2 bg-gray-500 text-white rounded-xl">
+                    {t('workout_finished')}
+                  </span>
                   <button
                     type="button"
                     onClick={downloadPDF}
-                    className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
+                    className="px-6 py-2 bg-blue-700 text-white rounded-xl hover:bg-blue-800 transition-colors"
                   >
                     {t('download_pdf')}
                   </button>

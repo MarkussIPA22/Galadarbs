@@ -29,21 +29,23 @@ export default function MuscleStats({ auth, muscleCounts = {} }) {
 
           <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] bg-white dark:bg-gray-800 rounded-xl shadow flex items-center justify-center mb-6">
             <ResponsiveContainer width="100%" height="100%">
+          
               <PieChart>
                 <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius="80%"
-                  fill="#8884d8"
-                  dataKey="value"
-                  label
-                >
+                  data={data}               // dati, kas tiks attēloti diagrammā
+                  cx="50%"                  // X koordināta centra pozīcija (50% = horizontāli centrēta)
+                  cy="50%"                  // Y koordināta centra pozīcija (50% = vertikāli centrēta)
+                  outerRadius="80%"         // ārējais rādiuss, cik daudzdiagramma aizpildīs vietu
+                  label                     // parāda vērtības vai nosaukumus katrā sektorā
+      >
+                   {/* Katram datu ierakstam piešķir krāsu no COLORS masīva */}
                   {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
+                   {/* Tooltip parāda informāciju, kad pele ir virs sektora */}
                 <Tooltip />
+                 {/* Vertikāli novieto diagrammu lejā ar augstumu 36 px   */}
                 <Legend verticalAlign="bottom" height={36} />
               </PieChart>
             </ResponsiveContainer>
