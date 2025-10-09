@@ -85,6 +85,13 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
         ->name('admin.exercises.store');
     Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroyExercise'])
         ->name('admin.exercises.destroy');
+        
+        Route::get('/admin/exercises/{exercise}/edit', [AdminController::class, 'edit'])
+    ->name('admin.exercises.edit');
+
+
+    Route::post('/admin/exercises/{exercise}/update', [AdminController::class, 'update'])->name('admin.exercises.update');
+
 });
 
 // Notifications

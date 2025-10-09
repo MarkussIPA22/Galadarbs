@@ -23,7 +23,6 @@ export default function MyWorkouts({ auth }) {
         </div>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-10">
-          {/* Header Section */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
@@ -59,8 +58,6 @@ export default function MyWorkouts({ auth }) {
               {workouts.map((workout, index) => (
                 <div
                   key={workout.id}
-                  style={{ animationDelay: `${index * 50}ms` }}
-                  className="animate-fade-in-up"
                 >
                   <WorkoutCard
                     workout={workout}

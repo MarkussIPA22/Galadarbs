@@ -68,4 +68,51 @@ class AdminController extends Controller
             'exercises' => $exercises,
         ])->with('successMessage', 'Exercise deleted successfully!');
     }
+
+    public function edit(Exercise $exercise)
+    {
+        return Inertia::render('Admin/EditExercise', [
+            'exercise' => $exercise,
+        ]);
+    }
+
+    public function update(Request $request, Exercise $exercise)
+{
+    $request->validate([
+        'name'            => 'required|string',
+        'name_lv'         => 'required|string',
+        'muscle_group'    => 'required|string',
+        'muscle_group_lv' => 'required|string',
+        'description'     => 'nullable|string',
+        'description_lv'  => 'nullable|string',
+        'video_url'       => 'nullable|string',
+        'image'           => 'nullable|image|max:4096',
+    ]);
+
+    $path = $exercise->image_path;
+
+    if ($request->hasFile('image')) {
+        if ($path && file_exists(public_path(ltrim($path, '/')))) {
+            unlink(public_path(ltrim($path, '/')));
+        }
+        $filename = $request->file('image')->getClientOriginalName();
+        $request->file('image')->move(public_path('exercises'), $filename);
+        $path = '/exercises/' . $filename;
+    }
+
+    $exercise->update([
+        'name'            => $request->name,
+        'name_lv'         => $request->name_lv,
+        'muscle_group'    => $request->muscle_group,
+        'muscle_group_lv' => $request->muscle_group_lv,
+        'description'     => $request->description ?? '',
+        'description_lv'  => $request->description_lv ?? '',
+        'image_path'      => $path,
+        'video_url'       => $request->video_url,
+    ]);
+
+    return redirect()->route('admin.dashboard')->with('successMessage', 'Exercise updated successfully!');
+
+}
+
 }

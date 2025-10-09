@@ -36,14 +36,41 @@ class WorkoutController extends Controller
         return Inertia::render('Workouts/CreateWorkout');
     }
 
-    public function index()
-    {
-        $workouts = Workout::where('user_id', auth()->id())->get();
+  public function index()
+{
+    $locale = app()->getLocale();
 
-        return Inertia::render('Workouts/myWorkouts', [
-            'workouts' => $workouts,
-        ]);
-    }
+    $muscleTranslations = [
+        'chest' => 'Krūšu muskuļi',
+        'back' => 'Muguras muskuļi',
+        'shoulders' => 'Pleci',
+        'biceps' => 'Bicepsi',
+        'triceps' => 'Tricepsi',
+        'legs' => 'Kājas',
+        'abs' => 'Vēdera muskuļi',
+        'full body' => 'Vesels ķermenis',
+    ];
+
+    $workouts = Workout::where('user_id', auth()->id())->get()->map(function ($workout) use ($locale, $muscleTranslations) {
+        return [
+            'id' => $workout->id,
+            'name' => $workout->name,
+            'description' => $workout->description,
+            'muscle_groups' => array_map(function ($group) use ($locale, $muscleTranslations) {
+                $key = strtolower($group); 
+                if ($locale === 'lv' && isset($muscleTranslations[$key])) {
+                    return $muscleTranslations[$key]; 
+                }
+                return $group; 
+            }, $workout->muscle_groups ?? []),
+        ];
+    });
+
+    return Inertia::render('Workouts/myWorkouts', [
+        'workouts' => $workouts,
+    ]);
+}
+
 
     public function edit(Workout $workout)
     {

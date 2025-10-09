@@ -121,7 +121,10 @@
   "muscle_group_lv": "Muskuļu grupa (LV)",
   "description_en": "Apraksts (EN)",
   "description_lv": "Apraksts (LV)",
-  "save_exercise": "Saglabāt vingrinājumu"
+  "save_exercise": "Saglabāt vingrinājumu",
+  "select_exercises": "Izvēlaties vingrinājumus",
+  "no_exercises_found" : "Neviens vingrinājums netika atrasts"
+
 
   
 
