@@ -90,7 +90,9 @@
   "description_lv": "Description (LV)",
   "save_exercise": "Save Exercise",
   "select_exercises": "Select exercises",
-  "no_exercises_found" : "No exercise found"
+  "no_exercises_found" : "No exercise found",
+  "Enter_your_weight" : "Enter your weight",
+  "Enter_your_reps": "Enter your reps"
 
   
 

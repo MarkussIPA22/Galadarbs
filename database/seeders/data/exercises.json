@@ -193,7 +193,135 @@
     "description": "A dynamic bodyweight exercise that engages the core and legs by bringing knees toward the chest in a running motion.",
     "description_lv": "Dinamiska vingrinājums ar savu svaru, kas trenē vēdera un kāju muskuļus, velkot ceļus uz krūtīm skriešanas kustībā.",
     "image_path": "/storage/exercises/mountain-climber.webp"
+  },
+  {
+    "id": 21,
+    "name": "Incline Dumbbell Press",
+    "name_lv": "Hanteļu spiešana uz slīpa soliņa",
+    "muscle_group": "Chest",
+    "muscle_group_lv": "Krūtis",
+    "description": "Targets the upper chest and shoulders by pressing dumbbells on an inclined bench.",
+    "description_lv": "Vingrinājums augšējām krūtīm un pleciem, paceļot hanteles uz slīpa soliņa.",
+    "image_path": "/storage/exercises/dumbbell-press.webp"
+  },
+  
+  {
+    "id": 23,
+    "name": "Chest Press Machine",
+    "name_lv": "Krūšu spiešana uz trenažiera",
+    "muscle_group": "Chest",
+    "muscle_group_lv": "Krūtis",
+    "description": "A machine exercise for chest, shoulders, and triceps, pressing the handles forward.",
+    "description_lv": "Vingrinājums uz trenažiera, kas trenē krūtis, plecus un tricepsus, spiežot rokturus uz priekšu.",
+    "image_path": "/storage/exercises/chest-press.webp"
+  },
+  {
+    "id": 25,
+    "name": "Pull-Over",
+    "name_lv": "Hanteļu vilkšana virs galvas",
+    "muscle_group": "Chest",
+    "muscle_group_lv": "Krūtis",
+    "description": "Targets the chest and lats by pulling a dumbbell from behind the head to above the chest.",
+    "description_lv": "Vingrinājums krūtīm un mugurai, paceļot hanteli no galvas aizmugures virs krūtīm.",
+    "image_path": "/storage/exercises/dumbbell-pullover.webp"
+  },
+  
+  {
+    "id": 27,
+    "name": "Barbell Row",
+    "name_lv": "Stieņa vilkums uz augšu",
+    "muscle_group": "Back",
+    "muscle_group_lv": "Mugura",
+    "description": "Targets the back muscles by rowing a barbell toward the torso while bent over.",
+    "description_lv": "Vingrinājums mugurai, vilkot stieni pret ķermeni, saliekoties uz priekšu.",
+    "image_path": "/storage/exercises/barbell-row.webp"
+  },
+ 
+  {
+    "id": 29,
+    "name": "Romanian Deadlift",
+    "name_lv": "Rumāņu vilkme",
+    "muscle_group": "Back",
+    "muscle_group_lv": "Mugura",
+    "description": "A variation of the deadlift focusing on hamstrings and glutes, keeping the legs mostly straight.",
+    "description_lv": "Vilkmes variācija, kas fokusējas uz hamstringiem un sēžas muskuļiem, turot kājas gandrīz taisnas.",
+    "image_path": "/storage/exercises/romanian-deadlift.webp"
+  },
+  {
+    "id": 30,
+    "name": "Standing Calf Raise",
+    "name_lv": "Stāvošā teļu pacelšana",
+    "muscle_group": "Legs",
+    "muscle_group_lv": "Kājas",
+    "description": "Targets the calves by raising the heels while s                                                                                                                                                                        tanding.",
+    "description_lv": "Vingrinājums teļu muskuļiem, paceļot papēžus stāvus.",
+    "image_path": "/storage/exercises/calf-raise.webp"
+  },
+
+  
+  {
+    "id": 31,
+    "name": "Tricep Overhead Extension",
+    "name_lv": "Tricepsa spiešana virs galvas",
+    "muscle_group": "Triceps",
+    "muscle_group_lv": "Tricepsi",
+    "description": "An isolation exercise for the triceps performed by extending the arms overhead while holding a dumbbell or bar.",
+    "description_lv": "Izolējošs vingrinājums tricepsiem, veicot roku iztaisnošanu virs galvas ar hanteli vai stieni.",
+    "image_path": "/storage/exercises/triceps-extension.webp"
+  },
+  {
+    "id": 32,
+    "name": "Dumbbell Kickback",
+    "name_lv": "Hanteļu atspiešana atpakaļ",
+    "muscle_group": "Triceps",
+    "muscle_group_lv": "Tricepsi",
+    "description": "A tricep isolation exercise where the upper arm stays still and the forearm extends backward while holding a dumbbell.",
+    "description_lv": "Tricepsu izolējošs vingrinājums, kurā augšdelms paliek nekustīgs un apakšdelms tiek iztaisnots atpakaļ ar hanteli.",
+    "image_path": "/storage/exercises/dumbbell-kickback.webp"
+  },
+  {
+    "id": 33,
+    "name": "Cable Tricep Pushdown",
+    "name_lv": "Tricepsa spiešana uz leju ar trosi",
+    "muscle_group": "Triceps",
+    "muscle_group_lv": "Tricepsi",
+    "description": "Performed on a cable machine, this exercise targets the triceps by pushing the handle down until the arms are fully extended.",
+    "description_lv": "Vingrinājums uz troses trenažiera, kas trenē tricepsus, spiežot rokturi uz leju līdz pilnīgai roku iztaisnošanai.",
+    "image_path": "/storage/exercises/cable-pushdown.webp"
+  },
+   {
+    "id": 34,
+    "name": "Cable Curl",
+    "name_lv": "Bicepsa vilkšana ar trosi",
+    "muscle_group": "Biceps",
+    "muscle_group_lv": "Bicepsi",
+    "description": "Performed using a cable machine, this exercise targets the biceps through constant tension while curling the handle upward.",
+    "description_lv": "Vingrinājums uz troses trenažiera, kas trenē bicepsus, uzturot pastāvīgu spriedzi, velkot rokturi uz augšu.",
+    "image_path": "/storage/exercises/cable-curl.webp"
+  },
+  {
+    "id": 35,
+    "name": "Dumbbell Incline Curl",
+    "name_lv": "Hanteļu bicepsa pacelšana uz slīpa soliņa",
+    "muscle_group": "Biceps",
+    "muscle_group_lv": "Bicepsi",
+    "description": "Performed seated on an incline bench, this variation stretches the biceps more deeply for greater activation.",
+    "description_lv": "Vingrinājums sēdus uz slīpa soliņa, kas vairāk izstiepj un aktivizē bicepsa muskuļus.",
+    "image_path": "/storage/exercises/dumbbell-incline-biceps-curl.webp"
+  },
+  {
+    "id": 36,
+    "name": "Barbell Curl",
+    "name_lv": "Stieņa bicepsa pacelšana",
+    "muscle_group": "Biceps",
+    "muscle_group_lv": "Bicepsi",
+    "description": "A fundamental bicep exercise performed by curling a barbell upward while keeping the elbows close to the torso.",
+    "description_lv": "Klasisks bicepsa vingrinājums, paceļot stieni uz augšu un turot elkoņus tuvu ķermenim.",
+    "image_path": "/storage/exercises/barbell-curl.webp"
   }
+
+
+
 ]
 
 

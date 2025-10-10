@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\WorkoutLog;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+
 
 class WorkoutLogController extends Controller
 {
-    public function store(Request $request)
+   public function store(Request $request)
 {
     $request->validate([
         'workout_id' => 'required|exists:workouts,id',
@@ -21,13 +23,15 @@ class WorkoutLogController extends Controller
     $log = WorkoutLog::create([
         'workout_id' => $request->workout_id,
         'user_id' => auth()->id(),
-        'exercises' => $request->exercises, 
+        'exercises' => $request->exercises,
     ]);
 
     $log->updateTasks();
 
-    return redirect()->back()->with('success', 'Workout logged and tasks updated!');
+    // Return JSON for Inertia
+  return redirect()->back()->with('success', 'Workout logged!');
 }
+
 
     public function updateTasks()
 {

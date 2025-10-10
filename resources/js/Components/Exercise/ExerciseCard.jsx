@@ -1,5 +1,6 @@
 import React from 'react';
 import PreviousSets from '@/Components/Workouts/PreviousSets';
+import { useTranslation } from 'react-i18next';
 
 export default function ExerciseCard({
   exercise,
@@ -10,6 +11,7 @@ export default function ExerciseCard({
   handleRemoveSet,
   finished,
   t
+  
 }) {
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -37,7 +39,7 @@ export default function ExerciseCard({
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="text-sm  font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('reps')}
             </label>
             <input
@@ -46,8 +48,10 @@ export default function ExerciseCard({
               value={set.reps}
               onChange={(e) =>
                 handleSetChange(exIndex, setIndex, 'reps', e.target.value)
+                
               }
-              className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+              placeholder={t('Enter_your_reps')}
+              className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-400 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
               disabled={finished}
             />
           </div>
@@ -63,7 +67,8 @@ export default function ExerciseCard({
                 onChange={(e) =>
                   handleSetChange(exIndex, setIndex, 'weight', e.target.value)
                 }
-                className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                placeholder={t('Enter_your_weight')}
+                className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-400 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
                 disabled={finished}
               />
               {exercise.sets.length > 1 && (

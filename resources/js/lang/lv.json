@@ -123,7 +123,9 @@
   "description_lv": "Apraksts (LV)",
   "save_exercise": "Saglabāt vingrinājumu",
   "select_exercises": "Izvēlaties vingrinājumus",
-  "no_exercises_found" : "Neviens vingrinājums netika atrasts"
+  "no_exercises_found" : "Neviens vingrinājums netika atrasts",
+  "Enter_your_weight" : "Ievadit jūsu svaru",
+  "Enter_your_reps": "Ievadiet jūsu atkārtojumus"
 
 
   

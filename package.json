@@ -27,6 +27,7 @@
         "@inertiajs/inertia-react": "^0.8.1",
         "i18next": "^25.5.2",
         "jspdf": "^3.0.3",
+        "playwright": "^1.56.0",
         "react-calendar": "^6.0.0",
         "react-i18next": "^15.7.3",
         "recharts": "^3.2.1",
