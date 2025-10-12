@@ -13,7 +13,7 @@ export default function CompletedWorkoutsList({ completedLogs, title, emptyText,
                 </h2>
                 {completedLogs.length > 0 && (
                     <span className="text-sm text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full font-medium">
-                        {completedLogs.length} total
+                        {completedLogs.length} {t('total')}
                     </span>
                 )}
             </div>

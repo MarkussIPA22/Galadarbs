@@ -11,7 +11,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
   const { t } = useTranslation();
   const [finished, setFinished] = useState(false);
 
-  // Map previous exercises for reference
   const previousExercises = workout.exercises.map((ex) => {
     const prevEx = latest_log?.exercises?.find((p) => p.id === ex.id);
     return {
@@ -22,17 +21,18 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     };
   });
 
-  // Workout state
-  const [exerciseData, setExerciseData] = useState(() =>
-    workout.exercises.map((ex) => ({
-      id: ex.id,
-      name: ex.name,
-      muscle_group: ex.muscle_group,
-      sets: ex.sets && ex.sets.length > 0 ? ex.sets : [{ reps: '', weight: '' }],
-    }))
-  );
+ const [exerciseData, setExerciseData] = useState(() =>
+  workout.exercises.map((ex) => ({
+    id: ex.id,
+    name: ex.name,
+    name_lv: ex.name_lv,               
+    muscle_group: ex.muscle_group,
+    muscle_group_lv: ex.muscle_group_lv,
+    sets: ex.sets && ex.sets.length > 0 ? ex.sets : [{ reps: '', weight: '' }],
+  }))
+);
 
-  // Handlers for sets
+
   const handleSetChange = (exIndex, setIndex, field, value) => {
     const newData = [...exerciseData];
     newData[exIndex].sets[setIndex][field] = value;
@@ -53,7 +53,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     }
   };
 
-  // Save partially completed workout
   const handleSaveWorkout = (e) => {
     e.preventDefault();
     const workoutData = {
@@ -67,13 +66,12 @@ export default function StartWorkout({ auth, workout, latest_log }) {
       })),
     };
       Inertia.post(route('workout-logs.store'), workoutData, {
-  preserveState: true, // keeps the page state so finished = true works
-  onSuccess: () => setFinished(true), // show download PDF button
+  preserveState: true, 
+  onSuccess: () => setFinished(true), 
 });
 
   };
 
-  // Finish workout and log it
  const handleFinishWorkout = () => {
   const workoutData = {
     workout_id: workout.id,
@@ -87,12 +85,11 @@ export default function StartWorkout({ auth, workout, latest_log }) {
   };
 
   Inertia.post(route('workout-logs.store'), workoutData, {
-    onSuccess: () => setFinished(true), // Now this will work
+    onSuccess: () => setFinished(true), 
   });
 };
 
 
-  // Generate PDF
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -115,19 +112,18 @@ export default function StartWorkout({ auth, workout, latest_log }) {
   return (
     <AuthenticatedLayout>
       <div className="flex flex-col md:flex-row min-h-screen bg-white dark:bg-gray-900 transition-colors">
-        {/* Sidebar */}
+
         <div className="w-full md:w-64 flex-shrink-0">
           <Sidebar auth={auth} />
         </div>
 
-        {/* Main content */}
         <main className="flex-1 p-4 md:p-6 space-y-6">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
             {t('start_workout')}: {workout.name}
           </h1>
 
           <form onSubmit={handleSaveWorkout} className="space-y-4">
-            {/* Exercise Cards */}
+
             {exerciseData.map((ex, exIndex) => {
               const prevEx = previousExercises.find((p) => p.id === ex.id);
               return (
@@ -145,10 +141,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
               );
             })}
 
-            {/* Action Buttons */}
-            {/* Action Buttons */}
 <div className="flex flex-wrap gap-4 mt-4">
-  {/* Save Workout Button */}
   <button
     type="submit"
     className="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
@@ -156,7 +149,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     {t('save_workout')}
   </button>
 
-  {/* Download PDF Button (always visible) */}
   <button
     type="button"
     onClick={downloadPDF}
@@ -165,7 +157,6 @@ export default function StartWorkout({ auth, workout, latest_log }) {
     {t('download_pdf')}
   </button>
 
-  {/* Cancel Link */}
   <Link
     href={route('workouts.index')}
     className="px-6 py-2 bg-red-800 text-white rounded-xl hover:bg-red-900 transition-colors"

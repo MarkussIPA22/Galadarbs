@@ -69,35 +69,21 @@ export default function MyWorkouts({ auth }) {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                <svg
-                  className="w-12 h-12 text-gray-400 dark:text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-              </div>
+
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                 {t("no_workouts_yet")}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">
-                Start building your fitness routine by creating your first workout
-              </p>
+             
               <a
                 href={route("workouts.create")}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-semibold shadow-lg shadow-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transition-all duration-200 transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 dark:bg-gradient-to-r dark:from-purple-700 dark:to-purple-900 text-white rounded-xl font-semibold shadow-lg  transition-all duration-200 transform hover:-translate-y-0.5"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                <span>Create Your First Workout</span>
+                <span>
+                  {t('Create_Your_First_Workout')}
+                  </span>
               </a>
             </div>
           )}

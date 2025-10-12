@@ -76,16 +76,20 @@ class WorkoutController extends Controller
     {
         $locale = app()->getLocale();
 
-        $exercises = Exercise::orderBy('name')->get()->map(function ($ex) use ($locale) {
-            return [
-                'id' => $ex->id,
-                'name' => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
-                'description' => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
-                'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
-                'muscle_group_key' => $ex->muscle_group,
-                'image_path' => $ex->image_path,
-            ];
-        });
+     $exercises = Exercise::orderBy('name')->get()->map(function ($ex) {
+    return [
+        'id' => $ex->id,
+        'name' => $ex->name,
+        'name_lv' => $  ex->name_lv,
+        'description' => $ex->description,
+        'description_lv' => $ex->description_lv,
+        'muscle_group' => $ex->muscle_group,
+        'muscle_group_lv' => $ex->muscle_group_lv,
+        'muscle_group_key' => $ex->muscle_group,
+        'image_path' => $ex->image_path,
+    ];
+});
+
 
         $favoriteExercises = Favorite::where('user_id', auth()->id())
             ->pluck('exercise_id')
@@ -151,7 +155,9 @@ class WorkoutController extends Controller
         return [
             'id' => $exercise->id,
             'name' => $exercise->name,
+             'name_lv' => $exercise->name_lv,    
             'muscle_group' => $exercise->muscle_group,
+              'muscle_group_lv' => $exercise->muscle_group_lv,
             'sets' => $ex['sets'] ?? [],
         ];
     })->toArray();

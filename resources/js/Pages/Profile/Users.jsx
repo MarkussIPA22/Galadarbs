@@ -26,7 +26,7 @@ export default function Users({ auth, users }) {
                 <ResponsiveSidebar auth={auth} />
                 <div className="flex-1 p-6 lg:p-8 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-950 transition-colors">
 
-                    {/* Search Box */}
+
                     <div className="bg-white/70 backdrop-blur-sm dark:bg-gray-900 rounded-2xl p-6 mb-8 flex items-center gap-3">
                         <input
                             type="text"
@@ -64,8 +64,8 @@ export default function Users({ auth, users }) {
                                         </div>
                                         <h3 className="font-bold text-slate-900 dark:text-white">{user.name}</h3>
                                         <p className="underline underline-offset-2 text-blue-900 font-medium cursor-pointer transition-colors duration-200 group-hover:text-indigo-500 dark:text-blue-300 dark:group-hover:text-indigo-300">
-                                            View profile
-                                        </p>
+                                            {t('View_Profile')}
+                                            </p>
                                     </div>
                                 </Link>
                             ))

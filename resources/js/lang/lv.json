@@ -101,7 +101,7 @@
    "workout_number": "Treniņš",
     "workout_number_plural": "Treniņi",
   "Trenina_numurs": "Treniņš # ",
-    "confirm_delete": "Vai tiešām vēlaties izdzēst šo vingrinājumu? Šo darbību nevar atgriezt.",
+    "confirm_delete": "Vai tiešām vēlaties izdzēst šo treniņu? Šo darbību nevar atgriezt.",
   "dont_forget_workout": "Neaizmirsti šodien pabeigt treniņu!",
   "workout_not_completed" :"Jūs vēl neesat pabeidzis nevienu treniņu. Esi konsekvents un šodien reģistrē vienu, lai turpinātu savu sēriju.",
   "calculate1RM": "Aprēķināt vienu atkārtojuma maksimumu",
@@ -125,7 +125,16 @@
   "select_exercises": "Izvēlaties vingrinājumus",
   "no_exercises_found" : "Neviens vingrinājums netika atrasts",
   "Enter_your_weight" : "Ievadit jūsu svaru",
-  "Enter_your_reps": "Ievadiet jūsu atkārtojumus"
+  "Enter_your_reps": "Ievadiet jūsu atkārtojumus",
+  "total" : "kopā",
+  "Create_Your_First_Workout" : "Izveidojiet Savu Pirmo Treniņu",
+  "search_exercises" : "Meklēt vingrinājumus",
+  "your_task_for_this_week" : "Jūsu uzdevums prieks šīs nedēļas",
+  "target": "Mērķis",
+  "start_date" : "Starta datums",
+  "due_date" : "Beigu datums",
+  "in_progress" : "Progresā"
+  
 
 
   

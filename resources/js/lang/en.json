@@ -68,7 +68,7 @@
   "No_completed_workouts_yet": "No completed workouts yet",
  "workout_number": "Workout",
     "workout_number_plural": "Workouts",
-    "confirm_delete": "Are you sure you want to delete this exercise? This action cannot be undone.",
+    "confirm_delete": "Are you sure you want to delete this workout? This action cannot be undone.",
   "dont_forget_workout": "Don't forget to finish a workout today!",
   "workout_not_completed" :"You haven’t completed a workout yet. Stay consistent and log one today to keep your streak going.",
   "calculate1RM": "Calculate one rep max",
@@ -92,7 +92,14 @@
   "select_exercises": "Select exercises",
   "no_exercises_found" : "No exercise found",
   "Enter_your_weight" : "Enter your weight",
-  "Enter_your_reps": "Enter your reps"
+  "Enter_your_reps": "Enter your reps",
+  "Create_Your_First_Workout" : "Create Your First Workout",
+  "Search_exercises" : "Search exercises",
+  "your_task_for_this_week" : "Your task for this week",
+  "start_date" : "Start date",
+  "due_date" : "due_date",
+  "in_progress" : "In progress"
+  
 
   
 

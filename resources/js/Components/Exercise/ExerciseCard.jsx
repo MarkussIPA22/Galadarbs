@@ -10,24 +10,39 @@ export default function ExerciseCard({
   handleAddSet,
   handleRemoveSet,
   finished,
-  t
-  
+  t,
 }) {
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+
+
+  // Show LV fields if language is lv, otherwise use English fields
+ const exerciseName = currentLang === 'lv' && exercise.name_lv
+  ? exercise.name_lv
+  : exercise.name;
+
+const muscleGroup = currentLang === 'lv' && exercise.muscle_group_lv
+  ? exercise.muscle_group_lv
+  : exercise.muscle_group;
+
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
+      {/* Exercise title */}
       <h2 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
-        {exercise.name}
+        {exerciseName}
         <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
-          ({exercise.muscle_group})
+          ({muscleGroup})
         </span>
       </h2>
 
+      {/* Previous sets */}
       <PreviousSets prevSets={prevExercise?.prevSets} t={t} />
 
       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
         {t('this_workout')}
       </h3>
 
+      {/* Current sets input */}
       {(exercise.sets || []).map((set, setIndex) => (
         <div
           key={setIndex}
@@ -38,8 +53,9 @@ export default function ExerciseCard({
               {t('set')} {setIndex + 1}
             </span>
           </div>
+
           <div className="flex flex-col items-center">
-            <label className="text-sm  font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('reps')}
             </label>
             <input
@@ -48,18 +64,18 @@ export default function ExerciseCard({
               value={set.reps}
               onChange={(e) =>
                 handleSetChange(exIndex, setIndex, 'reps', e.target.value)
-                
               }
               placeholder={t('Enter_your_reps')}
-              className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-400 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+              className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
               disabled={finished}
             />
           </div>
+
           <div className="flex flex-col items-center">
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               {t('weight_kg')}
             </label>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full">
               <input
                 type="number"
                 min="0"
@@ -68,7 +84,7 @@ export default function ExerciseCard({
                   handleSetChange(exIndex, setIndex, 'weight', e.target.value)
                 }
                 placeholder={t('Enter_your_weight')}
-                className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-400 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
+                className="w-full p-3 text-center border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
                 disabled={finished}
               />
               {exercise.sets.length > 1 && (
@@ -87,6 +103,7 @@ export default function ExerciseCard({
         </div>
       ))}
 
+      {/* Add new set */}
       <button
         type="button"
         onClick={() => handleAddSet(exIndex)}

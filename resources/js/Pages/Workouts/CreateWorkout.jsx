@@ -9,21 +9,33 @@ import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
 export default function CreateWorkout({ auth }) {
   const { t } = useTranslation();
+
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     description: '',
-    muscle_groups: [],
+    muscle_groups: [], // always an array
   });
 
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const muscleOptions = ['chest', 'back', 'shoulders', 'biceps', 'triceps', 'legs', 'abs', 'full body'];
+  const muscleOptions = [
+    'chest',
+    'back',
+    'shoulders',
+    'biceps',
+    'triceps',
+    'legs',
+    'abs',
+    'full body',
+  ];
 
+  // Safely toggle a muscle group
   const toggleMuscleGroup = (group) => {
-    if (data.muscle_groups.includes(group)) {
-      setData('muscle_groups', data.muscle_groups.filter((m) => m !== group));
+    const groups = data.muscle_groups || [];
+    if (groups.includes(group)) {
+      setData('muscle_groups', groups.filter((m) => m !== group));
     } else {
-      setData('muscle_groups', [...data.muscle_groups, group]);
+      setData('muscle_groups', [...groups, group]);
     }
   };
 
@@ -50,50 +62,63 @@ export default function CreateWorkout({ auth }) {
             </h2>
 
             <form onSubmit={submit} className="flex flex-col gap-4">
-            
+              {/* Workout Name */}
               <div>
-                <label className="block text-gray-700 dark:text-gray-200">{t('workout_name')}</label>
+                <label className="block text-gray-700 dark:text-gray-200">
+                  {t('workout_name')}
+                </label>
                 <input
                   type="text"
                   value={data.name}
                   onChange={(e) => setData('name', e.target.value)}
                   className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
                 />
-                {errors.name && <p className="text-red-500 text-sm">{t("workout_name_required")}</p>}
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{t('workout_name_required')}</p>
+                )}
               </div>
 
-           
+              {/* Description */}
               <div>
-                <label className="block text-gray-700 dark:text-gray-200">{t('description')}</label>
+                <label className="block text-gray-700 dark:text-gray-200">
+                  {t('description')}
+                </label>
                 <textarea
                   value={data.description}
                   onChange={(e) => setData('description', e.target.value)}
                   className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200"
                 />
-                {errors.description && <p className="text-red-500 text-sm">{t("The_muscle_group_field_is_required.")}</p>}
+                {errors.description && (
+                  <p className="text-red-500 text-sm">{t('description_required')}</p>
+                )}
               </div>
 
-             
+              {/* Muscle Groups */}
               <div>
-                <label className="block text-gray-700 dark:text-gray-200 mb-2">{t('muscle_groups')}</label>
+                <label className="block text-gray-700 dark:text-gray-200 mb-2">
+                  {t('muscle_groups')}
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {muscleOptions.map((muscle) => (
-  <MuscleGroupButton
-    key={muscle}
-    group={muscle}
-    isActive={data.muscle_groups.includes(muscle)}
-    isFavorite={muscle === 'favorites'}
-    toggle={() => (muscle === 'favorites' ? toggleFavorites() : toggleMuscleGroup(muscle))}
-    displayName={t(muscle.toLowerCase())} 
-  />
-))}
-
+                    <MuscleGroupButton
+                      key={muscle}
+                      group={muscle}
+                      isActive={(data.muscle_groups || []).includes(muscle)}
+                      isFavorite={muscle === 'favorites'}
+                      toggle={() =>
+                        muscle === 'favorites' ? toggleFavorites() : toggleMuscleGroup(muscle)
+                      }
+                      displayName={t(muscle.toLowerCase())}
+                    />
+                  ))}
                 </div>
-                {errors.muscle_groups && <p className="text-red-500 text-sm">{errors.muscle_groups}</p>}
+                {errors.muscle_groups && (
+                  <p className="text-red-500 text-sm">{errors.muscle_groups}</p>
+                )}
               </div>
 
-            
-                  <SubmitButton processing={processing} label={t('create_workout')} />
+              {/* Submit */}
+              <SubmitButton processing={processing} label={t('create_workout')} />
             </form>
           </div>
         </main>

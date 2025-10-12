@@ -1,114 +1,93 @@
-import React from 'react';
-import { useForm } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useTranslation } from 'react-i18next';
 import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
-export default function Tasks({ tasks = [], exercises = [], auth }) {
-  const { t } = useTranslation();
-  const { data, setData, post, processing } = useForm({
-    exercise_id: exercises.length > 0 ? exercises[0].id : '',
-    target: '',
-    date: new Date().toISOString().split('T')[0],
-  });
+export default function Tasks({ exercises = [], auth }) {
+  const { t, i18n } = useTranslation();
+  const [task, setTask] = useState(null);
 
-  const handleCreateTask = (e) => {
-    e.preventDefault();
-    post(route('tasks.store'), {
-      onSuccess: () =>
-        setData({
-          exercise_id: exercises.length > 0 ? exercises[0].id : '',
-          target: '',
-          date: new Date().toISOString().split('T')[0],
-        }),
-    });
-  };
+  useEffect(() => {
+    if (exercises.length === 0) return;
+
+    const storedTask = localStorage.getItem('weeklyTask');
+    let savedTask = null;
+
+    if (storedTask) {
+      savedTask = JSON.parse(storedTask);
+      const dueDate = new Date(savedTask.dueDate);
+      const today = new Date();
+
+      if (today > dueDate) {
+        savedTask = null;
+      }
+    }
+
+    if (!savedTask) {
+
+      const randomExercise = exercises[Math.floor(Math.random() * exercises.length)];
+      const startDate = new Date();
+      const dueDate = new Date();
+      dueDate.setDate(startDate.getDate() + 7);
+
+      savedTask = {
+        exercise: randomExercise,
+        target: Math.floor(Math.random() * (1000 - 500 + 1)) + 500,
+        startDate: startDate.toISOString(),
+        dueDate: dueDate.toISOString(),
+        completed: false,
+      };
+
+      localStorage.setItem('weeklyTask', JSON.stringify(savedTask));
+    }
+
+    setTask(savedTask);
+  }, [exercises]);
+
+  if (!task) {
+    return (
+      <AuthenticatedLayout auth={auth}>
+        <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+          <ResponsiveSidebar auth={auth} />
+          <main className="flex-1 p-6 max-w-6xl mx-auto text-center">
+            <p className="text-gray-500 dark:text-gray-400">{t('loading_task')}...</p>
+          </main>
+        </div>
+      </AuthenticatedLayout>
+    );
+  }
+
+  const exerciseName = i18n.language === 'lv' ? task.exercise.name_lv || task.exercise.name : task.exercise.name;
+  const exerciseMuscle = i18n.language === 'lv' ? task.exercise.muscle_group_lv || task.exercise.muscle_group : task.exercise.muscle_group;
 
   return (
     <AuthenticatedLayout auth={auth}>
       <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
         <ResponsiveSidebar auth={auth} />
         <main className="flex-1 p-6 max-w-6xl mx-auto">
-          <h1 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-gray-100">
-            {t('tasks')}
-          </h1>
+          <h1 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-gray-100">{t('your_task_for_this_week')}</h1>
 
-         
+          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{exerciseName}</h2>
+           
+            <p className="mb-2">
+              {t('target')}: <span className="font-medium">{task.target} kg</span>
+            </p>
+            <p className="mb-2">
+              {t('start_date')}: {new Date(task.startDate).toLocaleDateString()}
+            </p>
+            <p className="mb-4">
+              {t('due_date')}: {new Date(task.dueDate).toLocaleDateString()}
+            </p>
 
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-              {t('create_new_task')}
-            </h2>
-            <form onSubmit={handleCreateTask} className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <select
-                value={data.exercise_id}
-                onChange={(e) => setData('exercise_id', e.target.value)}
-                required
-                className="border p-2 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700"
-              >
-                {exercises.map((exercise) => (
-                  <option key={exercise.id} value={exercise.id}>
-                    {exercise.name}
-                  </option>
-                ))}
-              </select>
-
-              <input
-                type="number"
-                placeholder={t('target_kg')}
-                value={data.target}
-                onChange={(e) => setData('target', e.target.value)}
-                className="border p-2 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700"
-                min="1"
-                max={10000}
-                required
-              />
-
-              <input
-                type="date"
-                value={data.date}
-                min={new Date().toISOString().split('T')[0]}
-                onChange={(e) => setData('date', e.target.value)}
-                className="border p-2 rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700"
-                required
-              />
-
-              <button
-                type="submit"
-                disabled={processing}
-                className="bg-blue-600 hover:bg-blue-700  dark:bg-gradient-to-r dark:from-purple-700 dark:to-purple-900 text-white font-semibold px-4 py-2 rounded transition disabled:opacity-50"
-              >
-                {t('create')}
-              </button>
-            </form>
-          </div>
-
-          <div className="space-y-4">
-            {tasks.length === 0 ? (
-              <div className="text-gray-500 italic text-center py-6 border border-dashed rounded-lg">
-                {t('no_tasks_for_today')}
-              </div>
+            {task.completed ? (
+              <span className="inline-block mt-2 text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
+                ✅ {t('completed')}
+              </span>
             ) : (
-              tasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="bg-white dark:bg-gray-800 shadow rounded-lg p-4 flex justify-between items-center"
-                >
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100">
-                      {task.exercise?.name ?? t('unnamed_exercise')}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {t('progress')}: <span className="font-medium">{task.progress}</span> / {task.target} kg
-                    </p>
-                    {task.completed && (
-                      <span className="inline-block mt-2 text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
-                        ✅ {t('completed')}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))
+              <span className="inline-block mt-2 text-sm bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+                 {t('in_progress')}
+              </span>
             )}
           </div>
         </main>
