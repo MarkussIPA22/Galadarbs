@@ -133,19 +133,55 @@
   "target": "Mērķis",
   "start_date" : "Starta datums",
   "due_date" : "Beigu datums",
-  "in_progress" : "Progresā"
-  
-
-
-  
-
-
-
-    
-  
-
-  
-  
-
-
+  "in_progress" : "Progresā",
+  "English": "Angļu valoda",
+  "Latvian Content": "Latviešu saturs",
+  "Exercise name (EN)": "Vingrinājuma nosaukums (EN)",
+  "Exercise name placeholder (EN)": "piem., Spiešana guļus",
+  "Muscle Group (EN)": "Muskuļu grupa (EN)",
+  "Muscle Group placeholder (EN)": "piem., Krūšu muskuļi",
+  "Description (EN)": "Apraksts (EN)",
+  "Description placeholder (EN)": "Aprakstiet vingrinājumu...",
+  "Exercise Name (LV)": "Vingrinājuma nosaukums (LV)",
+  "Exercise name placeholder (LV)": "Nosaukums latviski",
+  "Muscle Group (LV)": "Muskuļu grupa (LV)",
+  "Muscle Group placeholder (LV)": "Muskuļu grupa",
+  "Description (LV)": "Apraksts (LV)",
+  "Description placeholder (LV)": "Apraksts latviski...",
+  "Media": "Multivide",
+  "YouTube Video URL": "YouTube video saite",
+  "Exercise Image": "Vingrinājuma attēls",
+  "Current Image": "Pašreizējais attēls",
+  "Save Changes": "Saglabāt izmaiņas",
+  "Cancel": "Atcelt",
+  "Saving...": "Saglabā...",
+  "exercise_updated_successfully": "Vingrinājums veiksmīgi atjaunināts!",
+  "Admin Panel": "Administrācijas panelis",
+  "Exercise Name *": "Vingrinājuma nosaukums *",
+  "e.g., Bench Press": "piem., Spiešana guļus",
+  "Description": "Apraksts",
+  "Describe the exercise...": "Aprakstiet vingrinājumu...",
+  "Muscle Group *": "Muskuļu grupa *",
+  "Select Muscle Group": "Izvēlieties muskuļu grupu",
+  "Back": "Mugura",
+  "Chest": "Krūtis",
+  "Legs": "Kājas",
+  "Arms": "Rokas",
+  "Shoulders": "Pleci",
+  "Core": "Vēders/serdi",
+  "Add New Exercise": "Pievienot jaunu vingrinājumu",
+  "Edit Exercise": "Rediģēt vingrinājumu",
+  "Update Exercise": "Atjaunināt vingrinājumu",
+  "Add Exercise": "Pievienot vingrinājumu",
+  "All Exercises": "Visi vingrinājumi",
+  "No exercises found.": "Vingrinājumi nav atrasti.",
+  "Add your first exercise to get started!": "Pievienojiet pirmo vingrinājumu, lai sāktu!",
+  "Exercise added successfully!": "Vingrinājums veiksmīgi pievienots!",
+  "Exercise updated successfully!": "Vingrinājums veiksmīgi atjaunināts!",
+  "Exercise deleted successfully!": "Vingrinājums veiksmīgi dzēsts!",
+  "Are you sure you want to delete this exercise?": "Vai tiešām vēlaties dzēst šo vingrinājumu?",
+  "Watch Video": "Skatīties video",
+  "Delete": "Dzēst"
 }
+
+

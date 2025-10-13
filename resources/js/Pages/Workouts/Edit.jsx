@@ -75,7 +75,7 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
                 {filteredExercises.map((exercise) => {
                   const isSelected = data.exercises.includes(exercise.id);
 
-                  const exerciseName = i18n.language === 'lv' ? exercise.name_lv : exercise.name;
+                    const exerciseName = i18n.language === 'lv' ? exercise.name_lv || exercise.name : exercise.name || exercise.name_lv || '';
                   const exerciseMuscle = i18n.language === 'lv' ? exercise.muscle_group_lv : exercise.muscle_group;
 
                   return (
@@ -96,9 +96,10 @@ export default function EditWorkout({ auth, workout, exercises, favoriteExercise
                             className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-110"
                           />
                         ) : (
-                          <span className="text-5xl font-bold text-gray-400 dark:text-gray-600">
-                            {exerciseName.charAt(0)}
-                          </span>
+                         <span className="text-5xl font-bold text-gray-400 dark:text-gray-600">
+  {exerciseName ? exerciseName.charAt(0) : '?'}
+</span>
+
                         )}
 
                         {isSelected && (

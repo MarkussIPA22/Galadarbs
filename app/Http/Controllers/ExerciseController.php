@@ -37,27 +37,7 @@ class ExerciseController extends Controller
         return $image ?: null;
     }
 
-    public function index()
-    {
-        $locale = app()->getLocale();
-
-        $exercises = Exercise::orderBy('name')->get()->map(function ($ex) use ($locale) {
-            $normalizedPath = $this->resolveImagePath($ex);
-
-            return [
-                'id'           => $ex->id,
-                'name'         => $locale === 'lv' && $ex->name_lv ? $ex->name_lv : $ex->name,
-                'description'  => $locale === 'lv' && $ex->description_lv ? $ex->description_lv : $ex->description,
-                'muscle_group' => $locale === 'lv' && $ex->muscle_group_lv ? $ex->muscle_group_lv : $ex->muscle_group,
-                'image_path'   => $normalizedPath,
-            ];
-        });
-
-        return Inertia::render('Exercises/Index', [
-            'exercises' => $exercises,
-            'auth'      => auth()->user(),
-        ]);
-    }
+   
 
     public function show(Exercise $exercise)
     {
