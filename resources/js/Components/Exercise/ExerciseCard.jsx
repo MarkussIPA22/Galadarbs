@@ -16,7 +16,6 @@ export default function ExerciseCard({
   const currentLang = i18n.language;
 
 
-  // Show LV fields if language is lv, otherwise use English fields
  const exerciseName = currentLang === 'lv' && exercise.name_lv
   ? exercise.name_lv
   : exercise.name;
@@ -27,7 +26,7 @@ const muscleGroup = currentLang === 'lv' && exercise.muscle_group_lv
 
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
-      {/* Exercise title */}
+     
       <h2 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
         {exerciseName}
         <span className="text-sm text-gray-500 dark:text-gray-400 ml-2">
@@ -35,14 +34,13 @@ const muscleGroup = currentLang === 'lv' && exercise.muscle_group_lv
         </span>
       </h2>
 
-      {/* Previous sets */}
+     
       <PreviousSets prevSets={prevExercise?.prevSets} t={t} />
 
       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
         {t('this_workout')}
       </h3>
 
-      {/* Current sets input */}
       {(exercise.sets || []).map((set, setIndex) => (
         <div
           key={setIndex}
@@ -103,7 +101,6 @@ const muscleGroup = currentLang === 'lv' && exercise.muscle_group_lv
         </div>
       ))}
 
-      {/* Add new set */}
       <button
         type="button"
         onClick={() => handleAddSet(exIndex)}

@@ -13,7 +13,7 @@ class WorkoutLog extends Model
     protected $fillable = ['workout_id', 'user_id', 'exercises'];
 
     protected $casts = [
-        'exercises' => 'array', // JSON field: [{name, weight, reps}, ...]
+        'exercises' => 'array', 
     ];
 
    

@@ -48,18 +48,60 @@ public function test_it_requires_name_when_creating_an_workout()
         'muscle_groups' => ['Chest'],
     ];
 
-    // Assign the POST response to $response
     $response = $this->actingAs($user)
                      ->post('/workouts', $WorkoutData);
 
-    // Assert that the 'name' field triggers a validation error
     $response->assertSessionHasErrors(['name']);
 
-    // Assert that no workout was created in the database
     $this->assertDatabaseMissing('workouts', [
         'description' => 'Workout Tests',
         'muscle_group' => ['Chest'],
     ]);
 }
+
+/** @test */
+public function test_it_allows_user_to_edit_a_workout()
+{
+    // Create a user
+    $user = User::factory()->create([
+        'email' => 'nuno@laravel.com',
+        'password' => bcrypt('password123'),
+    ]);
+
+    // Create a workout for that user
+    $workout = Workout::factory()->create([
+        'user_id' => $user->id,
+        'name' => 'Original Workout',
+        'description' => 'Original Description',
+        'muscle_groups' => ['Chest'],
+    ]);
+
+    $updatedData = [
+        'name' => 'Updated Workout',
+        'description' => 'Updated Description',
+        'muscle_groups' => ['Back', 'Biceps'],
+        'exercises' => [], // optional, no exercises attached
+    ];
+
+    // Acting as the user, send PUT request to update workout
+    $response = $this->actingAs($user)
+                     ->put("/workouts/{$workout->id}", $updatedData);
+
+    // Assert the user is redirected back to edit page
+    $response->assertRedirect(route('workouts.edit', $workout->id));
+
+    // Assert the database has updated values
+    $this->assertDatabaseHas('workouts', [
+        'id' => $workout->id,
+        'name' => 'Updated Workout',
+        'description' => 'Updated Description',
+    ]);
+
+    // Optional: Assert muscle_groups were updated
+    $this->assertEquals(['Back', 'Biceps'], Workout::find($workout->id)->muscle_groups);
+}
+
+
+
 
 }

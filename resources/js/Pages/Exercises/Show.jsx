@@ -25,7 +25,7 @@ export default function Show({ exercise, auth, isFavorite }) {
             }
 
             if (urlObj.hostname === "youtu.be") {
-                return urlObj.pathname.slice(1); // remove leading '/'
+                return urlObj.pathname.slice(1); 
             }
         } catch (e) {
             return null;

@@ -1,247 +1,203 @@
-import React, { useState } from "react";
-import { useForm, Link } from "@inertiajs/react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import Sidebar from "@/Components/ResponsiveSidebar";
-import { useTranslation } from "react-i18next";
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { Inertia } from '@inertiajs/inertia';
+import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
 
-export default function Exercises({ auth, exercises }) {
-  const { t, i18n } = useTranslation();
-  const { post, processing } = useForm();
+export default function AdminPanel({ auth, exercises = [], successMessage: initialMessage = '' }) {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [muscleGroup, setMuscleGroup] = useState('');
+    const [image, setImage] = useState(null);
+    const [videoUrl, setVideoUrl] = useState('');
+    const [successMessage, setSuccessMessage] = useState(initialMessage);
+    const [editingExercise, setEditingExercise] = useState(null);
 
-  const [newExercise, setNewExercise] = useState({
-    name: "",
-    name_lv: "",
-    muscle_group: "",
-    muscle_group_lv: "",
-    description: "",
-    description_lv: "",
-    image: null,
-  });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('muscle_group', muscleGroup);
+        if (image) formData.append('image', image);
+        if (videoUrl) formData.append('video_url', videoUrl);
 
-  const [filter, setFilter] = useState("All");
+        if (editingExercise) {
+            Inertia.post(
+                `/admin/exercises/${editingExercise.id}`,
+                formData,
+                {
+                    forceFormData: true,
+                    onSuccess: () => {
+                        setSuccessMessage('Exercise updated!');
+                        resetForm();
+                    },
+                    onError: () => {
+                    }
+                }
+            );
+        } else {
+            Inertia.post(
+                '/admin/exercises',
+                formData,
+                {
+                    forceFormData: true,
+                    onSuccess: () => {
+                        setSuccessMessage('Exercise added!');
+                        resetForm();
+                    }
+                }
+            );
+        }
+    };
 
-  const handleAddExercise = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    Object.entries(newExercise).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    const resetForm = () => {
+        setName('');
+        setDescription('');
+        setMuscleGroup('');
+        setImage(null);
+        setVideoUrl('');
+        setEditingExercise(null);
+    };
 
-    post(route("exercises.store"), {
-      data: formData,
-      forceFormData: true,
-      onSuccess: () => {
-        setNewExercise({
-          name: "",
-          name_lv: "",
-          muscle_group: "",
-          muscle_group_lv: "",
-          description: "",
-          description_lv: "",
-          image: null,
+    const startEdit = (exercise) => {
+        setEditingExercise(exercise);
+        setName(exercise.name);
+        setDescription(exercise.description || '');
+        setMuscleGroup(exercise.muscle_group);
+        setVideoUrl(exercise.video_url || '');
+        setImage(null);
+    };
+
+    const handleDelete = (id) => {
+        if (!confirm('Are you sure?')) return;
+        Inertia.delete(`/admin/exercises/${id}`, {
+            onSuccess: () => setSuccessMessage('Exercise deleted!'),
         });
-      },
-    });
-  };
+    };
 
-  const handleDeleteExercise = (id) => {
-    if (confirm(t("are_you_sure_delete"))) {
-      post(route("exercises.destroy", id), { _method: "delete" });
-    }
-  };
+    return (
+        <AuthenticatedLayout>
+            <Head title="Admin Panel" />
+            <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
+                <ResponsiveSidebar auth={auth} />
+                <main className="flex-1 p-6">
+                    <h1 className="text-3xl font-bold mb-6">Welcome, {auth?.name || 'Admin'}!</h1>
 
-  const filteredExercises =
-    filter === "All"
-      ? exercises
-      : exercises.filter(
-          (ex) =>
-            ex.muscle_group.toLowerCase() === filter.toLowerCase() ||
-            ex.muscle_group_lv.toLowerCase() === filter.toLowerCase()
-        );
+                    {successMessage && (
+                        <div className="mb-4 p-3 bg-green-100 dark:bg-green-800/20 text-green-800 dark:text-green-200 rounded">
+                            {successMessage}
+                        </div>
+                    )}
 
-  return (
-    <AuthenticatedLayout auth={auth}>
-      <div className="flex min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
-        <Sidebar auth={auth} />
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded shadow mb-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            {editingExercise ? 'Edit Exercise' : 'Add New Exercise'}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-200"
+                                required
+                            />
+                            <textarea
+                                placeholder="Description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-200"
+                                rows={3}
+                            />
+                            <select
+                                value={muscleGroup}
+                                onChange={(e) => setMuscleGroup(e.target.value)}
+                                className="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-200"
+                                required
+                            >
+                                <option value="">Select Muscle Group</option>
+                                <option value="Back">Back</option>
+                                <option value="Chest">Chest</option>
+                                <option value="Legs">Legs</option>
+                                <option value="Arms">Arms</option>
+                                <option value="Shoulders">Shoulders</option>
+                                <option value="Core">Core</option>
+                            </select>
+                            <input
+                                type="file"
+                                onChange={(e) => setImage(e.target.files[0])}
+                                className="w-full"
+                            />
+                            <input
+                                type="text"
+                                placeholder="YouTube URL"
+                                value={videoUrl}
+                                onChange={(e) => setVideoUrl(e.target.value)}
+                                className="border p-2 w-full rounded dark:bg-gray-700 dark:text-gray-200"
+                            />
+                            <div className="flex gap-2">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                >
+                                    {editingExercise ? 'Update' : 'Add'}
+                                </button>
+                                {editingExercise && (
+                                    <button
+                                        type="button"
+                                        onClick={resetForm}
+                                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
+                            </div>
+                        </form>
+                    </div>
 
-        <main className="flex-1 p-6">
-          <h1 className="text-3xl font-bold mb-6">{t("welcome_admin")}</h1>
 
-          {/* Add Exercise Form */}
-          <div className="bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl shadow-md mb-8 transition-colors duration-300">
-            <h2 className="text-xl font-bold mb-4">{t("add_new_exercise")}</h2>
-            <form onSubmit={handleAddExercise} className="grid grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder={t("name_en")}
-                value={newExercise.name}
-                onChange={(e) =>
-                  setNewExercise({ ...newExercise, name: e.target.value })
-                }
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="text"
-                placeholder={t("name_lv")}
-                value={newExercise.name_lv}
-                onChange={(e) =>
-                  setNewExercise({ ...newExercise, name_lv: e.target.value })
-                }
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="text"
-                placeholder={t("muscle_group_en")}
-                value={newExercise.muscle_group}
-                onChange={(e) =>
-                  setNewExercise({
-                    ...newExercise,
-                    muscle_group: e.target.value,
-                  })
-                }
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="text"
-                placeholder={t("muscle_group_lv")}
-                value={newExercise.muscle_group_lv}
-                onChange={(e) =>
-                  setNewExercise({
-                    ...newExercise,
-                    muscle_group_lv: e.target.value,
-                  })
-                }
-                className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <textarea
-                placeholder={t("description_en")}
-                value={newExercise.description}
-                onChange={(e) =>
-                  setNewExercise({
-                    ...newExercise,
-                    description: e.target.value,
-                  })
-                }
-                className="col-span-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <textarea
-                placeholder={t("description_lv")}
-                value={newExercise.description_lv}
-                onChange={(e) =>
-                  setNewExercise({
-                    ...newExercise,
-                    description_lv: e.target.value,
-                  })
-                }
-                className="col-span-2 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-              />
-
-              <input
-                type="file"
-                onChange={(e) =>
-                  setNewExercise({
-                    ...newExercise,
-                    image: e.target.files[0],
-                  })
-                }
-                className="col-span-2 text-gray-900 dark:text-white"
-              />
-
-              <button
-                type="submit"
-                disabled={processing}
-                className="col-span-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl transition-colors"
-              >
-                {t("save_exercise")}
-              </button>
-            </form>
-          </div>
-
-          {/* Filter */}
-          <div className="mb-6">
-            <label className="mr-2">{t("filter_by_muscle_group")}:</label>
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-            >
-              <option value="All">{t("all")}</option>
-              {[...new Set(
-                exercises.map((ex) =>
-                  i18n.language === "lv"
-                    ? ex.muscle_group_lv
-                    : ex.muscle_group
-                )
-              )].map((group, idx) => (
-                <option key={idx} value={group}>
-                  {group}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* All Exercises */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-bold mb-4">{t("all_exercises")}</h2>
-            {filteredExercises.map((exercise) => (
-              <div
-                key={exercise.id}
-                className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md flex flex-col sm:flex-row sm:items-center sm:justify-between transition-colors"
-              >
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold">
-                    {i18n.language === "lv"
-                      ? exercise.name_lv
-                      : exercise.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {i18n.language === "lv"
-                      ? exercise.muscle_group_lv
-                      : exercise.muscle_group}
-                  </p>
-                  <p className="text-gray-700 dark:text-gray-300 mt-2">
-                    {i18n.language === "lv"
-                      ? exercise.description_lv
-                      : exercise.description}
-                  </p>
-                  {exercise.image_path && (
-                    <img
-                      src={exercise.image_path}
-                      alt={
-                        i18n.language === "lv"
-                          ? exercise.name_lv
-                          : exercise.name
-                      }
-                      className="mt-2 w-32 h-32 object-contain rounded"
-                    />
-                  )}
-                </div>
-
-                <div className="flex mt-4 sm:mt-0">
-                  <button
-                    onClick={() => handleDeleteExercise(exercise.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-                  >
-                    {t("delete")}
-                  </button>
-
-                  <Link
-                    href={route("admin.exercises.edit", exercise.id)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg ml-2"
-                  >
-                    {t("edit")}
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </main>
-      </div>
-    </AuthenticatedLayout>
-  );
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
+                        <h2 className="text-xl font-semibold mb-4">All Exercises</h2>
+                        {exercises.length > 0 ? (
+                            <ul className="space-y-4">
+                                {exercises.map((ex) => (
+                                    <li
+                                        key={ex.id}
+                                        className="p-4 border rounded flex justify-between items-center dark:border-gray-700"
+                                    >
+                                        <div>
+                                            <h3 className="font-bold text-blue-500 hover:underline">
+                                                <Link href={`/exercises/${ex.id}`}>{ex.name}</Link>
+                                            </h3>
+                                            <p className="text-sm">{ex.muscle_group}</p>
+                                            {ex.description && <p className="text-sm">{ex.description}</p>}
+                                            {ex.image_path && <img src={ex.image_path} className="w-24 mt-2" />}
+                                            {ex.video_url && <p className="text-xs">🎥 {ex.video_url}</p>}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => startEdit(ex)}
+                                                className="bg-yellow-500 px-4 py-2 rounded text-white hover:bg-yellow-600"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(ex.id)}
+                                                className="bg-red-600 px-4 py-2 rounded text-white hover:bg-red-700"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p>No exercises found.</p>
+                        )}
+                    </div>
+                </main>
+            </div>
+        </AuthenticatedLayout>
+    );
 }

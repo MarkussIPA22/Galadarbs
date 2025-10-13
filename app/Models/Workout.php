@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
 
 class Workout extends Model
 {
+    use HasFactory; 
+
     protected $fillable = ['user_id', 'name', 'description', 'muscle_groups'];
 
     protected $casts = [
@@ -17,8 +21,7 @@ class Workout extends Model
     }
 
     public function logs()
-{
-    return $this->hasMany(\App\Models\WorkoutLog::class);
+    {
+        return $this->hasMany(\App\Models\WorkoutLog::class);
+    }
 }
-}
-

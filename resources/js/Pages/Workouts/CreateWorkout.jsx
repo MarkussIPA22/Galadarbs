@@ -13,7 +13,7 @@ export default function CreateWorkout({ auth }) {
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     description: '',
-    muscle_groups: [], // always an array
+    muscle_groups: [], 
   });
 
   const [showFavorites, setShowFavorites] = useState(false);
@@ -29,7 +29,6 @@ export default function CreateWorkout({ auth }) {
     'full body',
   ];
 
-  // Safely toggle a muscle group
   const toggleMuscleGroup = (group) => {
     const groups = data.muscle_groups || [];
     if (groups.includes(group)) {
@@ -62,7 +61,7 @@ export default function CreateWorkout({ auth }) {
             </h2>
 
             <form onSubmit={submit} className="flex flex-col gap-4">
-              {/* Workout Name */}
+            
               <div>
                 <label className="block text-gray-700 dark:text-gray-200">
                   {t('workout_name')}
@@ -78,7 +77,7 @@ export default function CreateWorkout({ auth }) {
                 )}
               </div>
 
-              {/* Description */}
+            
               <div>
                 <label className="block text-gray-700 dark:text-gray-200">
                   {t('description')}
@@ -93,7 +92,7 @@ export default function CreateWorkout({ auth }) {
                 )}
               </div>
 
-              {/* Muscle Groups */}
+              
               <div>
                 <label className="block text-gray-700 dark:text-gray-200 mb-2">
                   {t('muscle_groups')}
@@ -117,7 +116,6 @@ export default function CreateWorkout({ auth }) {
                 )}
               </div>
 
-              {/* Submit */}
               <SubmitButton processing={processing} label={t('create_workout')} />
             </form>
           </div>

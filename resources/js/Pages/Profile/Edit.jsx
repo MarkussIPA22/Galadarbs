@@ -87,7 +87,6 @@ export default function Edit({ mustVerifyEmail, status, user, auth, tasks = [] }
 
             
               <div className="mt-6 w-full">
-                <h3 className="text-lg font-semibold mb-2 text-center">Task Streaks 🔥</h3>
                 <div className="flex flex-wrap justify-center gap-3">
                   {tasks.map((task) => task.streak > 0 && (
                     <div key={task.id} className="relative">

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import React from 'react';
+import { useForm, Link } from '@inertiajs/react';
 
 export default function EditExercise({ exercise }) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, put, processing, errors } = useForm({
     name: exercise.name || '',
     name_lv: exercise.name_lv || '',
     muscle_group: exercise.muscle_group || '',
@@ -16,8 +15,10 @@ export default function EditExercise({ exercise }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post(route('admin.exercises.update', exercise.id), {
+    put(route('admin.exercises.update', exercise.id), {
       forceFormData: true,
+      onSuccess: () => {
+      },
     });
   };
 
@@ -27,7 +28,7 @@ export default function EditExercise({ exercise }) {
         <h1 className="text-2xl font-bold mb-6 text-center">Edit Exercise</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
+
           <div>
             <label className="block mb-1 text-sm font-medium">Name (EN)</label>
             <input
@@ -39,7 +40,6 @@ export default function EditExercise({ exercise }) {
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
-          {/* Name LV */}
           <div>
             <label className="block mb-1 text-sm font-medium">Name (LV)</label>
             <input
@@ -51,7 +51,6 @@ export default function EditExercise({ exercise }) {
             {errors.name_lv && <p className="text-red-500 text-sm">{errors.name_lv}</p>}
           </div>
 
-          {/* Muscle Group */}
           <div>
             <label className="block mb-1 text-sm font-medium">Muscle Group (EN)</label>
             <input
@@ -63,7 +62,6 @@ export default function EditExercise({ exercise }) {
             {errors.muscle_group && <p className="text-red-500 text-sm">{errors.muscle_group}</p>}
           </div>
 
-          {/* Muscle Group LV */}
           <div>
             <label className="block mb-1 text-sm font-medium">Muscle Group (LV)</label>
             <input
@@ -75,7 +73,6 @@ export default function EditExercise({ exercise }) {
             {errors.muscle_group_lv && <p className="text-red-500 text-sm">{errors.muscle_group_lv}</p>}
           </div>
 
-          {/* Description EN */}
           <div>
             <label className="block mb-1 text-sm font-medium">Description (EN)</label>
             <textarea
@@ -85,7 +82,6 @@ export default function EditExercise({ exercise }) {
             />
           </div>
 
-          {/* Description LV */}
           <div>
             <label className="block mb-1 text-sm font-medium">Description (LV)</label>
             <textarea
@@ -95,7 +91,6 @@ export default function EditExercise({ exercise }) {
             />
           </div>
 
-          {/* Video URL */}
           <div>
             <label className="block mb-1 text-sm font-medium">Video URL</label>
             <input
@@ -106,7 +101,6 @@ export default function EditExercise({ exercise }) {
             />
           </div>
 
-          {/* Image Upload */}
           <div>
             <label className="block mb-1 text-sm font-medium">Image</label>
             <input
@@ -123,9 +117,9 @@ export default function EditExercise({ exercise }) {
             )}
           </div>
 
-          {/* Buttons */}
           <div className="flex justify-between mt-6">
-            <Link href={route('admin.dashboard')}
+            <Link
+              href={route('admin.dashboard')}
               className="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded text-white"
             >
               Cancel

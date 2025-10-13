@@ -28,7 +28,6 @@ class WorkoutLogController extends Controller
 
     $log->updateTasks();
 
-    // Return JSON for Inertia
   return redirect()->back()->with('success', 'Workout logged!');
 }
 

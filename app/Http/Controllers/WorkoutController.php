@@ -80,7 +80,7 @@ class WorkoutController extends Controller
     return [
         'id' => $ex->id,
         'name' => $ex->name,
-        'name_lv' => $  ex->name_lv,
+        'name_lv' => $ex->name_lv,
         'description' => $ex->description,
         'description_lv' => $ex->description_lv,
         'muscle_group' => $ex->muscle_group,

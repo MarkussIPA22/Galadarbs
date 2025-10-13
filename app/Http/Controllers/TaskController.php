@@ -63,7 +63,6 @@ class TaskController extends Controller
     if ($task->progress >= $task->target && !$task->completed) {
         $task->completed = true;
 
-        // Streak logic
         if ($task->last_completed_at) {
             $yesterday = now()->subDay()->toDateString();
             if ($task->last_completed_at->toDateString() == $yesterday) {
