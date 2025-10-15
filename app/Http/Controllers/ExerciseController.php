@@ -26,14 +26,6 @@ class ExerciseController extends Controller
             }
         }
 
-        if (!$image) {
-            $slug = Str::slug($ex->name);
-            $candidate = '/exercises/' . $slug . '.webp';
-            if (file_exists(public_path(ltrim($candidate, '/')))) {
-                $image = $candidate;
-            }
-        }
-
         return $image ?: null;
     }
 
@@ -63,33 +55,6 @@ class ExerciseController extends Controller
             'auth'       => auth()->user(),
         ]);
     }
-
-   public function store(Request $request)
-{
-    $request->validate([
-        'name'         => 'required|unique:exercises,name',
-        'muscle_group' => 'required|string',
-        'image'        => 'nullable|image|max:4096',
-        'video_url'    => 'nullable|string',
-    ]);
-
-    $path = null;
-
-    if ($request->hasFile('image')) {
-        $filename = $request->file('image')->getClientOriginalName();
-        $request->file('image')->move(public_path('exercises'), $filename);
-        $path = '/exercises/' . $filename;
-    }
-
-    $exercise = Exercise::create([
-        'name'         => $request->name,
-        'muscle_group' => $request->muscle_group,
-        'image_path'   => $path,
-        'video_url'    => $request->video_url,
-    ]);
-
-    return response()->json(['exercise' => $exercise]);
-}
 
 
     public function destroy(Exercise $exercise)

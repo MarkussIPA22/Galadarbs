@@ -22,7 +22,7 @@ Route::post('/exercises/{exercise}/favorite', [ExerciseController::class, 'toggl
 
 Route::get('/locale/{lang}', function ($lang) {
     session(['locale' => $lang]);
-    app()->setLocale($lang);
+    app()->setLocale($lang);          
     return redirect()->back();
 })->name('locale.switch');
 
@@ -92,11 +92,5 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroy'])->name('admin.exercises.destroy');
 });
 
-
-// Notifications
-Route::middleware(['auth'])->group(function () {
-    Route::get('/notifications', [NotificationController::class, 'index'])
-        ->name('notifications.index');
-});
 
 require __DIR__ . '/auth.php';
