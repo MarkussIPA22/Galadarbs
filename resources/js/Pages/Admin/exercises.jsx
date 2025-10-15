@@ -11,28 +11,37 @@ export default function AdminPanel({
     successMessage: initialMessage = "",
 }) {
     const [name, setName] = useState("");
+    const [nameLv, setNameLv] = useState("");
     const [description, setDescription] = useState("");
+    const [descriptionLv, setDescriptionLv] = useState("");
     const [muscleGroup, setMuscleGroup] = useState("");
+    const [muscleGroupLv, setMuscleGroupLv] = useState("");
     const [image, setImage] = useState(null);
     const [videoUrl, setVideoUrl] = useState("");
     const [successMessage, setSuccessMessage] = useState(initialMessage);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const currentLang = i18n.language;
 
     const resetForm = () => {
         setName("");
+        setNameLv("");
         setDescription("");
+        setDescriptionLv("");
         setMuscleGroup("");
+        setMuscleGroupLv("");
         setImage(null);
         setVideoUrl("");
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append("name", name);
+        formData.append("name_lv", nameLv);
         formData.append("description", description);
+        formData.append("description_lv", descriptionLv);
         formData.append("muscle_group", muscleGroup);
+        formData.append("muscle_group_lv", muscleGroupLv);
         if (image) formData.append("image", image);
         if (videoUrl) formData.append("video_url", videoUrl);
 
@@ -49,7 +58,6 @@ export default function AdminPanel({
     const handleDelete = (id) => {
         if (!confirm(t("Are you sure you want to delete this exercise?")))
             return;
-
         Inertia.delete(`/admin/exercises/${id}`, {
             onSuccess: () => {
                 setSuccessMessage(t("Exercise deleted successfully!"));
@@ -58,20 +66,35 @@ export default function AdminPanel({
         });
     };
 
+    const muscleGroupsEn = [
+        "Back",
+        "Chest",
+        "Legs",
+        "Arms",
+        "Shoulders",
+        "Core",
+    ];
+    const muscleGroupsLv = [
+        "Mugura",
+        "Krūtis",
+        "Kājas",
+        "Rokas",
+        "Pleci",
+        "Vēders/serdi",
+    ];
+
     return (
         <AuthenticatedLayout>
             <Head title={t("Admin Panel")} />
             <div className="flex min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
                 <ResponsiveSidebar auth={auth} />
                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
-                    {/* Heading */}
                     <div className="mb-8">
                         <h1 className="text-3xl lg:text-4xl font-bold bg-green-500 dark:bg-purple-600 bg-clip-text text-transparent">
                             {t("Admin Panel")}
                         </h1>
                     </div>
 
-                    {/* Success message */}
                     {successMessage && (
                         <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 border-l-4 border-emerald-500 rounded-lg animate-in slide-in-from-top-2 duration-300">
                             <p className="text-emerald-800 dark:text-emerald-200 font-medium">
@@ -80,20 +103,24 @@ export default function AdminPanel({
                         </div>
                     )}
 
-                    {/* Add Exercise Form */}
                     <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 lg:p-8 mb-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                             {t("Add New Exercise")}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Exercise Name */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                                     {t("Exercise Name *")}
                                 </label>
                                 <input
                                     type="text"
-                                    placeholder={t("e.g., Bench Press")}
+                                    placeholder={
+                                        currentLang === "lv"
+                                            ? t(
+                                                  "Exercise name placeholder (EN)"
+                                              )
+                                            : "e.g., Bench Press"
+                                    }
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
@@ -101,13 +128,36 @@ export default function AdminPanel({
                                 />
                             </div>
 
-                            {/* Description */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                    {t("Exercise Name (LV) *")}
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder={
+                                        currentLang === "lv"
+                                            ? t(
+                                                  "Exercise name placeholder (LV)"
+                                              )
+                                            : "e.g., Spēka presēšana"
+                                    }
+                                    value={nameLv}
+                                    onChange={(e) => setNameLv(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                                    required
+                                />
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                                     {t("Description")}
                                 </label>
                                 <textarea
-                                    placeholder={t("Describe the exercise...")}
+                                    placeholder={
+                                        currentLang === "lv"
+                                            ? t("Description placeholder (EN)")
+                                            : "Describe the exercise..."
+                                    }
                                     value={description}
                                     onChange={(e) =>
                                         setDescription(e.target.value)
@@ -117,7 +167,25 @@ export default function AdminPanel({
                                 />
                             </div>
 
-                            {/* Muscle Group */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                    {t("Description (LV)")}
+                                </label>
+                                <textarea
+                                    placeholder={
+                                        currentLang === "lv"
+                                            ? t("Description placeholder (LV)")
+                                            : "Apraksts latviski..."
+                                    }
+                                    value={descriptionLv}
+                                    onChange={(e) =>
+                                        setDescriptionLv(e.target.value)
+                                    }
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all resize-none"
+                                    rows={4}
+                                />
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                                     {t("Muscle Group *")}
@@ -133,18 +201,39 @@ export default function AdminPanel({
                                     <option value="">
                                         {t("Select Muscle Group")}
                                     </option>
-                                    <option value="Back">{t("Back")}</option>
-                                    <option value="Chest">{t("Chest")}</option>
-                                    <option value="Legs">{t("Legs")}</option>
-                                    <option value="Arms">{t("Arms")}</option>
-                                    <option value="Shoulders">
-                                        {t("Shoulders")}
-                                    </option>
-                                    <option value="Core">{t("Core")}</option>
+                                    {muscleGroupsEn.map((m) => (
+                                        <option key={m} value={m}>
+                                            {t(m)}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
-                            {/* Image */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                                    {t("Muscle Group (LV) *")}
+                                </label>
+                                <select
+                                    value={muscleGroupLv}
+                                    onChange={(e) =>
+                                        setMuscleGroupLv(e.target.value)
+                                    }
+                                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                                    required
+                                >
+                                    <option value="">
+                                        {currentLang === "lv"
+                                            ? "Izvēlies muskuļu grupu"
+                                            : "Select Muscle Group"}
+                                    </option>
+                                    {muscleGroupsLv.map((m) => (
+                                        <option key={m} value={m}>
+                                            {m}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                                     {t("Exercise Image")}
@@ -159,7 +248,6 @@ export default function AdminPanel({
                                 />
                             </div>
 
-                            {/* Video URL */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                                     {t("YouTube Video URL")}
@@ -175,7 +263,6 @@ export default function AdminPanel({
                                 />
                             </div>
 
-                            {/* Submit Button */}
                             <div className="flex gap-3 pt-4">
                                 <button
                                     type="submit"
@@ -187,7 +274,6 @@ export default function AdminPanel({
                         </form>
                     </div>
 
-                    {/* Exercises List */}
                     <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg border border-gray-200/50 dark:border-gray-700/50 p-6 lg:p-8">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                             {t("All Exercises")}
@@ -205,17 +291,27 @@ export default function AdminPanel({
                                                     href={`/exercises/${ex.id}`}
                                                 >
                                                     <h3 className="text-lg font-bold text-purple-600 dark:text-purple-400 hover:underline mb-1">
-                                                        {ex.name}
+                                                        {currentLang === "lv"
+                                                            ? ex.name_lv
+                                                            : ex.name}
                                                     </h3>
                                                 </Link>
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-full">
-                                                        {t(ex.muscle_group)}
+                                                        {currentLang === "lv"
+                                                            ? t(
+                                                                  ex.muscle_group_lv
+                                                              )
+                                                            : t(
+                                                                  ex.muscle_group
+                                                              )}
                                                     </span>
                                                 </div>
                                                 {ex.description && (
                                                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                                                        {ex.description}
+                                                        {currentLang === "lv"
+                                                            ? ex.description_lv
+                                                            : ex.description}
                                                     </p>
                                                 )}
                                                 {ex.image_path && (
