@@ -115,6 +115,7 @@ class WorkoutController extends Controller
         return Inertia::render('Workouts/StartWorkout', [
             'workout' => $workout,
             'latest_log' => $latest_log,
+            'locale' => app()->getLocale()
         ]);
     }
 

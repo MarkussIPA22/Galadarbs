@@ -179,5 +179,10 @@
     "Exercise deleted successfully!": "Vingrinājums veiksmīgi dzēsts!",
     "Are you sure you want to delete this exercise?": "Vai tiešām vēlaties dzēst šo vingrinājumu?",
     "Watch Video": "Skatīties video",
-    "Delete": "Dzēst"
+    "Delete": "Dzēst",
+    "One-Rep Max": "Viena atkārtojuma maksimums",
+    "enter_workout_name": "Ievadiet treniņa nosaukumu",
+    "Exercise Name (LV) *": "Vingrinājuma nosaukums (LV)",
+    "Muscle Group (LV) *": "Muskuļa grupa (LV)",
+    "Edit": "Rediģēt"
 }

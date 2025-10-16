@@ -56,9 +56,9 @@ class AdminController extends Controller
     {
        $validated = $request->validate([
     'name' => 'required|string|unique:exercises,name,' . $exercise->id,
-    'name_lv' => 'nullable|string',
+    'name_lv' => 'required|string|unique:exercises,name_lv,' .$exercise->id,
     'muscle_group' => 'required|string',
-    'muscle_group_lv' => 'nullable|string',
+    'muscle_group_lv' => 'required|string',
     'description' => 'nullable|string',
     'description_lv' => 'nullable|string',
     'image' => 'nullable|image|max:4096',

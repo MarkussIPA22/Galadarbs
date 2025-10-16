@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Inertia } from "@inertiajs/inertia";
 import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,57 @@ export default function AdminPanel({
     const [successMessage, setSuccessMessage] = useState(initialMessage);
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
+
+    const muscleGroupsEn = [
+        "Back",
+        "Chest",
+        "Legs",
+        "Biceps",
+        "Triceps",
+        "Shoulders",
+        "Core",
+    ];
+    const muscleGroupsLv = [
+        "Mugura",
+        "Krūtis",
+        "Kājas",
+        "Bicepsi",
+        "Tricepsi",
+        "Pleci",
+        "Vēders",
+    ];
+
+    const enToLvMap = {
+        Back: "Mugura",
+        Chest: "Krūtis",
+        Legs: "Kājas",
+        Biceps: "Bicepsi",
+        Triceps: "Tricepsi",
+        Shoulders: "Pleci",
+        Core: "Vēders",
+    };
+
+    const lvToEnMap = {
+        Mugura: "Back",
+        Krūtis: "Chest",
+        Kājas: "Legs",
+        Bicepsi: "Biceps",
+        Tricepsi: "Triceps",
+        Pleci: "Shoulders",
+        Vēders: "Core",
+    };
+
+    useEffect(() => {
+        if (muscleGroup) {
+            setMuscleGroupLv(enToLvMap[muscleGroup] || "");
+        }
+    }, [muscleGroup]);
+
+    useEffect(() => {
+        if (muscleGroupLv) {
+            setMuscleGroup(lvToEnMap[muscleGroupLv] || "");
+        }
+    }, [muscleGroupLv]);
 
     const resetForm = () => {
         setName("");
@@ -65,23 +116,6 @@ export default function AdminPanel({
             },
         });
     };
-
-    const muscleGroupsEn = [
-        "Back",
-        "Chest",
-        "Legs",
-        "Arms",
-        "Shoulders",
-        "Core",
-    ];
-    const muscleGroupsLv = [
-        "Mugura",
-        "Krūtis",
-        "Kājas",
-        "Rokas",
-        "Pleci",
-        "Vēders/serdi",
-    ];
 
     return (
         <AuthenticatedLayout>
@@ -203,7 +237,7 @@ export default function AdminPanel({
                                     </option>
                                     {muscleGroupsEn.map((m) => (
                                         <option key={m} value={m}>
-                                            {t(m)}
+                                            {m}
                                         </option>
                                     ))}
                                 </select>
