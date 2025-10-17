@@ -6,43 +6,37 @@ import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 export default function Tasks({ exercises = [], auth }) {
     const { t, i18n } = useTranslation();
     const [task, setTask] = useState(null);
+    const [inputWeight, setInputWeight] = useState("");
 
     useEffect(() => {
-        if (exercises.length === 0) return;
+        if (!exercises.length) return;
 
         const storedTask = localStorage.getItem("weeklyTask");
-        let savedTask = null;
+        let savedTask = storedTask ? JSON.parse(storedTask) : null;
 
-        if (storedTask) {
-            savedTask = JSON.parse(storedTask);
+        if (savedTask) {
             const dueDate = new Date(savedTask.dueDate);
-            const today = new Date();
-
-            if (today > dueDate) {
+            if (new Date() > dueDate) {
+                localStorage.removeItem("weeklyTask");
                 savedTask = null;
             }
         }
 
-        if (!savedTask) {
-            const randomExercise =
-                exercises[Math.floor(Math.random() * exercises.length)];
-            const startDate = new Date();
-            const dueDate = new Date();
-            dueDate.setDate(startDate.getDate() + 7);
-
-            savedTask = {
-                exercise: randomExercise,
-                target: Math.floor(Math.random() * (1000 - 500 + 1)) + 500,
-                startDate: startDate.toISOString(),
-                dueDate: dueDate.toISOString(),
-                completed: false,
-            };
-
-            localStorage.setItem("weeklyTask", JSON.stringify(savedTask));
-        }
-
-        setTask(savedTask);
+        if (savedTask) setTask(savedTask);
     }, [exercises]);
+
+    const updateProgress = (e) => {
+        e.preventDefault();
+        const weight = parseInt(inputWeight);
+        if (isNaN(weight) || weight < 0) return;
+
+        const updatedTask = { ...task, progress: weight };
+        if (weight >= task.target) updatedTask.completed = true;
+
+        setTask(updatedTask);
+        localStorage.setItem("weeklyTask", JSON.stringify(updatedTask));
+        setInputWeight("");
+    };
 
     if (!task) {
         return (
@@ -51,7 +45,7 @@ export default function Tasks({ exercises = [], auth }) {
                     <ResponsiveSidebar auth={auth} />
                     <main className="flex-1 p-6 max-w-6xl mx-auto text-center">
                         <p className="text-gray-500 dark:text-gray-400">
-                            {t("loading_task")}...
+                            {t("no_task_found")}
                         </p>
                     </main>
                 </div>
@@ -59,14 +53,12 @@ export default function Tasks({ exercises = [], auth }) {
         );
     }
 
+    const { exercise, target, startDate, dueDate, progress, completed } = task;
+
     const exerciseName =
         i18n.language === "lv"
-            ? task.exercise.name_lv || task.exercise.name
-            : task.exercise.name;
-    const exerciseMuscle =
-        i18n.language === "lv"
-            ? task.exercise.muscle_group_lv || task.exercise.muscle_group
-            : task.exercise.muscle_group;
+            ? exercise.name_lv || exercise.name
+            : exercise.name;
 
     return (
         <AuthenticatedLayout auth={auth}>
@@ -84,25 +76,53 @@ export default function Tasks({ exercises = [], auth }) {
 
                         <p className="mb-2">
                             {t("target")}:{" "}
-                            <span className="font-medium">
-                                {task.target} kg
-                            </span>
+                            <span className="font-medium">{target} kg</span>
                         </p>
                         <p className="mb-2">
                             {t("start_date")}:{" "}
-                            {new Date(task.startDate).toLocaleDateString()}
+                            <span className="font-medium">
+                                {new Date(startDate).toLocaleDateString()}
+                            </span>
                         </p>
                         <p className="mb-4">
                             {t("due_date")}:{" "}
-                            {new Date(task.dueDate).toLocaleDateString()}
+                            <span className="font-medium">
+                                {new Date(dueDate).toLocaleDateString()}
+                            </span>
                         </p>
 
-                        {task.completed ? (
-                            <span className="inline-block mt-2 text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
+                        <p className="mb-2">
+                            {t("your_progress")}:{" "}
+                            <span className="font-medium">{progress} kg</span>
+                        </p>
+
+                        <form onSubmit={updateProgress} className="mt-4">
+                            <label className="block mb-2">
+                                {t("enter_weight")}:
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={inputWeight}
+                                    onChange={(e) =>
+                                        setInputWeight(e.target.value)
+                                    }
+                                    className="mt-1 block w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 p-2"
+                                />
+                            </label>
+                            <button
+                                type="submit"
+                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                            >
+                                {t("update_progress")}
+                            </button>
+                        </form>
+
+                        {completed ? (
+                            <span className="inline-block mt-4 text-sm bg-green-100 text-green-700 px-2 py-1 rounded">
                                 ✅ {t("completed")}
                             </span>
                         ) : (
-                            <span className="inline-block mt-2 text-sm bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
+                            <span className="inline-block mt-4 text-sm bg-yellow-100 text-yellow-700 px-2 py-1 rounded">
                                 {t("in_progress")}
                             </span>
                         )}

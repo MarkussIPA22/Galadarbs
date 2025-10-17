@@ -97,7 +97,10 @@
     "Search_exercises": "Search exercises",
     "your_task_for_this_week": "Your task for this week",
     "start_date": "Start date",
-    "due_date": "due_date",
+    "due_date": "due date",
     "in_progress": "In progress",
-    "enter_workout_name": "Enter workout name"
+    "enter_workout_name": "Enter workout name",
+    "your_progress": "Your progress",
+    "enter_weight": "Enter weight",
+    "update_progress": "Update Progress"
 }

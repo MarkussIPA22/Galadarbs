@@ -38,7 +38,23 @@ class Task extends Model
         return $this->belongsTo(Exercise::class);
     }
 
-   
+   public function addProgress(int $weight)
+{
+    // Update progress if new weight is higher
+    if ($weight > $this->progress) {
+        $this->progress = $weight;
+    }
+
+    // Mark task as completed if progress >= target
+    if ($this->progress >= $this->target) {
+        $this->completed = true;
+        $this->last_completed_at = now();
+        $this->streak += 1;
+    }
+
+    $this->save();
+}
+
 
    
 

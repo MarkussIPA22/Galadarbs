@@ -184,5 +184,21 @@
     "enter_workout_name": "Ievadiet treniņa nosaukumu",
     "Exercise Name (LV) *": "Vingrinājuma nosaukums (LV)",
     "Muscle Group (LV) *": "Muskuļa grupa (LV)",
-    "Edit": "Rediģēt"
+    "Edit": "Rediģēt",
+    "Profile Information": "Profila informācija",
+    "Update your account's profile information and email address.": "Atjauniniet sava konta profila informāciju un e-pasta adresi.",
+    "Name": "Vārds",
+    "Email": "E-pasts",
+    "Save": "Saglabāt",
+    "Saved.": "Saglabāts.",
+    "Update Password": "Atjaunināt paroli",
+    "Ensure your account is using a long, random password to stay secure.": "Pārliecinieties, ka jūsu konts izmanto garu, nejaušu paroli, lai saglabātu drošību.",
+    "Current Password": "Pašreizējā parole",
+    "New Password": "Jaunā parole",
+    "Confirm Password": "Apstiprināt paroli",
+    "Password updated successfully!": "Parole veiksmīgi atjaunināta!",
+    "Delete Account": "Dzēst kontu",
+    "Profile Picture": "Profila attēls",
+    "your_progress": "jūsu progress",
+    "enter_weight": "ievadiet svaru"
 }
