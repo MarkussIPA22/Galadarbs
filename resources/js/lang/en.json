@@ -102,5 +102,7 @@
     "enter_workout_name": "Enter workout name",
     "your_progress": "Your progress",
     "enter_weight": "Enter weight",
-    "update_progress": "Update Progress"
+    "update_progress": "Update Progress",
+    "deleted_workout": "Deleted workout",
+    "Trenina_numurs": "Workout # "
 }

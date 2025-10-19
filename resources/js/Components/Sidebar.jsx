@@ -20,7 +20,8 @@ export default function Sidebar({ auth, isOpen, toggleSidebar }) {
 
     const switchLanguage = (lang) => {
         i18n.changeLanguage(lang);
-        router.get(route("locale.switch", lang));
+        localStorage.setItem("language", lang);
+        router.get(route("locale.switch", lang), {}, { preserveState: true });
     };
 
     const linkClasses =
