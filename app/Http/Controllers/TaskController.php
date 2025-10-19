@@ -29,27 +29,29 @@ class TaskController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'exercise_id' => 'required|exists:exercises,id',
-        ]);
+{
+    $request->validate([
+        'exercise_id' => 'required|exists:exercises,id',
+        'target' => 'required|integer|min:1',
+    ]);
 
-        $exercise = Exercise::find($request->exercise_id);
+    $exercise = Exercise::find($request->exercise_id);
 
-        $task = Task::create([
-            'user_id' => Auth::id(),
-            'exercise_id' => $exercise->id,
-            'name' => $exercise->name,
-            'target' => rand(500, 1000), 
-            'progress' => 0,
-            'completed' => false,
-            'streak' => 0,
-            'date' => now(),
-        ]);
+    $task = Task::create([
+        'user_id' => Auth::id(),
+        'exercise_id' => $exercise->id,
+        'name' => $exercise->name,
+        'target' => $request->target,
+        'progress' => 0,
+        'completed' => false,
+        'streak' => 0,
+        'date' => now(),
+    ]);
 
-        $task->load('exercise'); 
-        return response()->json($task);
-    }
+    $task->load('exercise');
+    return response()->json($task);
+}
+
 
     public function updateProgress(Request $request, Task $task)
     {
@@ -65,4 +67,13 @@ class TaskController extends Controller
         $task->load('exercise');
         return response()->json($task);
     }
+
+    public function destroy(Task $task)
+{
+    $this->authorize('delete', $task);
+    $task->delete();
+
+    return response()->json(['message' => 'Task deleted']);
+}
+
 }

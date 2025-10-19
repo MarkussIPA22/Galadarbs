@@ -61,22 +61,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Tasks & logs
     Route::post('/workout-logs', [WorkoutLogController::class, 'store'])->name('workout-logs.store');
-    Route::post('/tasks/{task}/update-progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
-    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+  Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::put('/tasks/{task}/progress', [TaskController::class, 'updateProgress'])->name('tasks.updateProgress');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/update-pic', [ProfileController::class, 'updateProfilePic'])->name('profile.update.pic');
-
-    // profiles
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/users', [ProfileController::class, 'index'])->name('users.index'); 
 });
 
-// Admin routes
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
     

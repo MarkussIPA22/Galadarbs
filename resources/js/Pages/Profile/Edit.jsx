@@ -96,8 +96,18 @@ export default function Edit({
                                 {t("Save")}
                             </button>
 
-                            <div className="mt-6 w-full">
+                            <div className="mt-6 w-full text-center">
+                                <h4 className="text-lg font-semibold text-orange-500 mb-3">
+                                    {t("Your Task Streaks")}
+                                </h4>
+
                                 <div className="flex flex-wrap justify-center gap-3">
+                                    {console.log(tasks)}
+                                    {tasks.length === 0 && (
+                                        <p className="text-gray-500 text-sm">
+                                            {t("No completed tasks yet.")}
+                                        </p>
+                                    )}
                                     {tasks.map(
                                         (task) =>
                                             task.streak > 0 && (
@@ -106,11 +116,11 @@ export default function Edit({
                                                     className="relative"
                                                 >
                                                     <img
-                                                        src="/images/fire.png"
+                                                        src="/streak/fire.png"
                                                         alt="Streak"
-                                                        className="w-10 h-10 sm:w-12 sm:h-12"
+                                                        className="w-10 h-10 sm:w-12 sm:h-12 animate-pulse"
                                                     />
-                                                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold">
+                                                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-sm sm:text-base">
                                                         {task.streak}
                                                     </span>
                                                 </div>

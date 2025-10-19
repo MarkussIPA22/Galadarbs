@@ -16,40 +16,49 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-
-
     public function index(Request $request)
+    {
+        $query = $request->input('q');
+
+        $users = User::query()
+            ->when($query, fn($q) => $q->where('name', 'like', "%{$query}%"))
+            ->select('id', 'name', 'profile_pic')
+            ->paginate(10)
+            ->appends(['q' => $query]);
+
+        return Inertia::render('Profile/Users', [
+            'users' => $users,
+            'query' => $query,
+        ]);
+    }
+
+   public function edit(Request $request): Response
 {
-    $query = $request->input('q');
+    $user = $request->user();
 
-    $users = User::query()
-        ->when($query, fn($q) => $q->where('name', 'like', "%{$query}%"))
-        ->select('id', 'name', 'profile_pic')
-        ->paginate(10)
-        ->appends(['q' => $query]);
+    $tasks = \App\Models\Task::where('user_id', $user->id)
+        ->where('completed', true)
+        ->orderBy('last_completed_at', 'desc')
+        ->get(['id', 'name', 'streak', 'last_completed_at']);
 
-    return Inertia::render('Profile/Users', [
-        'users' => $users,
-        'query' => $query,
+    return Inertia::render('Profile/Edit', [
+        'mustVerifyEmail' => $user instanceof MustVerifyEmail,
+        'status' => session('status'),
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile_pic_url' => $user->profile_pic
+                ? asset('storage/' . $user->profile_pic)
+                : null,
+        ],
+        'auth' => [
+            'user' => $user,
+        ],
+        'tasks' => $tasks->toArray(), 
     ]);
 }
 
-   
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-            'user' => [
-                'id' => $request->user()->id,
-                'name' => $request->user()->name,
-                'email' => $request->user()->email,
-                'profile_pic_url' => $request->user()->profile_pic
-                    ? asset('storage/' . $request->user()->profile_pic)
-                    : null,
-            ],
-        ]);
-    }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -67,7 +76,7 @@ class ProfileController extends Controller
     public function updateProfilePic(Request $request)
     {
         $request->validate([
-            'profile_pic' => ['required', 'image', 'max:2048'], // max 2MB
+            'profile_pic' => ['required', 'image', 'max:2048'], 
         ]);
 
         $user = $request->user();
@@ -91,35 +100,38 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function show(User $user): Response
-{
-    $workouts = Workout::where('user_id', $user->id)->get();
+    public function show(User $user)
+    {
+        $workouts = Workout::where('user_id', $user->id)
+            ->select('id', 'name')
+            ->get();
 
-    $completedLogs = WorkoutLog::where('user_id', $user->id)
-        ->with('workout:id,name')
-        ->orderBy('created_at', 'desc')
-        ->take(10)
-        ->get(['id', 'workout_id', 'created_at']);
+        $completedLogs = WorkoutLog::where('user_id', $user->id)
+            ->with('workout:id,name')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get(['id', 'workout_id', 'created_at']);
 
-    $tasks = \App\Models\Task::where('user_id', $user->id)
-        ->where('completed', true)
-        ->orderBy('last_completed_at', 'desc')
-        ->get(['id', 'name', 'streak', 'last_completed_at']);
+        $tasks = \App\Models\Task::where('user_id', $user->id)
+            ->where('completed', true)
+            ->where('streak', '>', 0)
+            ->orderBy('last_completed_at', 'desc')
+            ->get(['id', 'name', 'streak', 'last_completed_at']);
 
-    return Inertia::render('Profile/Show', [
-        'profileUser' => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'profile_pic_url' => $user->profile_pic
-                ? asset('storage/' . $user->profile_pic)
-                : null,
-        ],
-        'workouts' => $workouts,
-        'completedLogs' => $completedLogs,
-        'tasks' => $tasks, 
-        'auth' => auth()->user(), 
-    ]);
-}
-
-
+        return Inertia::render('Profile/Show', [
+            'profileUser' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'profile_pic_url' => $user->profile_pic
+                    ? asset('storage/' . $user->profile_pic)
+                    : null,
+            ],
+            'workouts' => $workouts->toArray(),
+            'completedLogs' => $completedLogs->toArray(),
+            'tasks' => $tasks->toArray(),
+            'auth' => [
+                'user' => auth()->user(),
+            ],
+        ]);
+    }
 }
