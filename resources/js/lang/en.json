@@ -104,5 +104,6 @@
     "enter_weight": "Enter weight",
     "update_progress": "Update Progress",
     "deleted_workout": "Deleted workout",
-    "Trenina_numurs": "Workout # "
+    "Trenina_numurs": "Workout # ",
+    "no_description": "No description available"
 }

@@ -22,6 +22,8 @@ export default function AdminPanel({
     const { t, i18n } = useTranslation();
     const currentLang = i18n.language;
 
+    const [selectedGroup, setSelectedGroup] = useState("all");
+
     const muscleGroupsEn = [
         "Back",
         "Chest",
@@ -116,6 +118,17 @@ export default function AdminPanel({
             },
         });
     };
+
+    const filteredExercises =
+        selectedGroup === "all"
+            ? exercises
+            : exercises.filter((ex) => {
+                  const group =
+                      currentLang === "lv"
+                          ? ex.muscle_group_lv
+                          : ex.muscle_group;
+                  return group === selectedGroup;
+              });
 
     return (
         <AuthenticatedLayout>
@@ -312,9 +325,47 @@ export default function AdminPanel({
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                             {t("All Exercises")}
                         </h2>
-                        {exercises.length > 0 ? (
+
+                        <div className="mb-6 flex flex-wrap items-center gap-3">
+                            <label
+                                htmlFor="muscleGroupFilter"
+                                className="text-gray-700 dark:text-gray-300 font-semibold"
+                            >
+                                {t("Filter by Muscle Group")}:
+                            </label>
+                            <select
+                                id="muscleGroupFilter"
+                                value={selectedGroup}
+                                onChange={(e) =>
+                                    setSelectedGroup(e.target.value)
+                                }
+                                className="bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-purple-500"
+                            >
+                                {[
+                                    { value: "all", label: t("All") },
+                                    ...(currentLang === "lv"
+                                        ? muscleGroupsLv.map((m) => ({
+                                              value: m,
+                                              label: m,
+                                          }))
+                                        : muscleGroupsEn.map((m) => ({
+                                              value: m,
+                                              label: m,
+                                          }))),
+                                ].map((group) => (
+                                    <option
+                                        key={group.value}
+                                        value={group.value}
+                                    >
+                                        {group.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {filteredExercises.length > 0 ? (
                             <div className="grid gap-4">
-                                {exercises.map((ex) => (
+                                {filteredExercises.map((ex) => (
                                     <div
                                         key={ex.id}
                                         className="group p-5 border-2 border-gray-200 dark:border-gray-700 rounded-2xl hover:border-purple-300 dark:hover:border-purple-600 hover:shadow-lg transition-all duration-200"

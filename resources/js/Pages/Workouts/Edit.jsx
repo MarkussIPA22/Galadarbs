@@ -12,6 +12,7 @@ export default function EditWorkout({
     favoriteExercises,
 }) {
     const { t, i18n } = useTranslation();
+
     const { data, setData, put, processing, errors } = useForm({
         name: workout.name || "",
         description: workout.description || "",

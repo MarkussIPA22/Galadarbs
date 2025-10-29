@@ -200,5 +200,17 @@
     "Delete Account": "Dzēst kontu",
     "Profile Picture": "Profila attēls",
     "your_progress": "jūsu progress",
-    "enter_weight": "ievadiet svaru"
+    "enter_weight": "ievadiet svaru",
+    "create_your_task": "izveidojiet savu uzdevumu",
+    "new_weekly_task": "Jauns iknedēļas uzdevums",
+    "select_exercise": "Izvēlieties vingrinājumu",
+    "choose_one": "Izvēlieties vienu",
+    "target_weight": "Mērķa svars",
+    "create_task": "Izveidot uzdevumu",
+    "e.g": "piem., 75",
+    "completed": "pabeigts",
+    "no_description": "Apraksts nav pieejams",
+    "Filter by Muscle Group": "Filtrēt pēc muskuļu grupas",
+    "Your Task Streaks": "Jūsu uzdevumu sērijas",
+    "No completed tasks yet.": "Vēl nav pabeigtu uzdevumu."
 }

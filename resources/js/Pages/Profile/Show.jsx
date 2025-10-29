@@ -33,6 +33,7 @@ export default function Show({
                     <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between">
                         <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                             <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600">
+                                {/* Ja lietotājam ir profila bilde, rādām to */}
                                 {profileUser.profile_pic_url ? (
                                     <img
                                         src={profileUser.profile_pic_url}
@@ -40,6 +41,7 @@ export default function Show({
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
+                                    // Ja bilde nav, rāda vārda pirmo burtu
                                     <span className="text-2xl font-bold text-white">
                                         {profileUser.name
                                             .charAt(0)
@@ -50,7 +52,9 @@ export default function Show({
 
                             <div className="flex flex-col">
                                 <h1 className="text-3xl lg:text-4xl font-bold text-emerald-500 dark:text-white flex items-center gap-2">
+                                    {/* Lietotāja vārds */}
                                     {profileUser.name}{" "}
+                                    {/* Ja ir streaks parādā liesmas ikonu un ciparu (dienas skaitu) */}
                                     {totalStreak > 0 && (
                                         <span className="flex items-center gap-1">
                                             <img
@@ -72,6 +76,7 @@ export default function Show({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        {/* Kopējie izveidotie treniņi */}
                         <div className="relative bg-gradient-to-br from-white to-blue-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg border border-white/20 dark:border-slate-700/50">
                             <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                                 {t("Workouts_Created")}
@@ -81,6 +86,7 @@ export default function Show({
                             </p>
                         </div>
 
+                        {/* Kopējie pabeigtie treniņi */}
                         <div className="relative bg-gradient-to-br from-white to-emerald-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg border border-white/20 dark:border-slate-700/50">
                             <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                                 {t("Completed_Workouts")}
@@ -92,14 +98,18 @@ export default function Show({
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Visi treniņi */}
                         <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
                                 {t("All_Workouts")}
                             </h2>
+
+                            {/* Ja ir treniņi, tos parāda sarakstā */}
                             {workouts?.length > 0 ? (
                                 <div className="space-y-3 max-h-96 overflow-y-auto">
                                     {workouts.map((workout) =>
                                         workout ? (
+                                            // Katrs treniņš ir saite uz detalizētu skatu
                                             <Link
                                                 key={workout.id}
                                                 href={route(
@@ -123,6 +133,7 @@ export default function Show({
                                                 </div>
                                             </Link>
                                         ) : (
+                                            // Ja treniņš ir izdzēsts, rāda atzīmi par to
                                             <div
                                                 key={Math.random()}
                                                 className="block p-4 bg-gray-200/50 dark:bg-gray-700/50 rounded-xl border border-gray-300/50 dark:border-gray-600/50"
@@ -139,14 +150,18 @@ export default function Show({
                             )}
                         </div>
 
+                        {/* Pēdējie pabeigtie treniņi */}
                         <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
                                 {t("Recent_Completed")}
                             </h2>
+
+                            {/* Ja ir pabeigti treniņi, rāda tos */}
                             {completedLogs?.length > 0 ? (
                                 <div className="space-y-3 max-h-96 overflow-y-auto">
                                     {getRecentWorkouts().map((log) =>
                                         log.workout ? (
+                                            // Saite uz pabeigtā treniņa lapu
                                             <Link
                                                 key={log.id}
                                                 href={route(
@@ -171,6 +186,8 @@ export default function Show({
                                                             </p>
                                                         </div>
                                                     </div>
+
+                                                    {/* Datums, kad treniņš pabeigts */}
                                                     <div className="text-right">
                                                         <p className="text-sm font-semibold text-slate-900 dark:text-white">
                                                             {new Date(
@@ -181,6 +198,7 @@ export default function Show({
                                                 </div>
                                             </Link>
                                         ) : (
+                                            // Ja treniņš ir izdzēsts, rāda kā “Deleted Workout”
                                             <div
                                                 key={log.id}
                                                 className="block p-4 bg-gray-200/50 dark:bg-gray-700/50 rounded-xl border border-gray-300/50 dark:border-gray-600/50"
@@ -189,7 +207,9 @@ export default function Show({
                                                     <span className="font-semibold text-gray-500 dark:text-gray-400">
                                                         Deleted Workout
                                                     </span>
+
                                                     <p className="text-sm text-gray-400 dark:text-gray-500">
+                                                        {/* Pabeigts treniņš */}
                                                         Completed Workout
                                                     </p>
                                                 </div>
@@ -198,6 +218,7 @@ export default function Show({
                                     )}
                                 </div>
                             ) : (
+                                // Ja nav pabeigtu treniņu rāda šo ziņojumu
                                 <p>{t("No_Completed_Yet")}</p>
                             )}
                         </div>

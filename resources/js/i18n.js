@@ -12,7 +12,6 @@ i18n.use(initReactI18next).init({
     },
     lng: savedLang,
     fallbackLng: "en",
-    interpolation: { escapeValue: false },
 });
 
 i18n.on("languageChanged", (lang) => {
