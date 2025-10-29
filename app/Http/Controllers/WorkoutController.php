@@ -23,7 +23,7 @@ class WorkoutController extends Controller
         'user_id' => auth()->id(),
         'name' => $request->name,
         'description' => $request->description,
-        'muscle_groups' => $request->muscle_groups,
+        'muscle_groups' => array_map(fn($g) => strtolower(trim($g)), $request->muscle_groups),
     ]);
 
     return redirect()->route('workouts.edit', $workout->id)

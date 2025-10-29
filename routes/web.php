@@ -28,10 +28,9 @@ Route::get('/locale/{lang}', function ($lang) {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Dashboard
     Route::get('/dashboard', [WorkoutController::class, 'dashboard'])->name('dashboard');
 
-    // Workouts
+    
     Route::get('/my-workouts', [WorkoutController::class, 'index'])->name('workouts.index');
     Route::get('/workouts/create', [WorkoutController::class, 'create'])->name('workouts.create');
     Route::post('/workouts', [WorkoutController::class, 'store'])->name('workouts.store');
@@ -41,17 +40,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/workouts/{workout}', [WorkoutController::class, 'destroy'])->name('workouts.destroy');
     Route::post('/workouts/{workout}/complete', [WorkoutController::class, 'complete'])->name('workouts.complete');
 
-    // Muscle stats
     Route::get('/muscles/stats', [WorkoutController::class, 'mostTrainedMuscles'])
         ->name('muscles.stats');
 
     Route::get('/workouts/{workout}', [WorkoutController::class, 'show'])->name('workouts.show');
 
-    // Show all workouts for a specific user
     Route::get('/workouts/user/{user}', [WorkoutController::class, 'showWorkoutsForUser'])
         ->name('workouts.showUser');
 
-    // Completed workout logs
     Route::get('/workouts/completed/{log}', [WorkoutController::class, 'showCompleted'])
         ->name('workouts.completed');
 

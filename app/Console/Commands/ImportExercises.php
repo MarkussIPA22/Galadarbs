@@ -34,7 +34,6 @@ class ImportExercises extends Command
                 $imagePath = '/' . ltrim(str_replace('/storage/', '', $imagePath), '/');
             }
 
-            // Use firstOrNew to preserve ID
             $exercise = Exercise::firstOrNew(['id' => $ex['id']]);
 
             $exercise->name            = $ex['name'];

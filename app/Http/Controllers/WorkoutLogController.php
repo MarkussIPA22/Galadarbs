@@ -32,7 +32,7 @@ class WorkoutLogController extends Controller
 }
 
 
-    public function updateTasks()
+    public function updateTasks() 
 {
     foreach ($this->exercises as $exercise) {
         $exerciseModel = \App\Models\Exercise::find($exercise['id']);
