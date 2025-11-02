@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia; 
 
 
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', function () {
+    return Inertia::render('LandingPage'); // <— Must match filename exactly!
+});
 
 // Exercises 
 Route::get('/exercises', [ExerciseController::class, 'index'])->name('exercises.index');
