@@ -6,12 +6,7 @@ import path from "path";
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                "resources/css/app.css",
-                "resources/js/app.jsx",
-                "resources/js/Pages/LandingPage.jsx",
-                "resources/js/Pages/StartWorkout.jsx",
-            ],
+            input: ["resources/css/app.css", "resources/js/app.jsx"],
             refresh: true,
         }),
         react(),
@@ -20,8 +15,5 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "resources/js"),
         },
-    },
-    build: {
-        outDir: "public/build",
     },
 });
