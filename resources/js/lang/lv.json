@@ -212,5 +212,8 @@
     "no_description": "Apraksts nav pieejams",
     "Filter by Muscle Group": "Filtrēt pēc muskuļu grupas",
     "Your Task Streaks": "Jūsu uzdevumu sērijas",
-    "No completed tasks yet.": "Vēl nav pabeigtu uzdevumu."
+    "No completed tasks yet.": "Vēl nav pabeigtu uzdevumu.",
+    "Your browser does not support location.": "Jūsu pārlūkprogramma neatbalsta atrašanās vietu.",
+    "Find Nearby Gyms": "Atrast tuvumā esošos sporta zāles",
+    "Loading": "Ielādē"
 }

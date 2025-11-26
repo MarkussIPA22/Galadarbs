@@ -7,13 +7,14 @@ use App\Http\Controllers\WorkoutLogController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia; 
 
 
 Route::get('/', function () {
-    return Inertia::render('LandingPage'); // <— Must match filename exactly!
+    return Inertia::render('LandingPage'); 
 });
 
 // Exercises 
@@ -79,7 +80,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/exercises/{exercise}/edit', [AdminController::class, 'edit'])->name('admin.exercises.edit');
 
-    // Add/delete admin
    Route::post('/admin/exercises', [AdminController::class, 'storeExercise'])
     ->name('admin.exercises.store');
 
@@ -87,6 +87,9 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::put('/admin/exercises/{exercise}', [AdminController::class, 'update'])->name('admin.exercises.update');
     Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroy'])->name('admin.exercises.destroy');
 });
+
+Route::get('/api/nearby-gyms', [GoogleController::class, 'gyms']);
+
 
 
 require __DIR__ . '/auth.php';
