@@ -7,35 +7,45 @@ use Illuminate\Support\Facades\Http;
 
 class GoogleController extends Controller
 {
-    
     public function gyms(Request $request)
     {
         $request->validate([
-            'lat' => 'required|numeric',
-            'lng' => 'required|numeric',
+            'location' => 'required|string',
+            'radius'   => 'nullable',
         ]);
 
-        $lat = $request->lat;
-        $lng = $request->lng;
+        $radius = isset($request->radius) ? (float) $request->radius * 1000 : 10000; 
         $apiKey = env('GOOGLE_SERVER_KEY');
 
-        $url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-        $params = [
+        $geoRes = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
+            'address' => $request->location,
+            'key' => $apiKey,
+        ]);
+
+        if (!$geoRes->successful() || empty($geoRes['results'])) {
+            return response()->json([
+                'error' => 'Could not find that location'
+            ], 422);
+        }
+
+        $coords = $geoRes['results'][0]['geometry']['location'];
+        $lat = $coords['lat'];
+        $lng = $coords['lng'];
+
+        $gymRes = Http::get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', [
             'location' => "$lat,$lng",
-            'radius'   => 10000,
-            'type'     => 'gym',
-            'key'      => $apiKey,
-        ];
+            'radius' => $radius,
+            'type' => 'gym',
+            'key' => $apiKey,
+        ]);
 
-        $response = Http::get($url, $params);
-
-        if ($response->successful()) {
-            return response()->json($response->json());
+        if ($gymRes->successful()) {
+            return response()->json($gymRes->json());
         }
 
         return response()->json([
             'error' => 'Unable to fetch gyms from Google Places API',
-            'details' => $response->body()
+            'details' => $gymRes->body()
         ], 500);
     }
 }

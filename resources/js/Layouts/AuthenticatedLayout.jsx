@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 
-export default function AuthenticatedLayout({ children }) {
+export default function AuthenticatedLayout({ auth, children }) {
     const user = usePage().props.auth.user;
     const { t } = useTranslation();
 

@@ -215,5 +215,13 @@
     "No completed tasks yet.": "Vēl nav pabeigtu uzdevumu.",
     "Your browser does not support location.": "Jūsu pārlūkprogramma neatbalsta atrašanās vietu.",
     "Find Nearby Gyms": "Atrast tuvumā esošos sporta zāles",
-    "Loading": "Ielādē"
+    "Loading": "Ielādē",
+    "Nearby Gyms": "Tuvumā esošās sporta zāles",
+    "Enter city": "Ievadiet pilsētu",
+    "Find Gyms": "Atrast sporta zāles",
+    "Searching...": "Meklē...",
+    "No gyms found at this location": "Šajā vietā netika atrastas sporta zāles",
+    "Error fetching gyms": "Kļūda, iegūstot sporta zāles",
+    "No gyms to display.": "Nav sporta zāļu, ko rādīt.",
+    "View on Map": "Skatīt kartē"
 }

@@ -29,39 +29,6 @@ export default function Sidebar({ auth, isOpen, toggleSidebar }) {
     const linkClasses =
         "p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors";
 
-    const findNearbyGyms = async () => {
-        if (!navigator.geolocation) {
-            alert("Your browser does not support location.");
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-
-            try {
-                const res = await fetch(
-                    `http://127.0.0.1:8000/api/nearby-gyms?lat=${lat}&lng=${lng}`
-                );
-                const data = await res.json();
-                console.log("Gyms API response:", data);
-
-                if (data.results && data.results.length > 0) {
-                    setGyms(data.results);
-                    const names = data.results
-                        .map((gym) => gym.name)
-                        .join("\n");
-                    alert("Nearby gyms:\n" + names);
-                } else {
-                    alert("No gyms found nearby.");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Error fetching gyms.");
-            }
-        });
-    };
-
     return (
         <>
             <aside
@@ -157,13 +124,9 @@ export default function Sidebar({ auth, isOpen, toggleSidebar }) {
                     <Link href="/muscles/stats" className={linkClasses}>
                         {i18n.t("Muscle_Stats")}
                     </Link>
-
-                    <button
-                        onClick={findNearbyGyms}
-                        className={`${linkClasses} bg-green-500 text-white hover:bg-green-600`}
-                    >
+                    <Link href="/gyms" className={linkClasses}>
                         {i18n.t("Find Nearby Gyms")}
-                    </button>
+                    </Link>
 
                     <Link
                         href={route("logout")}

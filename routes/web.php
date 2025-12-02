@@ -90,6 +90,11 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 Route::get('/api/nearby-gyms', [GoogleController::class, 'gyms']);
 
+Route::get('/gyms', function () {
+    return Inertia::render('Gyms/Index');
+})->name('gyms.index');
+Route::get('/gyms/by-address', [GoogleController::class, 'gymsByAddress']);
+
 
 
 require __DIR__ . '/auth.php';
