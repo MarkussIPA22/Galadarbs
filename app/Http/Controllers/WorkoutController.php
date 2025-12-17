@@ -259,36 +259,71 @@ class WorkoutController extends Controller
 }
 
 
-   public function mostTrainedMuscles()
-{
-    $user = auth()->user();
+  public function mostTrainedMuscles()
+    {
+        $user = auth()->user();
+        $locale = app()->getLocale(); 
 
-    $logs = \App\Models\WorkoutLog::where('user_id', $user->id)->get();
+        $logs = \App\Models\WorkoutLog::where('user_id', $user->id)
+            ->orderBy('created_at', 'asc')
+            ->get();
 
-    $muscleCounts = [];
+        $muscleCounts = [];
+        $personalRecords = [];
+        
 
-    foreach ($logs as $log) {
-        foreach ($log->exercises as $ex) {
-            $muscleGroup = $ex['muscle_group'] ?? null;
+        foreach ($logs as $log) {
+            foreach ($log->exercises as $ex) {
+                $exId = $ex['id'] ?? null;
+                
+                $exName = $ex['name'] ?? null;
+                $muscleGroup = $ex['muscle_group'] ?? null;
 
-            if (!$muscleGroup && isset($ex['id'])) {
-                $exercise = \App\Models\Exercise::find($ex['id']);
-                $muscleGroup = $exercise ? $exercise->muscle_group : 'Unknown';
+                if ((!$exName || !$muscleGroup) && $exId) {
+                    if (!isset($exerciseCache[$exId])) {
+                        $exerciseCache[$exId] = \App\Models\Exercise::find($exId);
+                    }
+                    
+                    $exerciseModel = $exerciseCache[$exId];
+
+                    if ($exerciseModel) {
+                        if (!$exName) {
+                            $exName = ($locale === 'lv' && $exerciseModel->name_lv) 
+                                ? $exerciseModel->name_lv 
+                                : $exerciseModel->name;
+                        }
+                        if (!$muscleGroup) {
+                            $muscleGroup = $exerciseModel->muscle_group;
+                        }
+                    }
+                }
+
+                $exName = $exName ?: 'Unknown Exercise';
+                $muscleGroup = $muscleGroup ?: 'Unknown';
+
+                $muscleCounts[$muscleGroup] = ($muscleCounts[$muscleGroup] ?? 0) + 1;
+
+                if (isset($ex['sets']) && is_array($ex['sets'])) {
+                    foreach ($ex['sets'] as $set) {
+                        $weight = floatval($set['weight'] ?? 0);
+                        
+                        if ($weight > 0) {
+                            if (!isset($personalRecords[$exName]) || $weight > $personalRecords[$exName]) {
+                                $personalRecords[$exName] = $weight;
+                            }
+                        }
+                    }
+                }
             }
-
-            if (!$muscleGroup) {
-                $muscleGroup = 'Unknown';
-            }
-
-            $muscleCounts[$muscleGroup] = ($muscleCounts[$muscleGroup] ?? 0) + 1;
         }
+
+        arsort($personalRecords);
+        $topPRs = array_slice($personalRecords, 0, 10);
+
+        return \Inertia\Inertia::render('Profile/MuscleStats', [
+            'auth' => ['user' => $user],
+            'muscleCounts' => $muscleCounts,
+            'personalRecords' => $topPRs,
+        ]);
     }
-
-    return \Inertia\Inertia::render('Profile/MuscleStats', [
-        'auth' => ['user' => $user],
-        'muscleCounts' => $muscleCounts,
-    ]);
-}
-
-
 }

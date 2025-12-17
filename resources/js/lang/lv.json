@@ -223,5 +223,7 @@
     "No gyms found at this location": "Šajā vietā netika atrastas sporta zāles",
     "Error fetching gyms": "Kļūda, iegūstot sporta zāles",
     "No gyms to display.": "Nav sporta zāļu, ko rādīt.",
-    "View on Map": "Skatīt kartē"
+    "View on Map": "Skatīt kartē",
+    "Most Trained Muscles": "Visvairāk trenētie muskuļi",
+    "Personal Records": "Personīgie rekordi"
 }

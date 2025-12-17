@@ -1,69 +1,174 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useTranslation } from 'react-i18next';
-import ResponsiveSidebar from '@/Components/ResponsiveSidebar';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import {
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+} from "recharts";
+import { useTranslation } from "react-i18next";
+import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 
-export default function MuscleStats({ auth, muscleCounts = {} }) {
-  const { t } = useTranslation();
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-gray-900 border border-gray-700 p-3 rounded-lg shadow-lg">
+                <p className="text-white font-medium">
+                    {payload[0].name} :{" "}
+                    <span className="text-blue-400 font-bold">
+                        {payload[0].value}
+                    </span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
-  const data = Object.entries(muscleCounts).map(([muscleKey, count]) => ({
-    name: t(muscleKey.toLowerCase()),
-    value: count,
-  }));
+export default function MuscleStats({
+    auth,
+    muscleCounts = {},
+    personalRecords = {},
+}) {
+    const { t } = useTranslation();
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f7f', '#7fbfff', '#d17fff'];
+    // Pie Chart Data Formatting
+    const pieData = Object.entries(muscleCounts).map(([muscleKey, count]) => ({
+        name: t(muscleKey.toLowerCase()),
+        value: count,
+    }));
 
-  return (
-    <AuthenticatedLayout
-      user={auth}
-      header={<h2 className="text-2xl font-bold">{t('most_trained_muscles')}</h2>}
-    >
-      <Head title={t('workout_stats')} />
+    const COLORS = [
+        "#8884d8",
+        "#82ca9d",
+        "#ffc658",
+        "#ff7f7f",
+        "#7fbfff",
+        "#d17fff",
+        "#ff6b6b",
+        "#4ecdc4",
+    ];
 
-      <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-        <ResponsiveSidebar auth={auth} />
+    return (
+        <AuthenticatedLayout
+            user={auth}
+            header={
+                <h2 className="text-2xl font-bold">{t("workout_stats")}</h2>
+            }
+        >
+            <Head title={t("workout_stats")} />
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          <h3 className="text-lg sm:text-xl font-semibold mb-4">{t('workout_stats')}</h3>
+            <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+                <ResponsiveSidebar auth={auth} />
 
-          <div className="w-full h-64 sm:h-80 md:h-96 lg:h-[400px] bg-white dark:bg-gray-800 rounded-xl shadow flex items-center justify-center mb-6">
-            <ResponsiveContainer width="100%" height="100%">
-          
-              <PieChart>
-                <Pie
-                  data={data}               // dati, kas tiks attēloti diagrammā
-                  cx="50%"                  // X koordināta centra pozīcija (50% = horizontāli centrēta)
-                  cy="50%"                  // Y koordināta centra pozīcija (50% = vertikāli centrēta)
-                  outerRadius="80%"         // ārējais rādiuss, cik daudzdiagramma aizpildīs vietu
-                  label                     // parāda vērtības vai nosaukumus katrā sektorā
-      >
-                   {/* Katram datu ierakstam piešķir krāsu no COLORS masīva */}
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                   {/* Tooltip parāda informāciju, kad pele ir virs sektora */}
-                <Tooltip />
-                 {/* Vertikāli novieto diagrammu lejā ar augstumu 36 px   */}
-                <Legend verticalAlign="bottom" height={36} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+                <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 flex flex-col">
+                            <h3 className="text-lg font-bold mb-6 text-center lg:text-left">
+                                {t("Most Trained Muscles")}
+                            </h3>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 sm:p-6">
-            <h4 className="font-bold mb-2">{t('muscle_groups')}</h4>
-            <ul className="space-y-2">
-              {data.map((item, index) => (
-                <li key={index} className="flex justify-between">
-                  <span>{item.name}</span>
-                  <span className="font-bold">{item.value}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </main>
-      </div>
-    </AuthenticatedLayout>
-  );
+                            <div className="w-full h-72 sm:h-80">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={pieData} // dati, kas tiks attēloti diagrammā
+                                            cx="50%" // X koordināta centra pozīcija (50% = horizontāli centrēta)
+                                            cy="50%" // Y koordināta centra pozīcija (50% = vertikāli centrēta)
+                                            innerRadius={60}
+                                            outerRadius={90} // ārējais rādiuss, cik daudzdiagramma aizpildīs vietu
+                                            paddingAngle={4}
+                                            dataKey="value"
+                                        >
+                                            {pieData.map((entry, index) => (
+                                                <Cell
+                                                    key={`cell-${index}`}
+                                                    fill={
+                                                        COLORS[
+                                                            index %
+                                                                COLORS.length
+                                                        ]
+                                                    }
+                                                />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip content={<CustomTooltip />} />
+                                        <Legend
+                                            verticalAlign="bottom"
+                                            height={36}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+
+                            <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                {pieData.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex justify-between border-b border-gray-100 dark:border-gray-700 py-1"
+                                    >
+                                        <span>{item.name}</span>
+                                        <span className="font-bold text-gray-800 dark:text-gray-200">
+                                            {item.value}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+                            <h3 className="text-lg font-bold mb-6">
+                                {t("Personal Records")}
+                            </h3>
+
+                            <div className="space-y-3 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
+                                {Object.entries(personalRecords).length > 0 ? (
+                                    Object.entries(personalRecords).map(
+                                        ([name, weight], index) => (
+                                            <div
+                                                key={index}
+                                                className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span
+                                                        className={`
+                                        flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold
+                                        ${
+                                            index === 0
+                                                ? "bg-yellow-100 text-yellow-700"
+                                                : index === 1
+                                                ? "bg-gray-200 text-gray-700"
+                                                : index === 2
+                                                ? "bg-orange-100 text-orange-800"
+                                                : "bg-blue-50 text-blue-600"
+                                        }
+                                    `}
+                                                    >
+                                                        {index + 1}
+                                                    </span>
+                                                    <span className="font-medium text-sm sm:text-base">
+                                                        {name}
+                                                    </span>
+                                                </div>
+                                                <span className="font-bold text-green-600 dark:text-green-400 text-lg whitespace-nowrap">
+                                                    {weight} kg
+                                                </span>
+                                            </div>
+                                        )
+                                    )
+                                ) : (
+                                    <div className="text-center py-10 text-gray-400">
+                                        <p className="mb-2">📉</p>
+                                        <p>{t("No Records Found")}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </AuthenticatedLayout>
+    );
 }
