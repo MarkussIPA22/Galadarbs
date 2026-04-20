@@ -40,6 +40,8 @@ class ImportExercises extends Command
             $exercise->name_lv         = $ex['name_lv'] ?? null;
             $exercise->muscle_group    = $ex['muscle_group'] ?? null;
             $exercise->muscle_group_lv = $ex['muscle_group_lv'] ?? null;
+            $exercise->secondary_muscles =$ex ['secondary_muscles'] ?? null;
+            $exercise->secondary_muscles_lv =$ex ['secondary_muscles_lv'] ?? null;
             $exercise->description     = $ex['description'] ?? null;
             $exercise->description_lv  = $ex['description_lv'] ?? null;
             $exercise->image_path      = $imagePath;

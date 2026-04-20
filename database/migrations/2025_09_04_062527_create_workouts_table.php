@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->json('muscle_groups');
+            $table->boolean('is_private')->default(true);
             $table->timestamps();
         });
     }

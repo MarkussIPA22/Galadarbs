@@ -1,12 +1,16 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import { useState } from "react";
-import { Inertia } from "@inertiajs/inertia";
 import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 import { useTranslation } from "react-i18next";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { Transition } from "@headlessui/react";
 
 export default function Edit({
     mustVerifyEmail,
@@ -18,27 +22,50 @@ export default function Edit({
     const [profilePic, setProfilePic] = useState(null);
     const { t } = useTranslation();
 
+    const { data, setData, patch, errors, processing, recentlySuccessful } =
+        useForm({
+            height: user.height ?? "",
+            weight: user.weight ?? "",
+        });
+
     const handleProfilePicChange = (e) => {
         setProfilePic(e.target.files[0]);
     };
 
-    const handleSubmit = (e) => {
+    const handlePicSubmit = (e) => {
         e.preventDefault();
         if (!profilePic) return;
 
         const formData = new FormData();
         formData.append("profile_pic", profilePic);
 
-        Inertia.post(route("profile.update.pic"), formData, {
+        router.post(route("profile.update.pic"), formData, {
             forceFormData: true,
         });
     };
+
+    const handleMetricsSubmit = (e) => {
+        e.preventDefault();
+        patch(route("profile.update"), {
+            preserveScroll: true,
+            onSuccess: () => console.log("Stats updated successfully"),
+        });
+    };
+
+    const heightInMeters = parseFloat(data.height) / 100;
+    const bmi =
+        data.weight && data.height && heightInMeters > 0
+            ? (
+                  parseFloat(data.weight) /
+                  (heightInMeters * heightInMeters)
+              ).toFixed(1)
+            : null;
 
     return (
         <AuthenticatedLayout
             header={
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    Profile
+                    {t("Profile")}
                 </h2>
             }
         >
@@ -67,7 +94,7 @@ export default function Edit({
                             </div>
                         </div>
 
-                        <div className="w-full lg:w-1/3 flex flex-col items-center bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow mb-8 lg:mb-0">
+                        <div className="w-full lg:w-1/3 flex flex-col items-center bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow mb-8 lg:mb-0 h-fit sticky top-6">
                             <h3 className="text-lg font-semibold mb-4">
                                 {t("Profile Picture")}
                             </h3>
@@ -87,22 +114,105 @@ export default function Edit({
                                 type="file"
                                 accept="image/*"
                                 onChange={handleProfilePicChange}
-                                className="mb-4 text-sm"
+                                className="mb-4 text-sm w-full"
                             />
                             <button
-                                onClick={handleSubmit}
-                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full sm:w-auto"
+                                onClick={handlePicSubmit}
+                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full"
                             >
-                                {t("Save")}
+                                {t("Update Picture")}
                             </button>
 
-                            <div className="mt-6 w-full text-center">
+                            <form
+                                onSubmit={handleMetricsSubmit}
+                                className="mt-8 w-full border-t dark:border-gray-700 pt-6"
+                            >
+                                <h4 className="text-lg font-semibold text-blue-500 mb-4 text-center">
+                                    {t("Body Metrics")}
+                                </h4>
+
+                                <div className="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="height"
+                                            value={t("Height (cm)")}
+                                        />
+                                        <TextInput
+                                            id="height"
+                                            type="number"
+                                            className="mt-1 block w-full"
+                                            value={data.height}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "height",
+                                                    e.target.value,
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.height}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                    <div>
+                                        <InputLabel
+                                            htmlFor="weight"
+                                            value={t("Weight (kg)")}
+                                        />
+                                        <TextInput
+                                            id="weight"
+                                            type="number"
+                                            className="mt-1 block w-full"
+                                            value={data.weight}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "weight",
+                                                    e.target.value,
+                                                )
+                                            }
+                                        />
+                                        <InputError
+                                            message={errors.weight}
+                                            className="mt-2"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                    <PrimaryButton disabled={processing}>
+                                        {t("Update Stats")}
+                                    </PrimaryButton>
+
+                                    <Transition
+                                        show={recentlySuccessful}
+                                        enter="transition ease-in-out"
+                                        enterFrom="opacity-0"
+                                        leave="transition ease-in-out"
+                                        leaveTo="opacity-0"
+                                    >
+                                        <p className="text-sm text-green-600">
+                                            {t("Saved.")}
+                                        </p>
+                                    </Transition>
+                                </div>
+
+                                {bmi && (
+                                    <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
+                                        <p className="text-xs uppercase text-gray-500">
+                                            {t("Current BMI")}
+                                        </p>
+                                        <p className="text-2xl font-black text-blue-500">
+                                            {bmi}
+                                        </p>
+                                    </div>
+                                )}
+                            </form>
+
+                            <div className="mt-8 w-full text-center border-t dark:border-gray-700 pt-6">
                                 <h4 className="text-lg font-semibold text-orange-500 mb-3">
                                     {t("Your Task Streaks")}
                                 </h4>
-
                                 <div className="flex flex-wrap justify-center gap-3">
-                                    {console.log(tasks)}
                                     {tasks.length === 0 && (
                                         <p className="text-gray-500 text-sm">
                                             {t("No completed tasks yet.")}
@@ -124,7 +234,7 @@ export default function Edit({
                                                         {task.streak}
                                                     </span>
                                                 </div>
-                                            )
+                                            ),
                                     )}
                                 </div>
                             </div>

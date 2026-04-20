@@ -5,9 +5,13 @@
         "name_lv": "Spiešana guļus",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Tricepsi", "Priekšējie deltveida muskuļi"],
         "description": "A compound exercise that targets the chest, shoulders, and triceps by pressing a barbell away from the chest while lying on a bench.",
         "description_lv": "Kombinēta vingrinājuma krūtīm, pleciem un tricepsiem, nospiežot stieni prom no krūtīm guļus uz soliņa.",
-        "image_path": "/storage/exercises/barbell-bench-press.webp"
+        "image_path": "/storage/exercises/barbell-bench-press.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 2,
@@ -15,9 +19,18 @@
         "name_lv": "Pietupieni",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Hamstrings", "Lower Back", "Core"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Hamstringi",
+            "Muguras lejasdaļa",
+            "Vēdera muskuļi"
+        ],
         "description": "A lower body exercise that primarily targets the quadriceps, hamstrings, and glutes by bending the knees and hips to lower the body, then returning to standing.",
         "description_lv": "Vingrinājums apakšējai ķermeņa daļai, kas galvenokārt trenē kvadricepsus, hamstringus un sēžas muskuļus, saliecot ceļus un gurnus.",
-        "image_path": "/storage/exercises/squat.webp"
+        "image_path": "/storage/exercises/squat.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 3,
@@ -25,9 +38,25 @@
         "name_lv": "Vilkme",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": [
+            "Glutes",
+            "Hamstrings",
+            "Forearms",
+            "Traps",
+            "Core"
+        ],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Hamstringi",
+            "Apakšdelmi",
+            "Trapeces",
+            "Vēdera muskuļi"
+        ],
         "description": "A compound movement that works the back, glutes, and hamstrings by lifting a barbell from the ground to hip level.",
         "description_lv": "Kombinēts vingrinājums mugurai, sēžam un hamstringiem, paceļot stieni no grīdas līdz gurnu līmenim.",
-        "image_path": "/storage/exercises/barbell-deadlift.webp"
+        "image_path": "/storage/exercises/barbell-deadlift.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 4,
@@ -35,9 +64,17 @@
         "name_lv": "Plecu spiešana",
         "muscle_group": "Shoulders",
         "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Triceps", "Upper Chest", "Core"],
+        "secondary_muscles_lv": [
+            "Tricepsi",
+            "Augšējās krūtis",
+            "Vēdera muskuļi"
+        ],
         "description": "An upper body exercise that targets the deltoids by pressing a weight overhead from shoulder height.",
         "description_lv": "Augšējās ķermeņa daļas vingrinājums, kas trenē deltveida muskuļus, spiežot svaru virs galvas no plecu līmeņa.",
-        "image_path": "/storage/exercises/shoulder-press.webp"
+        "image_path": "/storage/exercises/shoulder-press.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 5,
@@ -45,9 +82,18 @@
         "name_lv": "Pievilkšanās",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Core"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Vēdera muskuļi"
+        ],
         "description": "A bodyweight exercise that targets the upper back and biceps by pulling the body upward while hanging from a bar.",
         "description_lv": "Vingrinājums ar savu svaru, kas trenē augšējo muguru un bicepsus, paceļot ķermeni uz augšu, karājoties pie stieņa.",
-        "image_path": "/storage/exercises/pull-up.webp"
+        "image_path": "/storage/exercises/pull-up.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 6,
@@ -55,9 +101,13 @@
         "name_lv": "Bicepsa loks",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
         "description": "An isolation exercise that targets the biceps by curling a weight toward the shoulder.",
         "description_lv": "Izolēts vingrinājums bicepsiem, paceļot svaru uz plecu.",
-        "image_path": "/storage/exercises/biceps-curl.webp"
+        "image_path": "/storage/exercises/biceps-curl.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 7,
@@ -65,9 +115,13 @@
         "name_lv": "Tricepsa dips",
         "muscle_group": "Triceps",
         "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Chest", "Front Deltoids"],
+        "secondary_muscles_lv": ["Krūtis", "Priekšējie deltveida muskuļi"],
         "description": "A bodyweight exercise that targets the triceps by lowering and raising the body using parallel bars or a bench.",
         "description_lv": "Vingrinājums ar savu svaru, kas trenē tricepsus, pazeminot un pacelot ķermeni, izmantojot paralēlas stieņus vai soliņu.",
-        "image_path": "/storage/exercises/dips.webp"
+        "image_path": "/storage/exercises/dips.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 8,
@@ -75,9 +129,18 @@
         "name_lv": "Izklupiens",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Hamstrings", "Calves", "Core"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Hamstringi",
+            "Ikri",
+            "Vēdera muskuļi"
+        ],
         "description": "A lower body exercise that targets the quadriceps, hamstrings, and glutes by stepping forward and lowering the hips.",
         "description_lv": "Apakšējās ķermeņa daļas vingrinājums, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, sperot soli uz priekšu un nolaidot gurnus.",
-        "image_path": "/storage/exercises/lunge.webp"
+        "image_path": "/storage/exercises/lunge.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 9,
@@ -85,9 +148,13 @@
         "name_lv": "Planks",
         "muscle_group": "Core",
         "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Shoulders", "Glutes", "Lower Back"],
+        "secondary_muscles_lv": ["Pleci", "Sēžas muskuļi", "Muguras lejasdaļa"],
         "description": "An isometric core exercise that involves maintaining a push-up position to strengthen the abdominals and lower back.",
         "description_lv": "Izometrisks kodola vingrinājums, kas ietver atspiešanās pozīcijas uzturēšanu, lai stiprinātu vēdera un apakšējās muguras muskuļus.",
-        "image_path": "/storage/exercises/plank.webp"
+        "image_path": "/storage/exercises/plank.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 10,
@@ -95,63 +162,93 @@
         "name_lv": "Lat pulldown",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Apakšdelmi"
+        ],
         "description": "A machine exercise that targets the latissimus dorsi by pulling a bar down toward the chest.",
         "description_lv": "Vingrinājums ar ierīci, kas trenē platās muguras muskuļus, velkot stieni uz krūtīm.",
-        "image_path": "/storage/exercises/pulldown.webp"
+        "image_path": "/storage/exercises/pulldown.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
     },
-
     {
         "id": 11,
         "name": "Incline Bench Press",
-        "name_lv": "Spiešana uz slīpa soliņa",
+        "name_lv": "Spiešana uz slīpa sola",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids", "Triceps"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi", "Tricepsi"],
         "description": "A variation of the bench press performed on an inclined bench to target the upper chest and shoulders.",
         "description_lv": "Bench press variācija uz slīpa soliņa, kas trenē augšējo krūšu daļu un plecus.",
-        "image_path": "/storage/exercises/incline-bench-press.webp"
+        "image_path": "/storage/exercises/incline-bench-press.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
-
     {
         "id": 12,
         "name": "Cable Seated Row",
         "name_lv": "Kabeļu sēdošais vilkums",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Apakšdelmi"
+        ],
         "description": "A machine exercise that targets the middle back by pulling handles toward the torso.",
         "description_lv": "Vingrinājums uz trenažiera, kas trenē vidējo muguras daļu, velkot rokturus pret ķermeni.",
-        "image_path": "/storage/exercises/cable-seated-row.webp"
+        "image_path": "/storage/exercises/cable-seated-row.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
-
     {
         "id": 14,
         "name": "Dumbbell Lateral Raise",
         "name_lv": "Hanteļu sānu pacelšana",
         "muscle_group": "Shoulders",
         "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Traps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Trapeces", "Priekšējie deltveida muskuļi"],
         "description": "An isolation exercise for the lateral deltoids performed with dumbbells raised to the side.",
         "description_lv": "Izolēts vingrinājums sānu deltveida muskuļiem, paceļot hanteles uz sāniem.",
-        "image_path": "/storage/exercises/lateral-raise.webp"
+        "image_path": "/storage/exercises/lateral-raise.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
-
     {
         "id": 15,
         "name": "Leg Press",
         "name_lv": "Kāju spiešana",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Hamstrings", "Calves"],
+        "secondary_muscles_lv": ["Sēžas muskuļi", "Hamstringi", "Ikri"],
         "description": "A machine exercise that targets the quadriceps, hamstrings, and glutes by pushing a weighted platform away with the legs.",
         "description_lv": "Vingrinājums uz trenažiera, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, spiežot svaru platformu ar kājām.",
-        "image_path": "/storage/exercises/leg-press.webp"
+        "image_path": "/storage/exercises/leg-press.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
     },
     {
         "id": 16,
         "name": "Chest Fly",
-        "name_lv": "Krūšu atvērsšana",
+        "name_lv": "Krūšu atvēršana",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi"],
         "description": "An isolation exercise targeting the chest by bringing dumbbells together in an arc while lying on a bench.",
         "description_lv": "Izolēts vingrinājums krūtīm, paceļot hanteles kopā loka kustībā guļus uz soliņa.",
-        "image_path": "/storage/exercises/chest-fly.webp"
+        "image_path": "/storage/exercises/chest-fly.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 17,
@@ -159,19 +256,27 @@
         "name_lv": "Krievu pagrieziens",
         "muscle_group": "Core",
         "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors", "Lower Back"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi", "Muguras lejasdaļa"],
         "description": "A core exercise that targets the obliques by twisting the torso from side to side while seated.",
         "description_lv": "Vēdera vingrinājums, kas trenē slīpos vēdera muskuļus, pagriežot torsu no vienas puses uz otru sēdus.",
-        "image_path": "/storage/exercises/russian-twist.webp"
+        "image_path": "/storage/exercises/russian-twist.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 18,
         "name": "Hamstring Curl",
-        "name_lv": "Paceles cīpslas loks",
+        "name_lv": "Hamstringu loks",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Calves", "Glutes"],
+        "secondary_muscles_lv": ["Ikri", "Sēžas muskuļi"],
         "description": "A machine exercise that isolates the hamstrings by curling the lower legs toward the glutes.",
         "description_lv": "Vingrinājums uz trenažiera, kas izolē hamstringus, liekot apakšējās kājas pret sēžamvietu.",
-        "image_path": "/storage/exercises/hamstring-curl.webp"
+        "image_path": "/storage/exercises/hamstring-curl.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
     },
     {
         "id": 19,
@@ -179,9 +284,13 @@
         "name_lv": "Hanteļu pacelšana pleciem",
         "muscle_group": "Shoulders",
         "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Forearms", "Upper Back"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Muguras augšdaļa"],
         "description": "An isolation exercise targeting the trapezius muscles by shrugging the shoulders while holding dumbbells.",
         "description_lv": "Izolēts vingrinājums trapecveida muskuļiem, paceļot plecus, turot hanteles.",
-        "image_path": "/storage/exercises/shrug.webp"
+        "image_path": "/storage/exercises/shrug.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 20,
@@ -189,9 +298,17 @@
         "name_lv": "Kalnu kāpēji",
         "muscle_group": "Core",
         "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Shoulders", "Hip Flexors", "Quadriceps"],
+        "secondary_muscles_lv": [
+            "Pleci",
+            "Gurnu saliecējmuskuļi",
+            "Kvadricepsi"
+        ],
         "description": "A dynamic bodyweight exercise that engages the core and legs by bringing knees toward the chest in a running motion.",
         "description_lv": "Dinamiska vingrinājums ar savu svaru, kas trenē vēdera un kāju muskuļus, velkot ceļus uz krūtīm skriešanas kustībā.",
-        "image_path": "/storage/exercises/mountain-climber.webp"
+        "image_path": "/storage/exercises/mountain-climber.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 21,
@@ -199,20 +316,27 @@
         "name_lv": "Hanteļu spiešana uz slīpa soliņa",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids", "Triceps"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi", "Tricepsi"],
         "description": "Targets the upper chest and shoulders by pressing dumbbells on an inclined bench.",
         "description_lv": "Vingrinājums augšējām krūtīm un pleciem, paceļot hanteles uz slīpa soliņa.",
-        "image_path": "/storage/exercises/dumbbell-press.webp"
+        "image_path": "/storage/exercises/dumbbell-press.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
-
     {
         "id": 23,
         "name": "Chest Press Machine",
         "name_lv": "Krūšu spiešana uz trenažiera",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Tricepsi", "Priekšējie deltveida muskuļi"],
         "description": "A machine exercise for chest, shoulders, and triceps, pressing the handles forward.",
         "description_lv": "Vingrinājums uz trenažiera, kas trenē krūtis, plecus un tricepsus, spiežot rokturus uz priekšu.",
-        "image_path": "/storage/exercises/chest-press.webp"
+        "image_path": "/storage/exercises/chest-press.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
     },
     {
         "id": 25,
@@ -220,52 +344,90 @@
         "name_lv": "Hanteļu vilkšana virs galvas",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Lats", "Triceps", "Serratus Anterior"],
+        "secondary_muscles_lv": [
+            "Platie muguras muskuļi",
+            "Tricepsi",
+            "Zāģveida muskuļi"
+        ],
         "description": "Targets the chest and lats by pulling a dumbbell from behind the head to above the chest.",
         "description_lv": "Vingrinājums krūtīm un mugurai, paceļot hanteli no galvas aizmugures virs krūtīm.",
-        "image_path": "/storage/exercises/dumbbell-pullover.webp"
+        "image_path": "/storage/exercises/dumbbell-pullover.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
-
     {
         "id": 27,
         "name": "Barbell Row",
-        "name_lv": "Stieņa vilkums uz augšu",
+        "name_lv": "Stieņa vilkums",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": [
+            "Biceps",
+            "Rear Deltoids",
+            "Traps",
+            "Lower Back",
+            "Forearms"
+        ],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Muguras lejasdaļa",
+            "Apakšdelmi"
+        ],
         "description": "Targets the back muscles by rowing a barbell toward the torso while bent over.",
         "description_lv": "Vingrinājums mugurai, vilkot stieni pret ķermeni, saliekoties uz priekšu.",
-        "image_path": "/storage/exercises/barbell-row.webp"
+        "image_path": "/storage/exercises/barbell-row.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
-
     {
         "id": 29,
         "name": "Romanian Deadlift",
         "name_lv": "Rumāņu vilkme",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Hamstrings", "Glutes", "Forearms", "Traps"],
+        "secondary_muscles_lv": [
+            "Hamstringi",
+            "Sēžas muskuļi",
+            "Apakšdelmi",
+            "Trapeces"
+        ],
         "description": "A variation of the deadlift focusing on hamstrings and glutes, keeping the legs mostly straight.",
         "description_lv": "Vilkmes variācija, kas fokusējas uz hamstringiem un sēžas muskuļiem, turot kājas gandrīz taisnas.",
-        "image_path": "/storage/exercises/romanian-deadlift.webp"
+        "image_path": "/storage/exercises/romanian-deadlift.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 30,
         "name": "Standing Calf Raise",
-        "name_lv": "Stāvošā teļu pacelšana",
+        "name_lv": "Stāvošā ikru pacelšana",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Soleus"],
+        "secondary_muscles_lv": ["Kambaļveida muskulis"],
         "description": "Targets the calves by raising the heels while standing.",
-        "description_lv": "Vingrinājums teļu muskuļiem, paceļot papēžus stāvus.",
-        "image_path": "/storage/exercises/calf-raise.webp"
+        "description_lv": "Vingrinājums ikru muskuļiem, paceļot papēžus stāvus.",
+        "image_path": "/storage/exercises/calf-raise.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
     },
-
     {
         "id": 31,
         "name": "Tricep Overhead Extension",
         "name_lv": "Tricepsa spiešana virs galvas",
         "muscle_group": "Triceps",
         "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Shoulders", "Core"],
+        "secondary_muscles_lv": ["Pleci", "Vēdera muskuļi"],
         "description": "An isolation exercise for the triceps performed by extending the arms overhead while holding a dumbbell or bar.",
         "description_lv": "Izolējošs vingrinājums tricepsiem, veicot roku iztaisnošanu virs galvas ar hanteli vai stieni.",
-        "image_path": "/storage/exercises/triceps-extension.webp"
+        "image_path": "/storage/exercises/triceps-extension.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 32,
@@ -273,9 +435,16 @@
         "name_lv": "Hanteļu atspiešana atpakaļ",
         "muscle_group": "Triceps",
         "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Rear Deltoids", "Core"],
+        "secondary_muscles_lv": [
+            "Aizmugurējie deltveida muskuļi",
+            "Vēdera muskuļi"
+        ],
         "description": "A tricep isolation exercise where the upper arm stays still and the forearm extends backward while holding a dumbbell.",
         "description_lv": "Tricepsu izolējošs vingrinājums, kurā augšdelms paliek nekustīgs un apakšdelms tiek iztaisnots atpakaļ ar hanteli.",
-        "image_path": "/storage/exercises/dumbbell-kickback.webp"
+        "image_path": "/storage/exercises/dumbbell-kickback.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 33,
@@ -283,9 +452,13 @@
         "name_lv": "Tricepsa spiešana uz leju ar trosi",
         "muscle_group": "Triceps",
         "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Forearms"],
+        "secondary_muscles_lv": ["Apakšdelmi"],
         "description": "Performed on a cable machine, this exercise targets the triceps by pushing the handle down until the arms are fully extended.",
         "description_lv": "Vingrinājums uz troses trenažiera, kas trenē tricepsus, spiežot rokturi uz leju līdz pilnīgai roku iztaisnošanai.",
-        "image_path": "/storage/exercises/cable-pushdown.webp"
+        "image_path": "/storage/exercises/cable-pushdown.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
     {
         "id": 34,
@@ -293,9 +466,13 @@
         "name_lv": "Bicepsa vilkšana ar trosi",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
         "description": "Performed using a cable machine, this exercise targets the biceps through constant tension while curling the handle upward.",
         "description_lv": "Vingrinājums uz troses trenažiera, kas trenē bicepsus, uzturot pastāvīgu spriedzi, velkot rokturi uz augšu.",
-        "image_path": "/storage/exercises/cable-curl.webp"
+        "image_path": "/storage/exercises/cable-curl.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
     {
         "id": 35,
@@ -303,9 +480,13 @@
         "name_lv": "Hanteļu bicepsa pacelšana uz slīpa soliņa",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
         "description": "Performed seated on an incline bench, this variation stretches the biceps more deeply for greater activation.",
         "description_lv": "Vingrinājums sēdus uz slīpa soliņa, kas vairāk izstiepj un aktivizē bicepsa muskuļus.",
-        "image_path": "/storage/exercises/dumbbell-incline-biceps-curl.webp"
+        "image_path": "/storage/exercises/dumbbell-incline-biceps-curl.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 36,
@@ -313,20 +494,31 @@
         "name_lv": "Stieņa bicepsa pacelšana",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
         "description": "A fundamental bicep exercise performed by curling a barbell upward while keeping the elbows close to the torso.",
         "description_lv": "Klasisks bicepsa vingrinājums, paceļot stieni uz augšu un turot elkoņus tuvu ķermenim.",
-        "image_path": "/storage/exercises/barbell-curl.webp"
+        "image_path": "/storage/exercises/barbell-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
-
     {
         "id": 37,
         "name": "Push-Up",
         "name_lv": "Atspiešanās",
         "muscle_group": "Chest",
         "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids", "Core"],
+        "secondary_muscles_lv": [
+            "Tricepsi",
+            "Priekšējie deltveida muskuļi",
+            "Vēdera muskuļi"
+        ],
         "description": "A bodyweight exercise that targets the chest, shoulders and triceps by pushing the body away from the floor.",
         "description_lv": "Vingrinājums ar savu svaru, kas trenē krūtis, plecus un tricepsus, spiežot ķermeni prom no grīdas.",
-        "image_path": "/storage/exercises/push-up.webp"
+        "image_path": "/storage/exercises/push-up.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 38,
@@ -334,30 +526,62 @@
         "name_lv": "Bulgāru šķēliena pietupieni",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Hamstrings", "Core", "Calves"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Hamstringi",
+            "Vēdera muskuļi",
+            "Ikri"
+        ],
         "description": "A single-leg exercise that targets the quadriceps, hamstrings and glutes by elevating the rear foot and performing a lunge-type movement.",
-        "description_lv": "Vingrinājums vienai kājai, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, paceļot aizmugurējo kāju un veicot izklupiens-tipo kustību.",
-        "image_path": "/storage/exercises/bulgarian-split-squat.webp"
+        "description_lv": "Vingrinājums vienai kājai, kas trenē kvadricepsus, hamstringus un sēžas muskuļus, paceļot aizmugurējo kāju un veicot izklupiens-tipa kustību.",
+        "image_path": "/storage/exercises/bulgarian-split-squat.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
     {
         "id": 39,
         "name": "Cable Face Pull",
-        "name_lv": "Troses „face pull”",
+        "name_lv": "Troses face pull",
         "muscle_group": "Back",
         "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Rear Deltoids", "Traps", "Rotator Cuff"],
+        "secondary_muscles_lv": [
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Rotācijas manšete"
+        ],
         "description": "A cable machine exercise that targets the rear deltoids and upper back by pulling the rope towards the face while keeping the elbows high.",
         "description_lv": "Vingrinājums uz troses trenažiera, kas trenē muguras augšējo daļu un plecu aizmugurējos muskuļus, pievelkot virvi pret seju, turot elkoņus augstu.",
-        "image_path": "/storage/exercises/face-pull.webp"
+        "image_path": "/storage/exercises/face-pull.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
-
     {
         "id": 45,
         "name": "Kettlebell Swing",
         "name_lv": "Kettlebela svārsts",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": [
+            "Hamstrings",
+            "Glutes",
+            "Core",
+            "Lower Back",
+            "Shoulders"
+        ],
+        "secondary_muscles_lv": [
+            "Hamstringi",
+            "Sēžas muskuļi",
+            "Vēdera muskuļi",
+            "Muguras lejasdaļa",
+            "Pleci"
+        ],
         "description": "A dynamic hip-hinge exercise that works the glutes, hamstrings, core, and lower back by swinging a kettlebell between the legs to shoulder height.",
         "description_lv": "Dinamiska hip-hinge kustība, kas trenē sēžas, hamstringus, kodolu un apakšējo muguru, šūpojot kettlebelu starp kājām līdz plecu līmenim.",
-        "image_path": "/storage/exercises/kettlebell-swing.webp"
+        "image_path": "/storage/exercises/kettlebell-swing.webp",
+        "equipment": "Kettlebell",
+        "equipment_lv": "Ketlbels"
     },
     {
         "id": 46,
@@ -365,20 +589,36 @@
         "name_lv": "Pistola pietupiens",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Core", "Calves", "Hip Flexors"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Vēdera muskuļi",
+            "Ikri",
+            "Gurnu saliecējmuskuļi"
+        ],
         "description": "A challenging single-leg squat variation that builds strength, balance and mobility by lowering into a full one-leg squat and rising back up.",
         "description_lv": "Izaicinoša vienas kājas pietupiena variācija, kas attīsta spēku, līdzsvaru un mobilitāti, nolaidot pilnu vienas kājas pietupienu un atgriežoties augšā.",
-        "image_path": "/storage/exercises/pistol-squat.webp"
+        "image_path": "/storage/exercises/pistol-squat.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
     },
-
     {
         "id": 47,
         "name": "Front Squat",
         "name_lv": "Pietupiens ar stieni priekšā",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Core", "Upper Back"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Vēdera muskuļi",
+            "Muguras augšdaļa"
+        ],
         "description": "A squat variation where the barbell is placed on the front of the shoulders, emphasizing quadriceps and core strength.",
         "description_lv": "Pietupiena variācija, kur stienis tiek turēts uz pleciem priekšā, uzsverot kvadricepsu un kodola spēku.",
-        "image_path": "/storage/exercises/front-squat.webp"
+        "image_path": "/storage/exercises/front-squat.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 48,
@@ -386,9 +626,17 @@
         "name_lv": "Gurnu pacelšana",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Hamstrings", "Lower Back", "Core"],
+        "secondary_muscles_lv": [
+            "Hamstringi",
+            "Muguras lejasdaļa",
+            "Vēdera muskuļi"
+        ],
         "description": "A glute-focused exercise performed by thrusting the hips upward with a barbell placed across the pelvis.",
         "description_lv": "Sēžas muskuļiem paredzēts vingrinājums, paceļot gurnus uz augšu ar stieni uz iegurņa.",
-        "image_path": "/storage/exercises/barbell-hip-thrust.webp"
+        "image_path": "/storage/exercises/barbell-hip-thrust.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 49,
@@ -396,20 +644,31 @@
         "name_lv": "Arnolda spiešana",
         "muscle_group": "Shoulders",
         "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Triceps", "Upper Chest", "Core"],
+        "secondary_muscles_lv": [
+            "Tricepsi",
+            "Augšējās krūtis",
+            "Vēdera muskuļi"
+        ],
         "description": "A shoulder press variation invented by Arnold Schwarzenegger that rotates the wrists during the lift to engage all deltoid heads.",
         "description_lv": "Plecu spiešanas variācija, ko izstrādāja Arnolds Švarcenegers, pagriežot plaukstas kustības laikā, lai aktivizētu visus deltveida muskuļus.",
-        "image_path": "/storage/exercises/dumbbell-arnold-press.webp"
+        "image_path": "/storage/exercises/dumbbell-arnold-press.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
-
     {
         "id": 54,
         "name": "Preacher Curl",
         "name_lv": "Bicepsa loks uz slīpa sola",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms"],
+        "secondary_muscles_lv": ["Apakšdelmi"],
         "description": "An isolation biceps exercise performed on a preacher bench, emphasizing controlled range of motion.",
         "description_lv": "Izolēts bicepsa vingrinājums uz slīpa sola, uzsverot kontrolētu kustību amplitūdu.",
-        "image_path": "/storage/exercises/preacher-curl.webp"
+        "image_path": "/storage/exercises/preacher-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 55,
@@ -417,9 +676,13 @@
         "name_lv": "Apgrieztais loks",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Brachialis"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Brahialis"],
         "description": "A curl variation performed with an overhand grip to emphasize the brachioradialis and forearms.",
         "description_lv": "Loka pacelšanas variācija ar pārgrieztu satvērienu, kas uzsver apakšdelma un brachioradialis muskuļus.",
-        "image_path": "/storage/exercises/barbell-reverse-curl.webp"
+        "image_path": "/storage/exercises/barbell-reverse-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     },
     {
         "id": 56,
@@ -427,9 +690,13 @@
         "name_lv": "Āmura loks",
         "muscle_group": "Biceps",
         "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Brachialis"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Brahialis"],
         "description": "A bicep curl variation performed with a neutral grip to target the brachialis and forearms.",
         "description_lv": "Bicepsa loka variācija ar neitrālu satvērienu, kas trenē brachialis un apakšdelmus.",
-        "image_path": "/storage/exercises/dumbbell-hammer-curl.webp"
+        "image_path": "/storage/exercises/dumbbell-hammer-curl.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 57,
@@ -437,9 +704,13 @@
         "name_lv": "Troses sānu pacelšana",
         "muscle_group": "Shoulders",
         "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Traps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Trapeces", "Priekšējie deltveida muskuļi"],
         "description": "An isolation exercise for the shoulders using a cable machine to maintain constant tension.",
         "description_lv": "Plecu izolējošs vingrinājums uz troses trenažiera, kas uztur pastāvīgu spriedzi.",
-        "image_path": "/storage/exercises/cable-lateral-raise.webp"
+        "image_path": "/storage/exercises/cable-lateral-raise.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
     {
         "id": 60,
@@ -447,20 +718,32 @@
         "name_lv": "Troses vēdera preses vingrinājums",
         "muscle_group": "Core",
         "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi"],
         "description": "A cable exercise targeting the abdominals by kneeling and crunching forward against resistance.",
         "description_lv": "Troses trenažiera vingrinājums, kas trenē vēdera presi, noliecoties uz priekšu pret pretestību ceļos.",
-        "image_path": "/storage/exercises/cable-kneeling-crunch.webp"
+        "image_path": "/storage/exercises/cable-kneeling-crunch.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
     },
-
     {
         "id": 71,
         "name": "Goblet Squat",
         "name_lv": "Kauss pietupiens",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": ["Glutes", "Hamstrings", "Core", "Upper Back"],
+        "secondary_muscles_lv": [
+            "Sēžas muskuļi",
+            "Hamstringi",
+            "Vēdera muskuļi",
+            "Muguras augšdaļa"
+        ],
         "description": "A squat variation holding a dumbbell or kettlebell at chest level to target quads, glutes and core stability.",
         "description_lv": "Pietupiena variācija, turot hanteli vai kettlebellu pie krūtīm, lai trenētu kvadricepsus, sēžas muskuļus un kodola stabilitāti.",
-        "image_path": "/storage/exercises/goblet-squat.webp"
+        "image_path": "/storage/exercises/goblet-squat.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
     },
     {
         "id": 72,
@@ -468,8 +751,668 @@
         "name_lv": "Kāju iztaisnošana",
         "muscle_group": "Legs",
         "muscle_group_lv": "Kājas",
+        "secondary_muscles": [],
+        "secondary_muscles_lv": [],
         "description": "A machine isolation exercise targeting the quadriceps by extending the legs from a seated position.",
         "description_lv": "Trenažiera izolējošs vingrinājums kvadricepsiem, iztaisnojot kājas sēdus pozīcijā.",
-        "image_path": "/storage/exercises/leg-extension.webp"
+        "image_path": "/storage/exercises/leg-extension.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 73,
+        "name": "Smith Incline Bench Press",
+        "name_lv": "Smith spiešana uz slīpa sola",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids", "Triceps"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi", "Tricepsi"],
+        "description": "An incline press performed in a Smith machine for stability, targeting the upper chest and triceps.",
+        "description_lv": "Spiešana uz slīpa sola Smith trenažierī stabilitātei, trenējot augšējās krūtis un tricepsus.",
+        "image_path": "/storage/exercises/smith-incline-bench.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 74,
+        "name": "Assisted Pull Up",
+        "name_lv": "Pievilkšanās ar asistentu",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Apakšdelmi"
+        ],
+        "description": "An upper body exercise performed on a machine that provides counterweight to help you pull your body weight up toward a bar.",
+        "description_lv": "Augšdelmu un muguras vingrinājums uz trenažiera, kas nodrošina pretasvaru, lai palīdzētu pacelt savu svaru pie stieņa.",
+        "image_path": "/storage/exercises/assisted-pull-up.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 75,
+        "name": "Band Assisted Chin Up",
+        "name_lv": "Pievilkšanās ar gumijas palīdzību (apakšvērienā)",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Apakšdelmi"
+        ],
+        "description": "A pull-up variation using a resistance band for assistance, focusing on the back and biceps with an underhand grip.",
+        "description_lv": "Pievilkšanās variācija, izmantojot pretestības gumiju, kas palīdz pacelt ķermeni, uzsverot muguras un bicepsu darbību apakšvērienā.",
+        "image_path": "/storage/exercises/band-assisted-chin-up.webp",
+        "equipment": "Resistance Band",
+        "equipment_lv": "Pretestības gumija"
+    },
+    {
+        "id": 76,
+        "name": "Barbell Incline Row",
+        "name_lv": "Stieņa vilkums uz slīpa sola",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Apakšdelmi"
+        ],
+        "description": "A back exercise performed lying face down on an incline bench, pulling a barbell upward to target the lats and rhomboids while supporting the lower back.",
+        "description_lv": "Muguras vingrinājums, ko izpilda guļus ar seju uz leju uz slīpa sola, velkot stieni uz augšu, lai trenētu platos muguras un rombveida muskuļus.",
+        "image_path": "/storage/exercises/barbell-incline-row.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 77,
+        "name": "Cable Rear Pulldown",
+        "name_lv": "Troses vilkums aiz galvas",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Traps", "Rear Deltoids"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Trapeces",
+            "Aizmugurējie deltveida muskuļi"
+        ],
+        "description": "A variation of the lat pulldown where the bar is pulled down behind the head to emphasize the upper back muscles and lats.",
+        "description_lv": "Lat pulldown variācija, kurā stienis tiek vilkts lejā aiz galvas, lai uzsvērtu muguras augšējos muskuļus un platos muguras muskuļus.",
+        "image_path": "/storage/exercises/cable-rear-pulldown.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 78,
+        "name": "Dumbbell Incline Row",
+        "name_lv": "Hanteļu vilkums uz slīpa sola",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Apakšdelmi"
+        ],
+        "description": "An exercise performed lying chest-down on an incline bench, pulling dumbbells toward the hips to isolate the back muscles and prevent swinging.",
+        "description_lv": "Muguras vingrinājums, ko izpilda guļus ar krūtīm pret slīpu solu, velkot hanteles pie gurniem, lai izolētu muguras muskuļus un izvairītos no liekām kustībām.",
+        "image_path": "/storage/exercises/dumbbell-incline-row.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 79,
+        "name": "Lever Seated Row",
+        "name_lv": "Sēdošais vilkums trenažierī",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Rear Deltoids", "Traps", "Forearms"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Apakšdelmi"
+        ],
+        "description": "A machine-based exercise where you sit upright and pull handles toward your torso, providing a controlled path of motion to target the mid-back and lats.",
+        "description_lv": "Vingrinājums trenažierī, kurā sēžot velkat rokturus pie ķermeņa, nodrošinot kontrolētu kustību, lai trenētu muguras vidējo daļu un platos muguras muskuļus.",
+        "image_path": "/storage/exercises/lever-seated-row.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 80,
+        "name": "Reverse Grip Machine Lat Pulldown",
+        "name_lv": "Vilkums trenažierī ar apgriezto tvērienu",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": ["Biceps", "Forearms", "Rear Deltoids"],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Apakšdelmi",
+            "Aizmugurējie deltveida muskuļi"
+        ],
+        "description": "A lat pulldown variation using an underhand grip on a machine, which allows for a greater range of motion and increased biceps activation.",
+        "description_lv": "Vilkums trenažierī, izmantojot apakštvērienu (plaukstas pret sevi), kas nodrošina lielāku kustību amplitūdu un palielina bicepsu iesaisti.",
+        "image_path": "/storage/exercises/reverse-grip-machine-lat-pulldown.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 81,
+        "name": "Smith Bent Over Row",
+        "name_lv": "Vilkums noliecienā Smita mašīnā",
+        "muscle_group": "Back",
+        "muscle_group_lv": "Mugura",
+        "secondary_muscles": [
+            "Biceps",
+            "Rear Deltoids",
+            "Traps",
+            "Lower Back",
+            "Forearms"
+        ],
+        "secondary_muscles_lv": [
+            "Bicepsi",
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Muguras lejasdaļa",
+            "Apakšdelmi"
+        ],
+        "description": "A bent-over row performed using a Smith machine, providing a fixed path of motion that increases stability and targets the lats, traps, and rhomboids.",
+        "description_lv": "Vilkums noliecienā, izmantojot Smita trenažieri, kas nodrošina fiksētu kustības trajektoriju, palielinot stabilitāti un mērķtiecīgi trenējot muguras muskuļus.",
+        "image_path": "/storage/exercises/smith-bent-over-row.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 82,
+        "name": "Barbell Drag Curl",
+        "name_lv": "Stieņa pacelšana 'drag' stilā",
+        "muscle_group": "Biceps",
+        "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms"],
+        "secondary_muscles_lv": ["Apakšdelmi"],
+        "description": "A bicep curl variation where you pull the barbell up along the front of your body by moving your elbows back, isolating the biceps and reducing shoulder assistance.",
+        "description_lv": "Bicepsa loka variācija, kurā stienis tiek vilkts gar ķermeņa priekšpusi, virzot elkoņus atpakaļ, lai izolētu bicepsus un samazinātu plecu iesaisti.",
+        "image_path": "/storage/exercises/barbell-drag-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 83,
+        "name": "Cable Lying Bicep Curl",
+        "name_lv": "Bicepsa saliekšana pie troses guļus",
+        "muscle_group": "Biceps",
+        "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms"],
+        "secondary_muscles_lv": ["Apakšdelmi"],
+        "description": "An isolation exercise performed lying on your back on the floor, using a cable machine to curl the weight toward your forehead, which prevents cheating and keeps constant tension on the biceps.",
+        "description_lv": "Izolējošs vingrinājums, ko izpilda guļus uz muguras, izmantojot trenažiera trosi, lai pievilktu svaru pie pieres, kas novērš 'šūpošanos' un nodrošina pastāvīgu slodzi bicepsam.",
+        "image_path": "/storage/exercises/cable-lying-bicep-curl.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 84,
+        "name": "Cable Overhead Curl",
+        "name_lv": "Bicepsa saliekšana pie augšējām trosēm",
+        "muscle_group": "Biceps",
+        "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
+        "description": "An isolation exercise performed standing between two high pulleys, curling the handles toward your ears to target the bicep peak and improve muscle definition.",
+        "description_lv": "Izolējošs vingrinājums, ko izpilda stāvot starp diviem augšējiem blokiem, pievelkot rokturus pie ausīm, lai trenētu bicepsa virsotni un uzlabotu muskuļu reljefu.",
+        "image_path": "/storage/exercises/cable-overhead-curl.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 85,
+        "name": "Dumbbell Incline Hammer Curl",
+        "name_lv": "Hanteļu 'āmura' pacelšana uz slīpa sola",
+        "muscle_group": "Biceps",
+        "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Brachialis"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Brahialis"],
+        "description": "Performed on an incline bench with a neutral grip (palms facing each other), this exercise stretches the long head of the bicep and targets the brachialis and brachioradialis.",
+        "description_lv": "Izpilda uz slīpa sola ar neitrālu tvērienu (plaukstas vērstas viena pret otru), izstiepjot bicepsa garo galvu un trenējot augšdelma muskuļus.",
+        "image_path": "/storage/exercises/dumbbell-incline-hammer-curl.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 86,
+        "name": "EZ-Barbell Curl",
+        "name_lv": "Bicepsa saliekšana ar EZ stieni",
+        "muscle_group": "Biceps",
+        "muscle_group_lv": "Bicepsi",
+        "secondary_muscles": ["Forearms", "Front Deltoids"],
+        "secondary_muscles_lv": ["Apakšdelmi", "Priekšējie deltveida muskuļi"],
+        "description": "A classic bicep building exercise using a curved bar to reduce wrist strain while allowing for heavy loading of the biceps.",
+        "description_lv": "Klasisks bicepsa vingrinājums, izmantojot līko stieni, kas samazina plaukstas locītavu slodzi un ļauj trenēties ar lielāku svaru.",
+        "image_path": "/storage/exercises/ez-barbell-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 87,
+        "name": "Barbell Decline Bench Press",
+        "name_lv": "Spiešana guļus uz slīpa sola (ar galvu uz leju)",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Tricepsi", "Priekšējie deltveida muskuļi"],
+        "description": "A bench press variation performed on a decline bench to target the lower pectorals and reduce shoulder strain.",
+        "description_lv": "Spiešanas variācija uz sola ar noliekumu uz leju, lai mērķtiecīgi trenētu krūšu apakšējo daļu un samazinātu plecu slodzi.",
+        "image_path": "/storage/exercises/barbell-decline-bench-press.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 88,
+        "name": "Cable Crossover",
+        "name_lv": "Kabeļu krustošana",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi"],
+        "description": "A classic chest isolation move using high pulleys to bring the arms together in a hugging motion, providing constant tension.",
+        "description_lv": "Klasisks krūšu izolācijas vingrinājums, izmantojot augšējos blokus, lai savilktu rokas kopā, nodrošinot pastāvīgu muskuļu sasprindzinājumu.",
+        "image_path": "/storage/exercises/cable-crossover-variation.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 89,
+        "name": "Cable Incline Fly",
+        "name_lv": "Sānu atvilkšana pie trosēm uz slīpa sola",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi"],
+        "description": "Performed on an incline bench, this exercise uses cables to maintain tension on the upper chest throughout the entire range of motion.",
+        "description_lv": "Izpilda uz slīpa sola, izmantojot troses, lai uzturētu slodzi uz krūšu augšējo daļu visā kustības amplitūdā.",
+        "image_path": "/storage/exercises/cable-incline-fly.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 90,
+        "name": "Cable Standing Fly",
+        "name_lv": "Sānu atvilkšana pie trosēm stāvot",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids", "Core"],
+        "secondary_muscles_lv": [
+            "Priekšējie deltveida muskuļi",
+            "Vēdera muskuļi"
+        ],
+        "description": "A standing chest isolation exercise that allows for deep contraction by bringing the hands together at chest level using cables.",
+        "description_lv": "Izolējošs krūšu vingrinājums stāvot, kas ļauj panākt dziļu kontrakciju, savelkot rokas krūšu līmenī.",
+        "image_path": "/storage/exercises/cable-standing-fly.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 91,
+        "name": "Cable Upper Chest Crossovers",
+        "name_lv": "Krustošana pie trosēm krūšu augšdaļai",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi"],
+        "description": "By setting the cables low and pulling upward and inward, this move specifically targets the clavicular head of the pectorals.",
+        "description_lv": "Iestatot troses zemu un velkot tās uz augšu un uz iekšu, šis vingrinājums mērķtiecīgi trenē krūšu augšējo daļu.",
+        "image_path": "/storage/exercises/cable-upper-chest-crossovers.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 92,
+        "name": "Chest Dip",
+        "name_lv": "Krūšu dipsi",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Tricepsi", "Priekšējie deltveida muskuļi"],
+        "description": "A bodyweight exercise performed on parallel bars, leaning forward to shift the focus from the triceps to the lower chest.",
+        "description_lv": "Vingrinājums uz paralēlām stiegrām, liecoties uz priekšu, lai pārvietotu slodzi no tricepsa uz krūšu muskuļu apakšdaļu.",
+        "image_path": "/storage/exercises/chest-dip.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 93,
+        "name": "Dumbbell Decline Bench Press",
+        "name_lv": "Hanteļu spiešana guļus (ar galvu uz leju)",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Triceps", "Front Deltoids"],
+        "secondary_muscles_lv": ["Tricepsi", "Priekšējie deltveida muskuļi"],
+        "description": "Using dumbbells on a decline bench allows for a greater range of motion and independent arm movement to target the lower chest.",
+        "description_lv": "Hanteļu spiešana uz sola ar noliekumu uz leju nodrošina lielāku amplitūdu un neatkarīgu roku kustību krūšu apakšas trenēšanai.",
+        "image_path": "/storage/exercises/dumbbell-decline-bench-press.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 94,
+        "name": "Dumbbell Incline Twist Press",
+        "name_lv": "Hanteļu spiešana ar pagriezienu uz slīpa sola",
+        "muscle_group": "Chest",
+        "muscle_group_lv": "Krūtis",
+        "secondary_muscles": ["Front Deltoids", "Triceps"],
+        "secondary_muscles_lv": ["Priekšējie deltveida muskuļi", "Tricepsi"],
+        "description": "An incline press where dumbbells are rotated from a neutral to an overhand grip during the lift to maximize chest peak contraction.",
+        "description_lv": "Spiešana uz slīpa sola, pagriežot hanteles kustības laikā, lai maksimāli sasprindzinātu krūšu muskuļus augšējā punktā.",
+        "image_path": "/storage/exercises/dumbbell-incline-twist-press.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 95,
+        "name": "Barbell Front Raise",
+        "name_lv": "Stieņa celšana priekšā",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Upper Chest", "Traps"],
+        "secondary_muscles_lv": ["Augšējās krūtis", "Trapeces"],
+        "description": "An isolation exercise that targets the front deltoids by lifting a barbell to shoulder height with straight arms.",
+        "description_lv": "Izolējošs vingrinājums priekšējiem plecu muskuļiem, ceļot stieni ar taisnām rokām līdz plecu līmenim.",
+        "image_path": "/storage/exercises/barbell-front-raise.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 96,
+        "name": "Barbell Standing Military Press",
+        "name_lv": "Armijas spiešana stāvot",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Triceps", "Upper Chest", "Core"],
+        "secondary_muscles_lv": [
+            "Tricepsi",
+            "Augšējās krūtis",
+            "Vēdera muskuļi"
+        ],
+        "description": "A classic strength exercise where a barbell is pressed overhead from the upper chest while standing, engaging the shoulders and core.",
+        "description_lv": "Klasisks spēka vingrinājums, kurā stienis tiek spiests virs galvas no krūšu augšdaļas, nodarbinot plecus un ķermeņa vidusdaļu.",
+        "image_path": "/storage/exercises/barbell-standing-military-press.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 97,
+        "name": "Barbell Upright Row",
+        "name_lv": "Stieņa vilkšana pie zoda",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Traps", "Biceps", "Forearms"],
+        "secondary_muscles_lv": ["Trapeces", "Bicepsi", "Apakšdelmi"],
+        "description": "A vertical pulling movement that targets the lateral deltoids and upper traps by pulling the bar toward the chin.",
+        "description_lv": "Vertikāls vilkšanas vingrinājums sānu plecu muskuļiem un augšējai trapecei, velkot stieni uz augšu līdz zodam.",
+        "image_path": "/storage/exercises/barbell-upright-row.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 98,
+        "name": "Cable Forward Raise",
+        "name_lv": "Roku celšana priekšā pie troses",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Upper Chest"],
+        "secondary_muscles_lv": ["Augšējās krūtis"],
+        "description": "A shoulder isolation move using a cable machine to keep constant tension on the anterior deltoids during the lift.",
+        "description_lv": "Plecu izolācijas vingrinājums pie troses, kas nodrošina pastāvīgu slodzi priekšējiem plecu muskuļiem visas kustības laikā.",
+        "image_path": "/storage/exercises/cable-forward-raise.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 99,
+        "name": "Cable Standing Face Pull",
+        "name_lv": "Sejas vilkšana pie troses",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Rear Deltoids", "Traps", "Rotator Cuff"],
+        "secondary_muscles_lv": [
+            "Aizmugurējie deltveida muskuļi",
+            "Trapeces",
+            "Rotācijas manšete"
+        ],
+        "description": "An exercise focusing on the rear deltoids and upper back by pulling a rope attachment toward the face and rotating the shoulders.",
+        "description_lv": "Vingrinājums plecu aizmugurējai daļai un muguras augšdaļai, velkot troses virvi sejas virzienā un pagriežot plecus.",
+        "image_path": "/storage/exercises/cable-standing-face-pull.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 100,
+        "name": "Dumbbell Rear Fly",
+        "name_lv": "Hanteļu atvilkšana plecu aizmugurei",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Traps", "Upper Back"],
+        "secondary_muscles_lv": ["Trapeces", "Muguras augšdaļa"],
+        "description": "Lifting dumbbells out to the sides while bent over to isolate and strengthen the posterior deltoids.",
+        "description_lv": "Hanteļu celšana uz sāniem noliecienā, lai izolētu un stiprinātu plecu aizmugurējos muskuļus.",
+        "image_path": "/storage/exercises/dumbbell-rear-fly.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 101,
+        "name": "Smith Seated Shoulder Press",
+        "name_lv": "Sēdošā spiešana Smita mašīnā",
+        "muscle_group": "Shoulders",
+        "muscle_group_lv": "Pleci",
+        "secondary_muscles": ["Triceps", "Upper Chest"],
+        "secondary_muscles_lv": ["Tricepsi", "Augšējās krūtis"],
+        "description": "A seated overhead press performed in a Smith machine, providing a fixed path of motion for controlled shoulder isolation.",
+        "description_lv": "Sēdošā spiešana virs galvas Smita trenažierī, kas nodrošina fiksētu kustības trajektoriju kontrolētai plecu trenēšanai.",
+        "image_path": "/storage/exercises/smith-seated-shoulder-press.webp",
+        "equipment": "Machine",
+        "equipment_lv": "Mašīna"
+    },
+    {
+        "id": 102,
+        "name": "Bicycle Crunch",
+        "name_lv": "Velosipēda presīte",
+        "muscle_group": "Core",
+        "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi"],
+        "description": "A dynamic abdominal exercise that targets the obliques and rectus abdominis through a pedaling motion and elbow-to-knee contact.",
+        "description_lv": "Dinamisks vēdera preses vingrinājums, kas trenē slīpos un taisnos muskuļus ar riteņbraukšanas kustību, tuvinot pretējo elkoni celim.",
+        "image_path": "/storage/exercises/bicycle-crunch.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 103,
+        "name": "Hanging Leg Hip Raise",
+        "name_lv": "Kāju un gurnu celšana karājoties",
+        "muscle_group": "Core",
+        "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors", "Forearms"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi", "Apakšdelmi"],
+        "description": "An advanced version of the leg raise where you hang from a bar and lift your legs and pelvis upward to maximize lower ab activation.",
+        "description_lv": "Sarežģītāka kāju celšanas versija karājoties, kurā tiek pacelti arī gurni, lai maksimāli aktivizētu vēdera lejasdaļu.",
+        "image_path": "/storage/exercises/hanging-leg-hip-raise.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 104,
+        "name": "Hollow Hold",
+        "name_lv": "Hollow Hold poza",
+        "muscle_group": "Core",
+        "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors", "Lower Back"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi", "Muguras lejasdaļa"],
+        "description": "An isometric core exercise where you lie on your back and hover your arms and legs while keeping your lower back pressed firmly into the floor.",
+        "description_lv": "Izometrisks vingrinājums, kurā guļot uz muguras tiek paceltas rokas un kājas, stingri spiežot muguras lejasdaļu pie grīdas.",
+        "image_path": "/storage/exercises/hollow-hold.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 105,
+        "name": "Side Plank",
+        "name_lv": "Sānu planks",
+        "muscle_group": "Core",
+        "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Shoulders", "Hip Abductors"],
+        "secondary_muscles_lv": ["Pleci", "Gurnu atvelcējmuskuļi"],
+        "description": "A stability exercise held on one arm to target the obliques and improve lateral core strength.",
+        "description_lv": "Stabilitātes vingrinājums uz vienas rokas, lai trenētu slīpos vēdera muskuļus un uzlabotu sānu izturību.",
+        "image_path": "/storage/exercises/side-plank.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 106,
+        "name": "V Up",
+        "name_lv": "V-veida pievilkšanās",
+        "muscle_group": "Core",
+        "muscle_group_lv": "Vēders",
+        "secondary_muscles": ["Hip Flexors"],
+        "secondary_muscles_lv": ["Gurnu saliecējmuskuļi"],
+        "description": "An explosive movement where you simultaneously lift your torso and legs to touch your toes, forming a V-shape with your body.",
+        "description_lv": "Eksplozīva kustība, kurā vienlaicīgi tiek celts torss un kājas, lai pieskartos pirkstgaliem, izveidojot ķermeņa V-veidu.",
+        "image_path": "/storage/exercises/v-up.webp",
+        "equipment": "Bodyweight",
+        "equipment_lv": "Ķermeņa svars"
+    },
+    {
+        "id": 107,
+        "name": "Cable Kickback",
+        "name_lv": "Tricepsa atpakaļvilce pie troses",
+        "muscle_group": "Triceps",
+        "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Core"],
+        "secondary_muscles_lv": ["Vēdera muskuļi"],
+        "description": "An isolation exercise using a cable machine to extend the arm backward, specifically targeting the tricep's lateral head.",
+        "description_lv": "Izolējošs vingrinājums pie troses, atliecot roku atpakaļ, lai mērķtiecīgi trenētu tricepsa sānu galvu.",
+        "image_path": "/storage/exercises/cable-kickback.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 108,
+        "name": "Cable Reverse Grip Pushdown",
+        "name_lv": "Tricepsa noliekšana ar apgriezto tvērienu",
+        "muscle_group": "Triceps",
+        "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Forearms"],
+        "secondary_muscles_lv": ["Apakšdelmi"],
+        "description": "A pushdown variation using an underhand grip to emphasize the medial head of the triceps while reducing wrist strain.",
+        "description_lv": "Tricepsa noliekšana, izmantojot apakštvērienu, lai uzsvērtu tricepsa mediālo galvu un samazinātu plaukstu slodzi.",
+        "image_path": "/storage/exercises/cable-reverse-grip-pushdown.webp",
+        "equipment": "Cable",
+        "equipment_lv": "Trose"
+    },
+    {
+        "id": 109,
+        "name": "Dumbbell Seated Tricep Extensions",
+        "name_lv": "Hanteles spiešana virs galvas sēdus",
+        "muscle_group": "Triceps",
+        "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Core"],
+        "secondary_muscles_lv": ["Vēdera muskuļi"],
+        "description": "Sitting upright and lowering a dumbbell behind the head to provide a deep stretch and target the long head of the triceps.",
+        "description_lv": "Sēžot taisni un nolaižot hanteli aiz galvas, lai nodrošinātu dziļu iestiepumu un trenētu tricepsa garo galvu.",
+        "image_path": "/storage/exercises/dumbbell-seated-tricep-extensions.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 110,
+        "name": "EZ Bar Standing Tricep Extensions",
+        "name_lv": "EZ stieņa spiešana virs galvas stāvot",
+        "muscle_group": "Triceps",
+        "muscle_group_lv": "Tricepsi",
+        "secondary_muscles": ["Core"],
+        "secondary_muscles_lv": ["Vēdera muskuļi"],
+        "description": "Performed standing, this overhead extension with a curved bar challenges core stability while isolating the triceps.",
+        "description_lv": "Izpilda stāvot – spiešana virs galvas ar līko stieni, kas izaicina ķermeņa stabilitāti un izolē tricepsus.",
+        "image_path": "/storage/exercises/ez-bar-standing-tricep-extensions.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 111,
+        "name": "Dumbbell Finger Curls",
+        "name_lv": "Hanteļu rullēšana pirkstos",
+        "muscle_group": "Forearms",
+        "muscle_group_lv": "Apakšdelmi",
+        "secondary_muscles": [],
+        "secondary_muscles_lv": [],
+        "description": "An exercise targeting the finger flexors by letting the dumbbells roll down to the fingertips and then curling them back into the palm.",
+        "description_lv": "Vingrinājums pirkstu saliecējmuskuļiem – hanteles tiek norullētas līdz pirkstu galiem un tad ievilktas atpakaļ plaukstā.",
+        "image_path": "/storage/exercises/dumbbell-finger-curls.webp",
+        "equipment": "Dumbbell",
+        "equipment_lv": "Hantele"
+    },
+    {
+        "id": 112,
+        "name": "Barbell Wrist Curls",
+        "name_lv": "Plaukstu locīšana ar stieni",
+        "muscle_group": "Forearms",
+        "muscle_group_lv": "Apakšdelmi",
+        "secondary_muscles": [],
+        "secondary_muscles_lv": [],
+        "description": "Targets the forearm flexors. Rest your forearms on a bench and curl the barbell upward using only your wrists.",
+        "description_lv": "Trenē apakšdelmu saliecējmuskuļus. Apakšdelmi tiek atbalstīti pret solu, un stienis tiek celts uz augšu, izmantojot tikai plaukstas locītavas.",
+        "image_path": "/storage/exercises/barbell-wrist-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 113,
+        "name": "Barbell Reverse Wrist Curls",
+        "name_lv": "Plaukstu locīšana ar stieni pretējā tvērienā",
+        "muscle_group": "Forearms",
+        "muscle_group_lv": "Apakšdelmi",
+        "secondary_muscles": [],
+        "secondary_muscles_lv": [],
+        "description": "Focuses on the forearm extensors. With palms facing down, lift the back of your hands toward your ceiling.",
+        "description_lv": "Fokuss uz apakšdelmu atliecējmuskuļiem. Ar plaukstām uz leju, paceliet plaukstu virspuses griestu virzienā.",
+        "image_path": "/storage/exercises/barbell-reverse-wrist-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 114,
+        "name": "Barbell Reverse Curl",
+        "name_lv": "Bicepsa saliekšana ar stieni virstvērienā",
+        "muscle_group": "Forearms",
+        "muscle_group_lv": "Apakšdelmi",
+        "secondary_muscles": ["Biceps", "Brachialis"],
+        "secondary_muscles_lv": ["Bicepsi", "Brahialis"],
+        "description": "A standing curl with an overhand grip that builds both the brachioradialis and the biceps.",
+        "description_lv": "Saliekšana stāvus ar virstvērienu (plaukstas uz leju), kas trenē gan augšdelma-apakšdelma muskuli, gan bicepsi.",
+        "image_path": "/storage/exercises/barbell-reverse-curl.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
+    },
+    {
+        "id": 115,
+        "name": "Barbell Palms-Down Wrist Curl Over Bench",
+        "name_lv": "Plaukstu locīšana ar stieni pāri solam (virstvēriens)",
+        "muscle_group": "Forearms",
+        "muscle_group_lv": "Apakšdelmi",
+        "secondary_muscles": [],
+        "secondary_muscles_lv": [],
+        "description": "Performed by hanging the wrists over the edge of a bench with palms down to isolate the forearm extensors.",
+        "description_lv": "Izpilda, turot plaukstas locītavas pāri sola malai ar plaukstām uz leju, lai izolētu apakšdelmu atliecējmuskuļus.",
+        "image_path": "/storage/exercises/barbell-palms-down-wrist-curl-over-a-bench.webp",
+        "equipment": "Barbell",
+        "equipment_lv": "Stienis"
     }
 ]

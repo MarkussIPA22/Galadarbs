@@ -13,6 +13,7 @@ export default function PreviousSets({ prevSets, t }) {
           key={idx}
           className="flex justify-between bg-gray-200 dark:bg-gray-700 p-2 rounded mb-2 text-sm"
         >
+        
           <span>{t('set')} {idx + 1}</span>
           <span>{set.reps} {t('reps')} @ {set.weight} kg</span>
         </div>

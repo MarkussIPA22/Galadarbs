@@ -2,7 +2,6 @@ import React from "react";
 import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
-import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 
 export default function Show({
     auth,
@@ -16,214 +15,198 @@ export default function Show({
 
     const totalStreak = tasks.reduce(
         (sum, task) => sum + (task.streak || 0),
-        0
+        0,
     );
 
     return (
-        <AuthenticatedLayout
-            auth={auth}
-            header={`${profileUser.name}'s ${t("Profile")}`}
-        >
+        <AuthenticatedLayout auth={auth}>
             <Head title={`${profileUser.name}'s ${t("Profile")}`} />
 
-            <div className="flex min-h-screen">
-                <ResponsiveSidebar auth={auth} />
+            <div className="min-h-screen bg-[#f8f9fa] dark:bg-zinc-950 transition-colors duration-300">
+                <main className="max-w-5xl mx-auto p-6 lg:p-10">
+                    <nav className="flex items-center justify-between mb-8">
+                        <Link
+                            href={route("users.index")}
+                            className="text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                        >
+                            ← {t("Back to Users")}
+                        </Link>
+                    </nav>
 
-                <div className="flex-1 p-6 lg:p-8">
-                    <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between">
-                        <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-                            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden bg-gradient-to-br from-indigo-500 to-purple-600">
-                                {/* Ja lietotājam ir profila bilde, rādām to */}
+                    <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+                        <div className="relative">
+                            <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-3xl overflow-hidden bg-zinc-200 dark:bg-zinc-900 border-2 border-white dark:border-zinc-800 flex items-center justify-center shadow-2xl">
                                 {profileUser.profile_pic_url ? (
                                     <img
                                         src={profileUser.profile_pic_url}
-                                        alt={`${profileUser.name} profile`}
+                                        alt={profileUser.name}
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
-                                    // Ja bilde nav, rāda vārda pirmo burtu
-                                    <span className="text-2xl font-bold text-white">
+                                    <div className="w-full h-full bg-zinc-900 dark:bg-zinc-100 flex items-center justify-center text-3xl font-black text-white dark:text-zinc-900">
                                         {profileUser.name
                                             .charAt(0)
                                             .toUpperCase()}
-                                    </span>
+                                    </div>
                                 )}
                             </div>
 
-                            <div className="flex flex-col">
-                                <h1 className="text-3xl lg:text-4xl font-bold text-emerald-500 dark:text-white flex items-center gap-2">
-                                    {/* Lietotāja vārds */}
-                                    {profileUser.name}{" "}
-                                    {/* Ja ir streaks parādā liesmas ikonu un ciparu (dienas skaitu) */}
-                                    {totalStreak > 0 && (
-                                        <span className="flex items-center gap-1">
-                                            <img
-                                                src="/streak/fire.png"
-                                                alt="Streak"
-                                                className="w-8 h-8 animate-pulse"
-                                            />
-                                            <span className="text-orange-500 font-semibold text-lg">
-                                                {totalStreak}
-                                            </span>
-                                        </span>
-                                    )}
+                            {totalStreak > 0 && (
+                                <div className="absolute -top-2 -right-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5">
+                                    <span className="text-orange-500 text-sm">
+                                        🔥
+                                    </span>
+                                    <span className="text-xs font-black text-zinc-900 dark:text-white">
+                                        {totalStreak}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="text-center md:text-left">
+                            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
+                                <h1 className="text-4xl lg:text-5xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter leading-none">
+                                    {profileUser.name}
                                 </h1>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm">
-                                    {t("Profile")}
+
+                                {auth.user.id !== profileUser.id && (
+                                    <Link
+                                        href={route(
+                                            "chat.with",
+                                            profileUser.id,
+                                        )}
+                                        className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-[#bef264] hover:bg-[#a3d942] text-zinc-900 text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-md"
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="w-4 h-4"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                        >
+                                            <path d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.138 6.337.408 1.108.145 1.913 1.101 1.913 2.215v6.181c0 1.114-.805 2.07-1.913 2.215-1.314.17-2.654.292-4.013.364L10 21l-3.66-4.964c-1.359-.072-2.699-.193-4.013-.364C1.218 15.527.413 14.571.413 13.457V7.276c0-1.114.805-2.07 1.913-2.215z" />
+                                        </svg>
+                                        {t("Message")}
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 lg:gap-8 mb-12">
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-2xl shadow-sm relative overflow-hidden">
+                            <div className="relative z-10">
+                                <p className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2">
+                                    {t("Workouts Created")}
+                                </p>
+                                <p className="text-5xl lg:text-6xl font-black text-zinc-900 dark:text-white tracking-tighter">
+                                    {workouts?.length || 0}
+                                </p>
+                            </div>
+                            <div className="absolute top-0 right-0 p-4 opacity-10 dark:opacity-5"></div>
+                        </div>
+
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-2xl shadow-sm relative overflow-hidden">
+                            <div className="relative z-10">
+                                <p className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2">
+                                    {t("Completed_Workouts")}
+                                </p>
+                                <p className="text-5xl lg:text-6xl font-black text-zinc-900 dark:text-white tracking-tighter">
+                                    {completedLogs?.length || 0}
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                        {/* Kopējie izveidotie treniņi */}
-                        <div className="relative bg-gradient-to-br from-white to-blue-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg border border-white/20 dark:border-slate-700/50">
-                            <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                                {t("Workouts_Created")}
-                            </p>
-                            <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
-                                {workouts?.length || 0}
-                            </p>
-                        </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        <div>
+                            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mb-6 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-zinc-900 dark:bg-zinc-100"></span>
+                                {t("All Workouts")}
+                            </h3>
 
-                        {/* Kopējie pabeigtie treniņi */}
-                        <div className="relative bg-gradient-to-br from-white to-emerald-50 dark:from-slate-800 dark:to-slate-800/50 p-6 rounded-2xl shadow-lg border border-white/20 dark:border-slate-700/50">
-                            <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-                                {t("Completed_Workouts")}
-                            </p>
-                            <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
-                                {completedLogs?.length || 0}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Visi treniņi */}
-                        <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
-                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
-                                {t("All_Workouts")}
-                            </h2>
-
-                            {/* Ja ir treniņi, tos parāda sarakstā */}
-                            {workouts?.length > 0 ? (
-                                <div className="space-y-3 max-h-96 overflow-y-auto">
-                                    {workouts.map((workout) =>
+                            <div className="space-y-3">
+                                {workouts?.length > 0 ? (
+                                    workouts.map((workout) =>
                                         workout ? (
-                                            // Katrs treniņš ir saite uz detalizētu skatu
                                             <Link
                                                 key={workout.id}
                                                 href={route(
                                                     "workouts.show",
-                                                    workout.id
+                                                    workout.id,
                                                 )}
-                                                className="block p-4 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50 hover:shadow-md hover:scale-[1.02] transition-all duration-200 backdrop-blur-sm"
+                                                className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
                                             >
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center space-x-3">
-                                                        <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full shadow-sm"></div>
-                                                        <div>
-                                                            <h3 className="font-semibold text-slate-900 dark:text-white">
-                                                                {workout.name}
-                                                            </h3>
-                                                            <p className="text-sm text-slate-500 dark:text-slate-400">
-                                                                Workout Plan
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                                <div className="flex-1 overflow-hidden">
+                                                    <h4 className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate">
+                                                        {workout.name}
+                                                    </h4>
                                                 </div>
                                             </Link>
-                                        ) : (
-                                            // Ja treniņš ir izdzēsts, rāda atzīmi par to
-                                            <div
-                                                key={Math.random()}
-                                                className="block p-4 bg-gray-200/50 dark:bg-gray-700/50 rounded-xl border border-gray-300/50 dark:border-gray-600/50"
-                                            >
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                    Deleted Workout
-                                                </p>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                            ) : (
-                                <p>{t("No_Workouts_Yet")}</p>
-                            )}
+                                        ) : null,
+                                    )
+                                ) : (
+                                    <div className="p-8 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-center">
+                                        <p className="text-xs text-zinc-500 font-bold uppercase">
+                                            {t("No active plans")}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
-                        {/* Pēdējie pabeigtie treniņi */}
-                        <div className="bg-white/70 backdrop-blur-sm dark:bg-slate-800/70 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/50 p-6">
-                            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
-                                {t("Recent_Completed")}
-                            </h2>
+                        {/* Recent Completed */}
+                        <div>
+                            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mb-6 flex items-center gap-2">
+                                <span className="w-1.5 h-4 bg-[#bef264]"></span>
+                                {t("Completed_Workouts")}
+                            </h3>
 
-                            {/* Ja ir pabeigti treniņi, rāda tos */}
-                            {completedLogs?.length > 0 ? (
-                                <div className="space-y-3 max-h-96 overflow-y-auto">
-                                    {getRecentWorkouts().map((log) =>
+                            <div className="space-y-3">
+                                {completedLogs?.length > 0 ? (
+                                    getRecentWorkouts().map((log) =>
                                         log.workout ? (
-                                            // Saite uz pabeigtā treniņa lapu
                                             <Link
                                                 key={log.id}
                                                 href={route(
                                                     "workouts.show",
-                                                    log.workout.id
+                                                    log.workout.id,
                                                 )}
-                                                className="block p-4 bg-gradient-to-r from-slate-50/80 to-white/80 dark:from-slate-700/50 dark:to-slate-600/50 rounded-xl border border-slate-200/50 dark:border-slate-600/50 hover:shadow-md transition-all duration-200 backdrop-blur-sm"
+                                                className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
                                             >
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center space-x-3">
-                                                        <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full shadow-sm"></div>
-                                                        <div className="flex-1">
-                                                            <span className="font-semibold text-slate-900 dark:text-white">
-                                                                {
-                                                                    log.workout
-                                                                        .name
-                                                                }
-                                                            </span>
-                                                            <p className="text-sm text-slate-500 dark:text-slate-400">
-                                                                Completed
-                                                                Workout
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Datums, kad treniņš pabeigts */}
-                                                    <div className="text-right">
-                                                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                                                <div className="flex items-center gap-4 overflow-hidden">
+                                                    <div className="w-2 h-2 rounded-full bg-[#bef264] animate-pulse"></div>
+                                                    <div className="overflow-hidden">
+                                                        <span className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate block">
+                                                            {log.workout.name}
+                                                        </span>
+                                                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
                                                             {new Date(
-                                                                log.created_at
-                                                            ).toLocaleDateString()}
+                                                                log.created_at,
+                                                            ).toLocaleDateString(
+                                                                "lv-LV",
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        ) : (
-                                            // Ja treniņš ir izdzēsts, rāda kā “Deleted Workout”
-                                            <div
-                                                key={log.id}
-                                                className="block p-4 bg-gray-200/50 dark:bg-gray-700/50 rounded-xl border border-gray-300/50 dark:border-gray-600/50"
-                                            >
-                                                <div className="flex-1">
-                                                    <span className="font-semibold text-gray-500 dark:text-gray-400">
-                                                        Deleted Workout
+                                                <div className="bg-zinc-50 dark:bg-zinc-800 px-3 py-1 rounded-md">
+                                                    <span className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
+                                                        Done
                                                     </span>
-
-                                                    <p className="text-sm text-gray-400 dark:text-gray-500">
-                                                        {/* Pabeigts treniņš */}
-                                                        Completed Workout
-                                                    </p>
                                                 </div>
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                            ) : (
-                                // Ja nav pabeigtu treniņu rāda šo ziņojumu
-                                <p>{t("No_Completed_Yet")}</p>
-                            )}
+                                            </Link>
+                                        ) : null,
+                                    )
+                                ) : (
+                                    <div className="p-8 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-center">
+                                        <p className="text-xs text-zinc-500 font-bold uppercase">
+                                            {t("No workouts completed")}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
+                </main>
             </div>
         </AuthenticatedLayout>
     );

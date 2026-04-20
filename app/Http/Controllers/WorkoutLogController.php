@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\WorkoutLog;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Http;
 
 
 class WorkoutLogController extends Controller
@@ -53,9 +54,31 @@ class WorkoutLogController extends Controller
             }
         }
     }
+
+}
+
+public function analyzeLatest()
+{
+    $log = auth()->user()->workoutLogs()->latest()->first();
+
+    if (!$log || !isset($log->exercises)) {
+        return response()->json(['analysis' => 'No workout data found to analyze.']);
+    }
+
+    $exercises = is_array($log->exercises) ? $log->exercises : json_decode($log->exercises, true);
+
+    $stats = collect($exercises)->map(function ($ex) {
+        $sets = collect($ex['sets'] ?? []);
+        $maxWeight = $sets->max('weight') ?? 0;
+        $count = $sets->count();
+        return "{$ex['name']} ({$count} sets, max {$maxWeight}kg)";
+    })->implode(', ');
+
+    
+}
 }
 
 
 
 
-}
+

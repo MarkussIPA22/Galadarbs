@@ -17,6 +17,7 @@ class WorkoutController extends Controller
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
         'muscle_groups' => 'required|array|min:1',
+        'is_private'=> 'boolean'
     ]);
 
     $workout = Workout::create([
@@ -24,6 +25,7 @@ class WorkoutController extends Controller
         'name' => $request->name,
         'description' => $request->description,
         'muscle_groups' => array_map(fn($g) => strtolower(trim($g)), $request->muscle_groups),
+        'is_private' =>$request->boolean('is_private'),
     ]);
 
     return redirect()->route('workouts.edit', $workout->id)
@@ -41,14 +43,14 @@ class WorkoutController extends Controller
         $locale = app()->getLocale();
 
         $muscleTranslations = [
-            'chest' => 'Krūšu muskuļi',
-            'back' => 'Muguras muskuļi',
+            'chest' => 'Krūtis',
+            'back' => 'Mugura',
             'shoulders' => 'Pleci',
             'biceps' => 'Bicepsi',
             'triceps' => 'Tricepsi',
             'legs' => 'Kājas',
-            'abs' => 'Vēdera muskuļi',
-            'full body' => 'Vesels ķermenis',
+            'core' => 'Vēdera muskuļi',
+            'forearms' => 'Apakšdelmi',
         ];
 
         $workouts = Workout::where('user_id', auth()->id())->get()->map(function ($workout) use ($locale, $muscleTranslations) {

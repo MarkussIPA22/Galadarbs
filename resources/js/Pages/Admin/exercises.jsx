@@ -32,6 +32,7 @@ export default function AdminPanel({
         "Triceps",
         "Shoulders",
         "Core",
+        "Forearms",
     ];
     const muscleGroupsLv = [
         "Mugura",
@@ -41,6 +42,7 @@ export default function AdminPanel({
         "Tricepsi",
         "Pleci",
         "Vēders",
+        "Apakšdelmi",
     ];
 
     const enToLvMap = {
@@ -51,6 +53,7 @@ export default function AdminPanel({
         Triceps: "Tricepsi",
         Shoulders: "Pleci",
         Core: "Vēders",
+        Forearms: "Apakšdelmi",
     };
 
     const lvToEnMap = {
@@ -61,6 +64,7 @@ export default function AdminPanel({
         Tricepsi: "Triceps",
         Pleci: "Shoulders",
         Vēders: "Core",
+        Apakšdelmi: "Forearms",
     };
 
     useEffect(() => {
@@ -164,7 +168,7 @@ export default function AdminPanel({
                                     placeholder={
                                         currentLang === "lv"
                                             ? t(
-                                                  "Exercise name placeholder (EN)"
+                                                  "Exercise name placeholder (EN)",
                                               )
                                             : "e.g., Bench Press"
                                     }
@@ -184,7 +188,7 @@ export default function AdminPanel({
                                     placeholder={
                                         currentLang === "lv"
                                             ? t(
-                                                  "Exercise name placeholder (LV)"
+                                                  "Exercise name placeholder (LV)",
                                               )
                                             : "e.g., Spēka presēšana"
                                     }
@@ -385,10 +389,10 @@ export default function AdminPanel({
                                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-full">
                                                         {currentLang === "lv"
                                                             ? t(
-                                                                  ex.muscle_group_lv
+                                                                  ex.muscle_group_lv,
                                                               )
                                                             : t(
-                                                                  ex.muscle_group
+                                                                  ex.muscle_group,
                                                               )}
                                                     </span>
                                                 </div>
@@ -437,7 +441,7 @@ export default function AdminPanel({
                                 </p>
                                 <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">
                                     {t(
-                                        "Add your first exercise to get started!"
+                                        "Add your first exercise to get started!",
                                     )}
                                 </p>
                             </div>

@@ -1,59 +1,43 @@
-import { useState, useEffect } from "react";
-import { usePage } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import Sidebar from "@/Components/Sidebar";
 
 export default function AuthenticatedLayout({ auth, children }) {
-    const user = usePage().props.auth.user;
-    const { t } = useTranslation();
-
-    const [theme, setTheme] = useState(
-        localStorage.getItem("theme") ||
-            (window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "dark"
-                : "light")
-    );
-
-    useEffect(() => {
-        document.documentElement.classList.toggle("dark", theme === "dark");
-        localStorage.setItem("theme", theme);
-    }, [theme]);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     return (
-        <div className={theme === "dark" ? "dark" : ""}>
-            <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
-                <div className="p-4 flex justify-end">
-                    <label
-                        htmlFor="dark-mode-toggle"
-                        className="flex items-center cursor-pointer"
-                    >
-                        <div className="relative">
-                            <input
-                                id="dark-mode-toggle"
-                                type="checkbox"
-                                className="sr-only"
-                                checked={theme === "dark"}
-                                onChange={() =>
-                                    setTheme(
-                                        theme === "dark" ? "light" : "dark"
-                                    )
-                                }
-                            />
-                            <div className="w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full shadow-inner transition-colors"></div>
-                            <div
-                                className={`dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 top-0 transition-transform ${
-                                    theme === "dark"
-                                        ? "translate-x-full bg-indigo-500"
-                                        : ""
-                                }`}
-                            ></div>
-                        </div>
-                        <span className="ml-3 text-gray-700 dark:text-gray-200 font-medium">
-                            {theme === "dark" ? t("Dark") : t("Light")}
-                        </span>
-                    </label>
-                </div>
+        <div className="min-h-screen bg-white dark:bg-zinc-950 transition-colors duration-200">
+            <div className="flex min-h-screen">
+                <Sidebar
+                    auth={auth}
+                    isOpen={isSidebarOpen}
+                    toggleSidebar={() => setIsSidebarOpen(false)}
+                />
 
-                <main>{children}</main>
+                <div className="flex-1 flex flex-col min-w-0">
+                    <header className="md:hidden p-4 flex justify-between items-center bg-white dark:bg-[#09090b] border-b border-zinc-200 dark:border-zinc-800">
+                        <div className="w-8 h-8 rounded bg-lime-400 flex items-center justify-center font-black text-black"></div>
+                        <button
+                            onClick={() => setIsSidebarOpen(true)}
+                            className="text-zinc-600 dark:text-white"
+                        >
+                            <svg
+                                className="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            </svg>
+                        </button>
+                    </header>
+
+                    <main className="flex-1">{children}</main>
+                </div>
             </div>
         </div>
     );

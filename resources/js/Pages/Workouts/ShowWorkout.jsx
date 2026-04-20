@@ -20,7 +20,6 @@ export default function ShowWorkout({ auth, workout, latest_log }) {
             {latest_log?.exercises?.length > 0 ? (
               latest_log.exercises.map((exercise, idx) => (
                 <div key={idx} className="p-4 bg-slate-800/50 rounded-lg shadow">
-                  {/* Make exercise name a clickable link */}
                   <h2 className="text-xl font-semibold">
                     <Link
                       href={route('exercises.show', exercise.id)}

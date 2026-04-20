@@ -1,9 +1,133 @@
-import React, { useState } from "react";
-import { useForm, Link } from "@inertiajs/react";
+import React, { useState, useMemo } from "react";
+import { useForm, Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import WorkoutFormFields from "@/Components/Workouts/WorkoutFormFields";
 import { useTranslation } from "react-i18next";
-import Sidebar from "@/Components/Sidebar";
+import { Plus, X, Upload, Info } from "lucide-react";
+
+function CreateExerciseModal({ isOpen, onClose, t }) {
+    if (!isOpen) return null;
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: "",
+        muscle_group: "Chest",
+        description: "",
+        image: null,
+    });
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("exercises.store"), {
+            forceFormData: true,
+            onSuccess: () => {
+                reset();
+                onClose();
+            },
+        });
+    };
+
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+            <div className="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-[2.5rem] p-8 shadow-2xl border border-zinc-200 dark:border-zinc-800 relative animate-in fade-in zoom-in duration-200">
+                <button
+                    onClick={onClose}
+                    className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-600 dark:hover:text-white transition-colors"
+                >
+                    <X size={24} />
+                </button>
+
+                <h2 className="text-3xl font-black dark:text-white mb-6 tracking-tight">
+                    {t("Create your own exercise")}
+                </h2>
+
+                <form onSubmit={submit} className="space-y-5">
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">
+                            {t("exercise_name")}
+                        </label>
+                        <input
+                            type="text"
+                            value={data.name}
+                            onChange={(e) => setData("name", e.target.value)}
+                            className="w-full px-5 py-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all"
+                        />
+                        {errors.name && (
+                            <p className="text-red-500 text-xs mt-2 font-bold">
+                                {errors.name}
+                            </p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">
+                            {t("muscle_group")}
+                        </label>
+                        <select
+                            value={data.muscle_group}
+                            onChange={(e) =>
+                                setData("muscle_group", e.target.value)
+                            }
+                            className="w-full px-5 py-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800 border-none focus:ring-2 focus:ring-emerald-500 dark:text-white transition-all appearance-none"
+                        >
+                            {[
+                                "Chest",
+                                "Back",
+                                "Biceps",
+                                "Triceps",
+                                "Legs",
+                                "Shoulders",
+                                "Abs",
+                                "Forearms",
+                            ].map((m) => (
+                                <option key={m} value={m}>
+                                    {t(m.toLowerCase())}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">
+                            {t("exercise_image")}
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="file"
+                                onChange={(e) =>
+                                    setData("image", e.target.files[0])
+                                }
+                                className="hidden"
+                                id="exercise-image-upload"
+                                accept="image/*"
+                            />
+                            <label
+                                htmlFor="exercise-image-upload"
+                                className="flex flex-col items-center justify-center gap-3 w-full p-8 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-[2rem] cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all group"
+                            >
+                                <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                                    <Upload size={24} />
+                                </div>
+                                <span className="text-sm font-bold text-zinc-500">
+                                    {data.image
+                                        ? data.image.name
+                                        : t("click_to_upload")}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className="w-full py-5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98] disabled:opacity-50"
+                    >
+                        {processing ? t("saving") : t("create_exercise")}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}
 
 export default function EditWorkout({
     auth,
@@ -12,6 +136,9 @@ export default function EditWorkout({
     favoriteExercises,
 }) {
     const { t, i18n } = useTranslation();
+    const [showFavorites, setShowFavorites] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { data, setData, put, processing, errors } = useForm({
         name: workout.name || "",
@@ -20,32 +147,49 @@ export default function EditWorkout({
         exercises: workout.exercises.map((e) => e.id) || [],
     });
 
-    const [showFavorites, setShowFavorites] = useState(false);
-    const [filter, setFilter] = useState("");
-
-    const toggleFavorites = () => setShowFavorites(!showFavorites);
-
-    const toggleExercise = (id) => {
-        if (data.exercises.includes(id)) {
-            setData(
-                "exercises",
-                data.exercises.filter((exId) => exId !== id)
-            );
-        } else {
-            setData("exercises", [...data.exercises, id]);
-        }
+    const toggleMuscleGroup = (group) => {
+        const lowerGroup = group.toLowerCase();
+        const current = [...data.muscle_groups];
+        setData(
+            "muscle_groups",
+            current.includes(lowerGroup)
+                ? current.filter((g) => g !== lowerGroup)
+                : [...current, lowerGroup],
+        );
     };
 
-    const filteredExercises = exercises.filter((exercise) => {
-        const matchesGroup = data.muscle_groups.includes(
-            exercise.muscle_group.toLowerCase()
+    const toggleExercise = (id) => {
+        const current = [...data.exercises];
+        setData(
+            "exercises",
+            current.includes(id)
+                ? current.filter((i) => i !== id)
+                : [...current, id],
         );
+    };
 
-        const matchesFavorites =
-            !showFavorites || favoriteExercises.includes(exercise.id);
+    const filteredExercises = useMemo(() => {
+        return exercises.filter((ex) => {
+            const name =
+                i18n.language === "lv" ? ex.name_lv || ex.name : ex.name;
+            const matchesSearch = name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+            const matchesGroup =
+                data.muscle_groups.length === 0 ||
+                data.muscle_groups.includes(ex.muscle_group.toLowerCase());
+            const matchesFav =
+                !showFavorites || favoriteExercises.includes(ex.id);
 
-        return matchesGroup && matchesFavorites;
-    });
+            return matchesSearch && matchesGroup && matchesFav;
+        });
+    }, [
+        exercises,
+        searchQuery,
+        data.muscle_groups,
+        showFavorites,
+        i18n.language,
+    ]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -54,159 +198,233 @@ export default function EditWorkout({
 
     return (
         <AuthenticatedLayout auth={auth}>
-            <div className="flex min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200 transition-colors">
-                <Sidebar auth={auth} />
-                <main className="flex-1 p-6 sm:p-8 lg:p-10">
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <WorkoutFormFields
-                            data={data}
-                            setData={setData}
-                            errors={errors}
-                            muscleGroups={data.muscle_groups}
-                            showFavorites={showFavorites}
-                            toggleMuscleGroup={() => {}}
-                            toggleFavorites={toggleFavorites}
-                            t={t}
-                            displayMuscleGroup={(g) => t(g)}
-                            editMode={true}
-                        />
+            <Head title={t("edit_workout")} />
 
-                        <div className="mt-6">
-                            <h3 className="font-semibold mb-2">
-                                {t("select_exercises")}
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {filteredExercises.map((exercise) => {
-                                    const isSelected = data.exercises.includes(
-                                        exercise.id
-                                    );
+            <CreateExerciseModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                t={t}
+            />
 
-                                    const exerciseName =
-                                        i18n.language === "lv"
-                                            ? exercise.name_lv || exercise.name
-                                            : exercise.name ||
-                                              exercise.name_lv ||
-                                              "";
-                                    const exerciseMuscle =
-                                        i18n.language === "lv"
-                                            ? exercise.muscle_group_lv
-                                            : exercise.muscle_group;
-
-                                    return (
-                                        <div
-                                            key={exercise.id}
-                                            onClick={() =>
-                                                toggleExercise(exercise.id)
-                                            }
-                                            className={`cursor-pointer border-2 rounded-2xl overflow-hidden transition-all ${
-                                                isSelected
-                                                    ? "border-emerald-500 shadow-lg shadow-emerald-500/20 bg-white dark:bg-gray-800"
-                                                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-600"
-                                            }`}
-                                        >
-                                            <div className="relative w-full h-40 bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden rounded-t-2xl">
-                                                {exercise.image_path ? (
-                                                    <img
-                                                        src={
-                                                            exercise.image_path
-                                                        }
-                                                        alt={exerciseName}
-                                                        className="max-w-full max-h-full object-contain transition-transform duration-500 hover:scale-110"
-                                                    />
-                                                ) : (
-                                                    <span className="text-5xl font-bold text-gray-400 dark:text-gray-600">
-                                                        {exerciseName
-                                                            ? exerciseName.charAt(
-                                                                  0
-                                                              )
-                                                            : "?"}
-                                                    </span>
-                                                )}
-
-                                                {isSelected && (
-                                                    <div className="absolute top-2 right-2 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg animate-in zoom-in duration-200">
-                                                        <svg
-                                                            className="w-5 h-5 text-white"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth={3}
-                                                                d="M5 13l4 4L19 7"
-                                                            />
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="p-4">
-                                                <h3
-                                                    className={`font-bold text-center mb-2 ${
-                                                        isSelected
-                                                            ? "text-emerald-900 dark:text-emerald-100"
-                                                            : "text-gray-900 dark:text-white"
-                                                    }`}
-                                                >
-                                                    {exerciseName}
-                                                </h3>
-                                                <div className="flex items-center justify-center gap-1">
-                                                    <span
-                                                        className={`text-xs font-medium px-3 py-1 rounded-full ${
-                                                            isSelected
-                                                                ? "bg-emerald-200 dark:bg-emerald-800 text-emerald-800 dark:text-emerald-200"
-                                                                : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
-                                                        }`}
-                                                    >
-                                                        {exerciseMuscle}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-
-                                {filteredExercises.length === 0 && (
-                                    <div className="text-center py-16 text-gray-500 dark:text-gray-400">
-                                        {t("no_exercises_found")}
-                                    </div>
-                                )}
+            <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors">
+                <main className="flex-1 p-4 sm:p-8 lg:p-12 max-w-[1600px] mx-auto w-full pb-32">
+                    <form onSubmit={handleSubmit} className="space-y-12">
+                        <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
+                            <div className="mb-8">
+                                <h2 className="text-3xl font-black tracking-tight dark:text-white mb-2">
+                                    {t("edit_workout")}
+                                </h2>
                             </div>
-                        </div>
 
-                        <div className="flex gap-4 mt-6">
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="px-6 py-3 bg-emerald-500 dark:bg-gradient-to-r  dark:from-purple-700 dark:to-purple-900 text-white rounded-xl"
-                            >
-                                {t("save_changes")}
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    (window.location.href = route(
-                                        "workouts.start",
-                                        workout.id
-                                    ))
+                            <WorkoutFormFields
+                                data={data}
+                                setData={setData}
+                                errors={errors}
+                                muscleGroups={data.muscle_groups}
+                                showFavorites={showFavorites}
+                                toggleMuscleGroup={toggleMuscleGroup}
+                                toggleFavorites={() =>
+                                    setShowFavorites(!showFavorites)
                                 }
-                                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
-                            >
-                                {t("start_workout")}
-                            </button>
+                                t={t}
+                                displayMuscleGroup={(g) => t(g)}
+                                editMode={true}
+                            />
+                        </section>
 
-                            <Link
-                                href={route("workouts.index")}
-                                className="px-6 py-3 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-white rounded-xl"
-                            >
-                                {t("cancel")}
-                            </Link>
+                        <section className="space-y-6">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
+                                <h3 className="text-2xl font-black dark:text-white flex items-center gap-3">
+                                    {t("select_exercises")}
+                                    <span className="text-sm font-bold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full">
+                                        {data.exercises.length}{" "}
+                                        {t("selected", {
+                                            count: data.exercises.length,
+                                        })}
+                                    </span>
+                                </h3>
+
+                                <div className="flex flex-wrap items-center gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="flex items-center gap-2 px-5 py-3 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800  dark:text-white  rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg active:scale-95"
+                                    >
+                                        <Plus size={16} strokeWidth={3} />
+                                        {t("create_exercise")}
+                                    </button>
+
+                                    <div className="relative w-full md:w-80">
+                                        <input
+                                            type="text"
+                                            placeholder={t("search_exercises")}
+                                            value={searchQuery}
+                                            onChange={(e) =>
+                                                setSearchQuery(e.target.value)
+                                            }
+                                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 dark:text-white focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm"
+                                        />
+                                        <svg
+                                            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                                {filteredExercises.map((exercise) => (
+                                    <ExerciseCard
+                                        key={exercise.id}
+                                        exercise={exercise}
+                                        isSelected={data.exercises.includes(
+                                            exercise.id,
+                                        )}
+                                        onToggle={() =>
+                                            toggleExercise(exercise.id)
+                                        }
+                                        t={t}
+                                        i18n={i18n}
+                                    />
+                                ))}
+                            </div>
+
+                            {filteredExercises.length === 0 && (
+                                <div className="text-center py-20 bg-zinc-100 dark:bg-zinc-900/50 rounded-[2rem] border-2 border-dashed border-zinc-300 dark:border-zinc-800">
+                                    <p className="text-zinc-500 font-bold">
+                                        {t("no_exercises_found")}
+                                    </p>
+                                </div>
+                            )}
+                        </section>
+
+                        <div className="fixed bottom-8 left-0 right-0 z-[50] flex items-center justify-center pointer-events-none px-4">
+                            <div className="flex flex-wrap justify-center gap-4 p-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] shadow-2xl pointer-events-auto">
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-95 disabled:opacity-50"
+                                >
+                                    {t("save_changes")}
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        (window.location.href = route(
+                                            "workouts.start",
+                                            workout.id,
+                                        ))
+                                    }
+                                    className="px-8 py-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
+                                >
+                                    {t("start_workout")}
+                                </button>
+
+                                <Link
+                                    href={route("workouts.index")}
+                                    className="px-8 py-4 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-2xl font-bold text-sm hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-all"
+                                >
+                                    {t("cancel")}
+                                </Link>
+                            </div>
                         </div>
                     </form>
                 </main>
             </div>
         </AuthenticatedLayout>
+    );
+}
+
+function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
+    const name =
+        i18n.language === "lv"
+            ? exercise.name_lv || exercise.name
+            : exercise.name;
+    const muscle =
+        i18n.language === "lv"
+            ? exercise.muscle_group_lv || exercise.muscle_group
+            : exercise.muscle_group;
+
+    return (
+        <div
+            className={`
+                group relative flex flex-col rounded-[2.5rem] border-4 transition-all duration-300 overflow-hidden
+                ${
+                    isSelected
+                        ? "border-emerald-500 bg-white dark:bg-zinc-900 shadow-xl scale-[1.02]"
+                        : "border-transparent bg-white dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-800 shadow-sm"
+                }
+            `}
+        >
+            <div
+                onClick={onToggle}
+                className="aspect-square bg-zinc-100 dark:bg-zinc-800/50 flex items-center justify-center p-6 relative overflow-hidden cursor-pointer"
+            >
+                {exercise.image_path ? (
+                    <img
+                        src={exercise.image_path}
+                        alt={name}
+                        className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                    />
+                ) : (
+                    <span className="text-4xl font-black text-zinc-300 dark:text-zinc-700 uppercase">
+                        {name.charAt(0)}
+                    </span>
+                )}
+
+                <div
+                    className={`
+                    absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
+                    ${isSelected ? "bg-emerald-500 text-white scale-100" : "bg-white/50 dark:bg-zinc-800/50 text-transparent scale-0"}
+                `}
+                >
+                    <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        strokeWidth="4"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                        />
+                    </svg>
+                </div>
+
+                <Link
+                    href={route("exercises.show", exercise.id)}
+                    target="_blank"
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-zinc-900/80 dark:bg-zinc-100/80 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                >
+                    <Info size={18} />
+                </Link>
+            </div>
+
+            <div className="p-6 text-center">
+                <Link
+                    href={route("exercises.show", exercise.id)}
+                    target="_blank"
+                    className={`font-black text-lg mb-1 truncate block transition-colors ${isSelected ? "text-emerald-600 dark:text-emerald-400" : "dark:text-white hover:text-emerald-500"}`}
+                >
+                    {name}
+                </Link>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+                    {muscle}
+                </p>
+            </div>
+        </div>
     );
 }

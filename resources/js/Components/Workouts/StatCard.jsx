@@ -1,21 +1,34 @@
 import React from "react";
 
-export default function StatCard({ title, value, gradient }) {
-  return (
-    <div
-      className={`relative p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 dark:border-slate-700/50 group overflow-hidden ${gradient}`}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-black/0 dark:from-white/5 dark:to-white/0"></div>
-      <div className="relative flex items-center justify-between">
-        <div>
-          <p className="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-            {title}
-          </p>
-          <p className="text-3xl font-bold text-slate-900 dark:text-white mt-2">
-            {value}
-          </p>
+export default function StatCard({ title, value, accent = "lime", sub }) {
+    const accentColors = {
+        lime: "bg-lime-400",
+        orange: "bg-orange-500",
+        sky: "bg-sky-500",
+        rose: "bg-rose-500",
+    };
+
+    return (
+        <div className="relative flex flex-col justify-between overflow-hidden rounded-xl bg-white p-5 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
+            <div
+                className={`absolute top-0 left-0 h-full w-1 ${accentColors[accent]}`}
+            />
+
+            <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-1">
+                    {title}
+                </p>
+                <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-zinc-900 dark:text-white tabular-nums">
+                        {value}
+                    </span>
+                    {sub && (
+                        <span className="text-xs font-medium text-zinc-400 dark:text-zinc-600 lowercase">
+                            {sub}
+                        </span>
+                    )}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

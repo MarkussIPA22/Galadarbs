@@ -6,7 +6,11 @@ export default function ResponsiveSidebar({ auth }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
-        document.body.style.overflow = sidebarOpen ? "hidden" : "";
+        if (sidebarOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
         return () => {
             document.body.style.overflow = "";
         };
@@ -14,13 +18,19 @@ export default function ResponsiveSidebar({ auth }) {
 
     return (
         <>
-            <div className="md:hidden flex justify-between items-center w-full bg-white dark:bg-gray-900 p-4 shadow fixed top-0 left-0 right-0 z-40">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
-                    {i18n.t("menu")}
-                </h2>
+            <div className="md:hidden flex justify-between items-center w-full bg-white dark:bg-[#09090b] p-4 border-b border-zinc-200 dark:border-zinc-800/50 fixed top-0 left-0 right-0 z-40">
+                <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded bg-lime-400 flex items-center justify-center text-black font-black text-xs">
+                        W
+                    </div>
+                    <h2 className="text-sm font-black tracking-tighter dark:text-white uppercase">
+                        {i18n.t("menu") || "Workout"}
+                    </h2>
+                </div>
+
                 <button
                     onClick={() => setSidebarOpen(!sidebarOpen)}
-                    className="text-gray-800 dark:text-gray-100 focus:outline-none"
+                    className="p-2 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                     aria-label="Toggle sidebar"
                 >
                     <svg
@@ -48,29 +58,10 @@ export default function ResponsiveSidebar({ auth }) {
                 </button>
             </div>
 
-            <div
-                className={`
-                    fixed top-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out
-                  
-
-                    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-                    md:relative md:translate-x-0 md:shadow-none md:z-0
-                `}
-            >
-                <Sidebar
-                    auth={auth}
-                    isOpen={sidebarOpen}
-                    toggleSidebar={() => setSidebarOpen(false)}
-                />
-            </div>
-
-            <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity duration-300 ${
-                    sidebarOpen
-                        ? "opacity-100 pointer-events-auto"
-                        : "opacity-0 pointer-events-none"
-                }`}
-                onClick={() => setSidebarOpen(false)}
+            <Sidebar
+                auth={auth}
+                isOpen={sidebarOpen}
+                toggleSidebar={() => setSidebarOpen(false)}
             />
         </>
     );

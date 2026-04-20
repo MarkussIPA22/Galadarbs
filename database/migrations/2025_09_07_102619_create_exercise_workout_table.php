@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('workout_id')->constrained()->onDelete('cascade');
             $table->foreignId('exercise_id')->constrained()->onDelete('cascade');
+            $table->json('sets')->nullable(); // This stores your reps/weight data
             $table->timestamps();
         });
     }

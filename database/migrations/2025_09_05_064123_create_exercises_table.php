@@ -10,10 +10,13 @@ return new class extends Migration
     {
        Schema::create('exercises', function (Blueprint $table) {
     $table->id();
+    $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
     $table->string('name');
     $table->string('name_lv')->nullable();
     $table->string('muscle_group');
     $table->string('muscle_group_lv')->nullable();
+    $table->string('secondary_muscles')->nullable();
+    $table->string('secondary_muscles_lv')->nullable();
     $table->text('description');
     $table->text('description_lv')->nullable();
     $table->string('image_path')->nullable();

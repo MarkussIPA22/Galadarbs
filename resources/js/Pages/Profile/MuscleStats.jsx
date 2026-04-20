@@ -34,7 +34,6 @@ export default function MuscleStats({
 }) {
     const { t } = useTranslation();
 
-    // Pie Chart Data Formatting
     const pieData = Object.entries(muscleCounts).map(([muscleKey, count]) => ({
         name: t(muscleKey.toLowerCase()),
         value: count,
@@ -52,17 +51,9 @@ export default function MuscleStats({
     ];
 
     return (
-        <AuthenticatedLayout
-            user={auth}
-            header={
-                <h2 className="text-2xl font-bold">{t("workout_stats")}</h2>
-            }
-        >
+        <AuthenticatedLayout auth={auth}>
             <Head title={t("workout_stats")} />
-
             <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-                <ResponsiveSidebar auth={auth} />
-
                 <main className="flex-1 p-4 sm:p-6 lg:p-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 flex flex-col">
@@ -139,10 +130,10 @@ export default function MuscleStats({
                                             index === 0
                                                 ? "bg-yellow-100 text-yellow-700"
                                                 : index === 1
-                                                ? "bg-gray-200 text-gray-700"
-                                                : index === 2
-                                                ? "bg-orange-100 text-orange-800"
-                                                : "bg-blue-50 text-blue-600"
+                                                  ? "bg-gray-200 text-gray-700"
+                                                  : index === 2
+                                                    ? "bg-orange-100 text-orange-800"
+                                                    : "bg-blue-50 text-blue-600"
                                         }
                                     `}
                                                     >
@@ -156,12 +147,11 @@ export default function MuscleStats({
                                                     {weight} kg
                                                 </span>
                                             </div>
-                                        )
+                                        ),
                                     )
                                 ) : (
                                     <div className="text-center py-10 text-gray-400">
-                                        <p className="mb-2">📉</p>
-                                        <p>{t("No Records Found")}</p>
+                                        <p>{t("Complete a workout first !")}</p>
                                     </div>
                                 )}
                             </div>
