@@ -6,8 +6,7 @@ import Checkbox from "@/Components/Checkbox";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Lock, Mail } from "lucide-react";
-import LandingNavbar from "@/Components/LandingNavbar";
-
+import LandingNavbar from "@/Components/LandingNavBar.jsx";
 export default function Login({ status, canResetPassword, auth }) {
     const { t } = useTranslation();
 

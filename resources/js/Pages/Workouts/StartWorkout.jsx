@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "@inertiajs/react";
-import { Inertia } from "@inertiajs/inertia";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
 import jsPDF from "jspdf";
 import ExerciseCard from "@/Components/Exercise/ExerciseCard";
+import { router } from '@inertiajs/react'
 
 function WorkoutHeader({ name, exerciseCount, t }) {
     const [elapsed, setElapsed] = useState(0);
@@ -103,7 +103,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                 })),
             })),
         };
-        Inertia.post(route("workout-logs.store"), workoutData, {
+        router.post(route("workout-logs.store"), workoutData, {
             preserveScroll: true,
             onSuccess: () => setFinished(true),
         });

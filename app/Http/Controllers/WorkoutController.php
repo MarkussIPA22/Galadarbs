@@ -38,35 +38,20 @@ class WorkoutController extends Controller
         return Inertia::render('Workouts/CreateWorkout');
     }
 
-    public function index()
-    {
-        $locale = app()->getLocale();
+  
 
-        $muscleTranslations = [
-            'chest' => 'Krūtis',
-            'back' => 'Mugura',
-            'shoulders' => 'Pleci',
-            'biceps' => 'Bicepsi',
-            'triceps' => 'Tricepsi',
-            'legs' => 'Kājas',
-            'core' => 'Vēdera muskuļi',
-            'forearms' => 'Apakšdelmi',
+   public function index()
+{
+    $workouts = Workout::where('user_id', auth()->id())->get()->map(function ($workout) {
+        return [
+            'id' => $workout->id,
+            'name' => $workout->name,
+            'description' => $workout->description,
+            'muscle_groups' => array_map(function ($group) {
+                return strtolower(trim($group)); 
+            }, $workout->muscle_groups ?? []),
         ];
-
-        $workouts = Workout::where('user_id', auth()->id())->get()->map(function ($workout) use ($locale, $muscleTranslations) {
-            return [
-                'id' => $workout->id,
-                'name' => $workout->name,
-                'description' => $workout->description,
-                'muscle_groups' => array_map(function ($group) use ($locale, $muscleTranslations) {
-                    $key = strtolower($group); 
-                    if ($locale === 'lv' && isset($muscleTranslations[$key])) {
-                        return $muscleTranslations[$key]; 
-                    }
-                    return $group; 
-                }, $workout->muscle_groups ?? []),
-            ];
-        });
+    });
 
     return Inertia::render('Workouts/myWorkouts', [
         'workouts' => $workouts,
@@ -114,11 +99,11 @@ class WorkoutController extends Controller
             ->with('exerciseSets')
             ->first();
 
-        return Inertia::render('Workouts/StartWorkout', [
-            'workout' => $workout,
-            'latest_log' => $latest_log,
-            'locale' => app()->getLocale()
-        ]);
+       return Inertia::render('Workouts/StartWorkout', [ // <--- CHECK THIS STRING
+        'workout' => $workout,
+        'latest_log' => $latest_log,
+        'locale' => app()->getLocale()
+    ]);
     }
 
     public function update(Request $request, Workout $workout)

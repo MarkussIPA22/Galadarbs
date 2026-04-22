@@ -1,15 +1,26 @@
 import React from "react";
 
 const muscleIconMap = {
+    // English Keys
     chest: "chest.png",
     back: "back.png",
     shoulders: "shoulders.png",
     biceps: "bicep.png",
     triceps: "triceps.png",
     legs: "leg.png",
-    core: "abs.png",
     abs: "abs.png",
+    core: "abs.png",
     forearms: "forearms.png",
+
+    // Latvian Keys (Matches what is in your DB screenshot)
+    "krūtis": "chest.png",
+    "mugura": "back.png",
+    "pleci": "shoulders.png",
+    "bicepsi": "bicep.png",
+    "tricepsi": "triceps.png",
+    "kājas": "leg.png",
+    "apakšdelmi": "forearms.png",
+    "abs": "abs.png"
 };
 
 export default function MuscleGroupBadge({ group, t }) {

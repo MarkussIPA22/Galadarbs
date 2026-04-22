@@ -4,7 +4,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { ChevronRight, Mail, Lock, User } from "lucide-react";
-import LandingNavbar from "@/Components/LandingNavbar";
+import LandingNavbar from "@/Components/LandingNavBar.jsx";
 
 export default function Register(auth) {
     const { t } = useTranslation();

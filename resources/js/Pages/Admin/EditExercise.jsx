@@ -30,7 +30,7 @@ export default function EditExercise({ exercise, auth}) {
 
     formData.append('_method', 'PUT');
 
-    Inertia.post(route('admin.exercises.update', exercise.id), formData, {
+    router.post(route('admin.exercises.update', exercise.id), formData, {
       forceFormData: true,
       onSuccess: () => {
         setSuccessMessage(t('exercise_updated_successfully'));

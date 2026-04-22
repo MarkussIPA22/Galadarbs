@@ -102,7 +102,7 @@ export default function AdminPanel({
         if (image) formData.append("image", image);
         if (videoUrl) formData.append("video_url", videoUrl);
 
-        Inertia.post("/admin/exercises", formData, {
+        router.post("/admin/exercises", formData, {
             forceFormData: true,
             onSuccess: () => {
                 setSuccessMessage(t("Exercise added successfully!"));
@@ -115,7 +115,7 @@ export default function AdminPanel({
     const handleDelete = (id) => {
         if (!confirm(t("Are you sure you want to delete this exercise?")))
             return;
-        Inertia.delete(`/admin/exercises/${id}`, {
+        router.delete(`/admin/exercises/${id}`, {
             onSuccess: () => {
                 setSuccessMessage(t("Exercise deleted successfully!"));
                 setTimeout(() => setSuccessMessage(""), 3000);
