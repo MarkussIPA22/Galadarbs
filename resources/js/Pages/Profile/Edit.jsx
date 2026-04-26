@@ -1,10 +1,9 @@
+import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
-import { useState } from "react";
-import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 import { useTranslation } from "react-i18next";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -48,195 +47,191 @@ export default function Edit({
         e.preventDefault();
         patch(route("profile.update"), {
             preserveScroll: true,
-            onSuccess: () => console.log("Stats updated successfully"),
         });
     };
 
-    const heightInMeters = parseFloat(data.height) / 100;
-    const bmi =
-        data.weight && data.height && heightInMeters > 0
-            ? (
-                  parseFloat(data.weight) /
-                  (heightInMeters * heightInMeters)
-              ).toFixed(1)
-            : null;
-
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
-                    {t("Profile")}
-                </h2>
-            }
-        >
+        <AuthenticatedLayout auth={auth}>
             <Head title="Profile" />
 
-            <div className="flex min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-                <ResponsiveSidebar auth={auth} />
+            <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-gray-100 transition-colors duration-300">
+                <main className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+                    {/* Page Title for Mobile */}
+                    <h2 className="text-2xl font-black mb-6 lg:hidden uppercase tracking-tight">
+                        {t("Profile")}
+                    </h2>
 
-                <main className="flex-1 py-8 px-2 sm:px-4 md:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-                    <div className="flex flex-col-reverse lg:flex-row gap-8">
-                        <div className="w-full lg:w-2/3 flex flex-col gap-6">
-                            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-                                <UpdateProfileInformationForm
-                                    mustVerifyEmail={mustVerifyEmail}
-                                    status={status}
-                                    className="max-w-xl"
-                                />
-                            </div>
+                    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                        {/* Sidebar Column: Profile Pic & Metrics */}
+                        {/* On Mobile: Appears first. On Desktop: Sticks to the right. */}
+                        <div className="w-full lg:w-1/3 order-1 lg:order-2">
+                            <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-2xl border border-gray-200 dark:border-white/5 shadow-xl h-fit lg:sticky lg:top-6">
+                                <h3 className="text-xl font-bold mb-6 text-emerald-600 dark:text-white tracking-tight text-center lg:text-left">
+                                    {t("Profile Picture")}
+                                </h3>
 
-                            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-                                <UpdatePasswordForm className="max-w-xl" />
-                            </div>
+                                <div className="flex flex-col items-center">
+                                    <div className="relative mb-6">
+                                        <img
+                                            src={
+                                                profilePic
+                                                    ? URL.createObjectURL(
+                                                          profilePic,
+                                                      )
+                                                    : user.profile_pic_url ||
+                                                      "/storage/avatar/avatar.jpg"
+                                            }
+                                            alt="Profile"
+                                            className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-emerald-500/20 dark:border-[#94e028]/20 shadow-lg"
+                                        />
+                                    </div>
 
-                            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow">
-                                <DeleteUserForm className="max-w-xl" />
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleProfilePicChange}
+                                        className="mb-6 text-sm text-gray-500 dark:text-gray-400 w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-emerald-50 dark:file:bg-[#94e028]/10 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer transition-all"
+                                    />
+
+                                    <button
+                                        onClick={handlePicSubmit}
+                                        className="w-full px-6 py-3 bg-emerald-600 dark:bg-[#94e028] text-white dark:text-black font-black rounded-xl hover:opacity-90 transition-all transform active:scale-[0.98] shadow-lg"
+                                    >
+                                        {t("Update Picture")}
+                                    </button>
+                                </div>
+
+                                {/* Metrics Section */}
+                                <form
+                                    onSubmit={handleMetricsSubmit}
+                                    className="mt-10 w-full border-t border-gray-100 dark:border-white/5 pt-8"
+                                >
+                                    <h4 className="text-xs font-black text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mb-6 text-center">
+                                        {t("Body information")}
+                                    </h4>
+
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        <div className="space-y-1">
+                                            <InputLabel
+                                                htmlFor="height"
+                                                value={t("Height (cm)")}
+                                                className="dark:text-white"
+                                            />
+                                            <TextInput
+                                                id="height"
+                                                type="number"
+                                                className="mt-1 block w-full bg-gray-50 dark:bg-[#0a0a0a] border-gray-300 dark:border-white/10 text-emerald-700 dark:text-white"
+                                                value={data.height}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "height",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            />
+                                            <InputError
+                                                message={errors.height}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <InputLabel
+                                                htmlFor="weight"
+                                                value={t("Weight (kg)")}
+                                                className="dark:text-white"
+                                            />
+                                            <TextInput
+                                                id="weight"
+                                                type="number"
+                                                className="mt-1 block w-full bg-gray-50 dark:bg-[#0a0a0a] border-gray-300 dark:border-white/10 text-emerald-700 dark:text-white"
+                                                value={data.weight}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "weight",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            />
+                                            <InputError
+                                                message={errors.weight}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col gap-4">
+                                        <PrimaryButton
+                                            disabled={processing}
+                                            className="w-full justify-center bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+                                        >
+                                            {t("Update information")}
+                                        </PrimaryButton>
+
+                                        <Transition
+                                            show={recentlySuccessful}
+                                            enter="transition ease-in-out"
+                                            enterFrom="opacity-0"
+                                            leave="transition ease-in-out"
+                                            leaveTo="opacity-0"
+                                        >
+                                            <p className="text-sm text-emerald-600 dark:text-white text-center font-bold">
+                                                {t("Saved Successfully")}
+                                            </p>
+                                        </Transition>
+                                    </div>
+                                </form>
+
+                                {/* Streaks Display */}
+                                <div className="mt-10 w-full text-center border-t border-gray-100 dark:border-white/5 pt-8">
+                                    <h4 className="text-[10px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-[0.2em] mb-4">
+                                        {t("Current Streaks")}
+                                    </h4>
+                                    <div className="flex flex-wrap justify-center gap-3">
+                                        {tasks.length === 0 ? (
+                                            <p className="text-gray-400 text-xs italic">
+                                                {t("No streaks yet")}
+                                            </p>
+                                        ) : (
+                                            tasks.map(
+                                                (task) =>
+                                                    task.streak > 0 && (
+                                                        <div
+                                                            key={task.id}
+                                                            className="relative group transition-transform hover:scale-110"
+                                                        >
+                                                            <img
+                                                                src="/streak/fire.png"
+                                                                alt="Streak"
+                                                                className="w-12 h-12"
+                                                            />
+                                                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-black text-lg">
+                                                                {task.streak}
+                                                            </span>
+                                                        </div>
+                                                    ),
+                                            )
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="w-full lg:w-1/3 flex flex-col items-center bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl shadow mb-8 lg:mb-0 h-fit sticky top-6">
-                            <h3 className="text-lg font-semibold mb-4">
-                                {t("Profile Picture")}
-                            </h3>
+                        {/* Main Forms Column */}
+                        <div className="w-full lg:w-2/3 flex flex-col gap-6 order-2 lg:order-1">
+                            <div className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-white/5 shadow-xl">
+                                <UpdateProfileInformationForm
+                                    mustVerifyEmail={mustVerifyEmail}
+                                    status={status}
+                                    className="max-w-full"
+                                />
+                            </div>
 
-                            <img
-                                src={
-                                    profilePic
-                                        ? URL.createObjectURL(profilePic)
-                                        : user.profile_pic_url ||
-                                          "/storage/avatar/avatar.jpg"
-                                }
-                                alt="Profile"
-                                className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600 mb-4"
-                            />
+                            <div className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-white/5 shadow-xl">
+                                <UpdatePasswordForm className="max-w-full" />
+                            </div>
 
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleProfilePicChange}
-                                className="mb-4 text-sm w-full"
-                            />
-                            <button
-                                onClick={handlePicSubmit}
-                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors w-full"
-                            >
-                                {t("Update Picture")}
-                            </button>
-
-                            <form
-                                onSubmit={handleMetricsSubmit}
-                                className="mt-8 w-full border-t dark:border-gray-700 pt-6"
-                            >
-                                <h4 className="text-lg font-semibold text-blue-500 mb-4 text-center">
-                                    {t("Body Metrics")}
-                                </h4>
-
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <InputLabel
-                                            htmlFor="height"
-                                            value={t("Height (cm)")}
-                                        />
-                                        <TextInput
-                                            id="height"
-                                            type="number"
-                                            className="mt-1 block w-full"
-                                            value={data.height}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "height",
-                                                    e.target.value,
-                                                )
-                                            }
-                                        />
-                                        <InputError
-                                            message={errors.height}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                    <div>
-                                        <InputLabel
-                                            htmlFor="weight"
-                                            value={t("Weight (kg)")}
-                                        />
-                                        <TextInput
-                                            id="weight"
-                                            type="number"
-                                            className="mt-1 block w-full"
-                                            value={data.weight}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "weight",
-                                                    e.target.value,
-                                                )
-                                            }
-                                        />
-                                        <InputError
-                                            message={errors.weight}
-                                            className="mt-2"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center justify-between">
-                                    <PrimaryButton disabled={processing}>
-                                        {t("Update Stats")}
-                                    </PrimaryButton>
-
-                                    <Transition
-                                        show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <p className="text-sm text-green-600">
-                                            {t("Saved.")}
-                                        </p>
-                                    </Transition>
-                                </div>
-
-                                {bmi && (
-                                    <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg text-center">
-                                        <p className="text-xs uppercase text-gray-500">
-                                            {t("Current BMI")}
-                                        </p>
-                                        <p className="text-2xl font-black text-blue-500">
-                                            {bmi}
-                                        </p>
-                                    </div>
-                                )}
-                            </form>
-
-                            <div className="mt-8 w-full text-center border-t dark:border-gray-700 pt-6">
-                                <h4 className="text-lg font-semibold text-orange-500 mb-3">
-                                    {t("Your Task Streaks")}
-                                </h4>
-                                <div className="flex flex-wrap justify-center gap-3">
-                                    {tasks.length === 0 && (
-                                        <p className="text-gray-500 text-sm">
-                                            {t("No completed tasks yet.")}
-                                        </p>
-                                    )}
-                                    {tasks.map(
-                                        (task) =>
-                                            task.streak > 0 && (
-                                                <div
-                                                    key={task.id}
-                                                    className="relative"
-                                                >
-                                                    <img
-                                                        src="/streak/fire.png"
-                                                        alt="Streak"
-                                                        className="w-10 h-10 sm:w-12 sm:h-12 animate-pulse"
-                                                    />
-                                                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-sm sm:text-base">
-                                                        {task.streak}
-                                                    </span>
-                                                </div>
-                                            ),
-                                    )}
-                                </div>
+                            <div className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-2xl border border-red-100 dark:border-red-900/20 shadow-xl">
+                                <DeleteUserForm className="max-w-full" />
                             </div>
                         </div>
                     </div>

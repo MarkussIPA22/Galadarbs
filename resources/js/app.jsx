@@ -11,7 +11,7 @@ import i18n from "./i18n";
 const appName = import.meta.env.VITE_APP_NAME || "";
 
 createInertiaApp({
-    title: (title) => `${title}  ${appName}`,
+    title: (title) => `${title}`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.jsx`,

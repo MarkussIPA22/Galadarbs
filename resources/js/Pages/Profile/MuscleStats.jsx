@@ -9,15 +9,14 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { useTranslation } from "react-i18next";
-import ResponsiveSidebar from "@/Components/ResponsiveSidebar";
 
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-gray-900 border border-gray-700 p-3 rounded-lg shadow-lg">
-                <p className="text-white font-medium">
+            <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-lg shadow-xl">
+                <p className="text-white text-[10px] font-bold uppercase tracking-widest">
                     {payload[0].name} :{" "}
-                    <span className="text-blue-400 font-bold">
+                    <span className="text-lime-400 font-black ml-2">
                         {payload[0].value}
                     </span>
                 </p>
@@ -30,48 +29,83 @@ const CustomTooltip = ({ active, payload }) => {
 export default function MuscleStats({
     auth,
     muscleCounts = {},
-    personalRecords = {},
+    personalRecords = [],
+    lifetimeTotalWeight = 0,
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
+    // Mapping pie data: Translate muscle group keys
     const pieData = Object.entries(muscleCounts).map(([muscleKey, count]) => ({
         name: t(muscleKey.toLowerCase()),
         value: count,
     }));
 
     const COLORS = [
-        "#8884d8",
-        "#82ca9d",
-        "#ffc658",
-        "#ff7f7f",
-        "#7fbfff",
-        "#d17fff",
-        "#ff6b6b",
-        "#4ecdc4",
+        "#a3e635",
+        "#71717a",
+        "#f4f4f5",
+        "#27272a",
+        "#d4d4d8",
+        "#52525b",
     ];
+
+    const getComparison = () => {
+        const kg = lifetimeTotalWeight;
+        if (kg === 0) return t("Time to move some iron!");
+        if (kg < 1000) return t("A Walrus");
+        if (kg < 5000) return t("a T-Rex dinosaur");
+        if (kg < 20000) return t("4000 Cats");
+        return t("a literal Blue Whale");
+    };
 
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title={t("workout_stats")} />
-            <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
-                <main className="flex-1 p-4 sm:p-6 lg:p-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 flex flex-col">
-                            <h3 className="text-lg font-bold mb-6 text-center lg:text-left">
+
+            <div className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-200">
+                <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+                    {/* Weight Metric Hero */}
+                    <div className="mb-8 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl p-8 overflow-hidden relative">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-lime-400/10 blur-[100px] -mr-32 -mt-32 rounded-full"></div>
+
+                        <div className="relative z-10">
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 mb-2">
+                                {t("Total Weight Lifted")}
+                            </h3>
+                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-3">
+                                <span className="text-6xl font-black text-black dark:text-zinc-200 tracking-tighter tabular-nums">
+                                    {lifetimeTotalWeight.toLocaleString()}
+                                </span>
+                                <span className="text-black dark:text-zinc-200 font-black text-xl uppercase italic">
+                                    kg
+                                </span>
+                            </div>
+
+                            <div className="mt-6 flex items-center gap-4 bg-white dark:bg-zinc-800 self-start px-4 py-2 rounded-full border border-zinc-700/50">
+                                {t("equivalent to")} {getComparison()}!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Muscle Distribution */}
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-2xl p-8">
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-500 mb-8">
                                 {t("Most Trained Muscles")}
                             </h3>
 
-                            <div className="w-full h-72 sm:h-80">
+                            <div className="w-full h-80">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <PieChart>
                                         <Pie
-                                            data={pieData} // dati, kas tiks attēloti diagrammā
-                                            cx="50%" // X koordināta centra pozīcija (50% = horizontāli centrēta)
-                                            cy="50%" // Y koordināta centra pozīcija (50% = vertikāli centrēta)
-                                            innerRadius={60}
-                                            outerRadius={90} // ārējais rādiuss, cik daudzdiagramma aizpildīs vietu
-                                            paddingAngle={4}
+                                            data={pieData}
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={70}
+                                            outerRadius={100}
+                                            paddingAngle={8}
                                             dataKey="value"
+                                            stroke="none"
                                         >
                                             {pieData.map((entry, index) => (
                                                 <Cell
@@ -88,73 +122,63 @@ export default function MuscleStats({
                                         <Tooltip content={<CustomTooltip />} />
                                         <Legend
                                             verticalAlign="bottom"
-                                            height={36}
+                                            iconType="circle"
+                                            wrapperStyle={{
+                                                paddingTop: "20px",
+                                                fontSize: "10px",
+                                                textTransform: "uppercase",
+                                                fontWeight: "bold",
+                                            }}
                                         />
                                     </PieChart>
                                 </ResponsiveContainer>
                             </div>
-
-                            <div className="mt-4 grid grid-cols-2 gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                {pieData.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex justify-between border-b border-gray-100 dark:border-gray-700 py-1"
-                                    >
-                                        <span>{item.name}</span>
-                                        <span className="font-bold text-gray-800 dark:text-gray-200">
-                                            {item.value}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-                            <h3 className="text-lg font-bold mb-6">
+                        {/* PR List */}
+                        <div className="space-y-4 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
+                            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 px-2">
                                 {t("Personal Records")}
                             </h3>
+                            {personalRecords.length > 0 ? (
+                                personalRecords.map((record, index) => {
+                                    // Logic to pick the correct name based on active language
+                                    const displayName =
+                                        i18n.language === "lv"
+                                            ? record.name_lv || record.name_en
+                                            : record.name_en;
 
-                            <div className="space-y-3 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
-                                {Object.entries(personalRecords).length > 0 ? (
-                                    Object.entries(personalRecords).map(
-                                        ([name, weight], index) => (
-                                            <div
-                                                key={index}
-                                                className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                                            >
-                                                <div className="flex items-center gap-3">
-                                                    <span
-                                                        className={`
-                                        flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold
-                                        ${
-                                            index === 0
-                                                ? "bg-yellow-100 text-yellow-700"
-                                                : index === 1
-                                                  ? "bg-gray-200 text-gray-700"
-                                                  : index === 2
-                                                    ? "bg-orange-100 text-orange-800"
-                                                    : "bg-blue-50 text-blue-600"
-                                        }
-                                    `}
-                                                    >
-                                                        {index + 1}
-                                                    </span>
-                                                    <span className="font-medium text-sm sm:text-base">
-                                                        {name}
-                                                    </span>
-                                                </div>
-                                                <span className="font-bold text-green-600 dark:text-green-400 text-lg whitespace-nowrap">
-                                                    {weight} kg
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="flex justify-between items-center p-5 bg-zinc-50 dark:bg-zinc-800/40 rounded-xl border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 transition-all"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <span className="w-6 h-6 flex items-center justify-center rounded bg-zinc-900 dark:bg-white text-white dark:text-black text-[10px] font-black">
+                                                    {index + 1}
+                                                </span>
+                                                <span className="text-sm font-bold tracking-tight text-zinc-700 dark:text-zinc-300">
+                                                    {displayName}
                                                 </span>
                                             </div>
-                                        ),
-                                    )
-                                ) : (
-                                    <div className="text-center py-10 text-gray-400">
-                                        <p>{t("Complete a workout first !")}</p>
-                                    </div>
-                                )}
-                            </div>
+                                            <div className="flex items-baseline gap-1">
+                                                <span className="font-black text-zinc-900 dark:text-white text-xl tabular-nums">
+                                                    {record.weight}
+                                                </span>
+                                                <span className="text-[9px] font-bold uppercase text-zinc-400">
+                                                    kg
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="text-center py-20">
+                                    <p className="text-[10px] uppercase font-bold tracking-widest text-zinc-400">
+                                        {t("Complete a workout first !")}
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </main>

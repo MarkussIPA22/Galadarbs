@@ -8,11 +8,13 @@ import {
     LineChart,
     Calculator,
     CheckSquare,
-    MapPin,
     Users,
     LogOut,
     Sun,
     Moon,
+    MessageCircle,
+    UserPen,
+    ShieldCheck,
 } from "lucide-react";
 
 export default function Sidebar({ auth = {}, isOpen, toggleSidebar }) {
@@ -21,13 +23,14 @@ export default function Sidebar({ auth = {}, isOpen, toggleSidebar }) {
 
     const NAV_ITEMS = [
         { key: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-        {
-            key: "create_workout",
-            href: "/workouts/create",
-            icon: PlusCircle,
-        },
+        { key: "create_workout", href: "/workouts/create", icon: PlusCircle },
         { key: "my_workouts", href: "/my-workouts", icon: Dumbbell },
-        { key: "Workout Information", href: "/muscles/stats", icon: LineChart },
+        {
+            key: "Workout Information",
+            href: "/muscles/stats",
+            icon: LineChart,
+            data: { locale: i18n.language },
+        },
         {
             key: "One Rep Max Calculator",
             href: "/Max/Calculate",
@@ -35,7 +38,17 @@ export default function Sidebar({ auth = {}, isOpen, toggleSidebar }) {
         },
         { key: "tasks", href: "/tasks", icon: CheckSquare },
         { key: "users", href: "/users", icon: Users },
+        { key: "Chat", href: "/chat", icon: MessageCircle },
+        { key: "Profile", href: "/profile", icon: UserPen },
     ];
+
+    if (auth.user && auth.user.is_admin === 1) {
+        NAV_ITEMS.push({
+            key: "Admin Panel",
+            href: "/admin",
+            icon: ShieldCheck,
+        });
+    }
 
     const [theme, setTheme] = useState(() => {
         if (typeof window !== "undefined") {
@@ -99,11 +112,7 @@ export default function Sidebar({ auth = {}, isOpen, toggleSidebar }) {
                                     onClick={() =>
                                         i18n.changeLanguage(lang.code)
                                     }
-                                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
-                                        i18n.language === lang.code
-                                            ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-                                            : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
-                                    }`}
+                                    className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${i18n.language === lang.code ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
                                 >
                                     <img
                                         src={lang.img}
@@ -132,15 +141,21 @@ export default function Sidebar({ auth = {}, isOpen, toggleSidebar }) {
 
                     <div className="p-2 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 rounded-xl bg-lime-400 flex items-center justify-center text-black font-black">
-                                {auth.user?.name?.[0]?.toUpperCase() || "?"}
-                            </div>
+                            {auth.user?.profile_pic_url ? (
+                                <img
+                                    src={auth.user.profile_pic_url}
+                                    alt={auth.user.name}
+                                    className="w-10 h-10 rounded-xl object-cover border border-zinc-200 dark:border-zinc-700"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 rounded-xl bg-lime-400 flex items-center justify-center text-black font-black">
+                                    {auth.user?.name?.[0]?.toUpperCase() || "?"}
+                                </div>
+                            )}
+
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-bold truncate text-zinc-900 dark:text-white">
                                     {auth.user?.name || "Guest"}
-                                </p>
-                                <p className="text-[10px] text-zinc-500 truncate">
-                                    {auth.user?.email}
                                 </p>
                             </div>
                         </div>

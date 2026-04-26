@@ -112,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/exercises/{exercise}/edit', [AdminController::class, 'edit'])->name('admin.exercises.edit');
-    Route::post('/admin/exercises', [AdminController::class, 'storeExercise'])->name('admin.exercises.store');
+    Route::post('/admin/exercises', [AdminController::class, 'store'])->name('admin.exercises.store');
     Route::put('/admin/exercises/{exercise}', [AdminController::class, 'update'])->name('admin.exercises.update');
     Route::delete('/admin/exercises/{exercise}', [AdminController::class, 'destroy'])->name('admin.exercises.destroy');
 });

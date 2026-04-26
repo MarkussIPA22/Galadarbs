@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
@@ -12,29 +12,39 @@ export default function ExerciseShow({
     const { t, i18n } = useTranslation();
     const isLv = i18n.language === "lv";
 
-    const name = isLv && exercise.name_lv ? exercise.name_lv : exercise.name;
-    const description =
-        isLv && exercise.description_lv
-            ? exercise.description_lv
-            : exercise.description;
-    const muscleGroup =
-        isLv && exercise.muscle_group_lv
-            ? exercise.muscle_group_lv
-            : exercise.muscle_group;
-    const secondaryMuscles =
-        isLv &&
-        Array.isArray(exercise.secondary_muscles_lv) &&
-        exercise.secondary_muscles_lv.length > 0
-            ? exercise.secondary_muscles_lv
-            : Array.isArray(exercise.secondary_muscles)
-              ? exercise.secondary_muscles
-              : [];
+    const getField = (field) => {
+        const lvField = `${field}_lv`;
+        return isLv && exercise[lvField] ? exercise[lvField] : exercise[field];
+    };
+
+    const displayData = useMemo(
+        () => ({
+            name: getField("name"),
+            description: getField("description"),
+            muscleGroup: getField("muscle_group"),
+            secondaryMuscles:
+                isLv && exercise.secondary_muscles_lv?.length > 0
+                    ? exercise.secondary_muscles_lv
+                    : exercise.secondary_muscles || [],
+        }),
+        [exercise, isLv],
+    );
+
+    const handleToggleFavorite = () => {
+        router.post(
+            route("exercises.favorite", exercise.id),
+            {},
+            {
+                preserveScroll: true,
+            },
+        );
+    };
 
     return (
         <AuthenticatedLayout auth={auth}>
-            <Head title={name} />
+            <Head title={displayData.name} />
 
-            <div className="flex flex-col md:flex-row min-h-screen bg-[#f8f9fa] dark:bg-zinc-950">
+            <div className="flex flex-col md:flex-row min-h-screen bg-[#f8f9fa] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
                 <main className="flex-1 p-4 lg:p-10 overflow-y-auto">
                     <div className="max-w-5xl mx-auto">
                         <nav className="flex items-center justify-between mb-6">
@@ -44,33 +54,25 @@ export default function ExerciseShow({
                             >
                                 ← {t("BACK")}
                             </Link>
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={() =>
-                                        router.post(
-                                            route(
-                                                "exercises.favorite",
-                                                exercise.id,
-                                            ),
-                                        )
-                                    }
-                                    className={`flex items-center gap-2 px-4 py-1.5 rounded-md border text-xs font-bold transition-all ${
-                                        isFavorite
-                                            ? "bg-red-50 border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20"
-                                            : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50"
-                                    }`}
+
+                            <button
+                                onClick={handleToggleFavorite}
+                                className={`flex items-center gap-2 px-4 py-1.5 rounded-md border text-xs font-bold transition-all ${
+                                    isFavorite
+                                        ? "bg-red-50 border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/20"
+                                        : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50"
+                                }`}
+                            >
+                                <svg
+                                    className={`w-4 h-4 ${isFavorite ? "fill-current" : "fill-none"}`}
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    viewBox="0 0 24 24"
                                 >
-                                    <svg
-                                        className={`w-4 h-4 ${isFavorite ? "fill-current" : "fill-none"}`}
-                                        stroke="currentColor"
-                                        strokeWidth="2.5"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                    {isFavorite ? t("Saved") : t("Save")}
-                                </button>
-                            </div>
+                                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                                {isFavorite ? t("Saved") : t("Save")}
+                            </button>
                         </nav>
 
                         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm mb-8">
@@ -81,13 +83,12 @@ export default function ExerciseShow({
                                             <iframe
                                                 src={exercise.video_url}
                                                 className="w-full h-full"
-                                                frameBorder="0"
                                                 allowFullScreen
-                                            ></iframe>
+                                            />
                                         ) : (
                                             <img
                                                 src={exercise.image_path}
-                                                alt={name}
+                                                alt={displayData.name}
                                                 className="w-full h-full object-cover"
                                             />
                                         )}
@@ -98,11 +99,11 @@ export default function ExerciseShow({
                                     <div>
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="px-2 py-0.5 rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-[10px] font-black uppercase tracking-tight">
-                                                {muscleGroup}
+                                                {displayData.muscleGroup}
                                             </span>
                                         </div>
-                                        <h1 className="text-3xl lg:text-4xl font-black text-zinc-900 dark:text-white uppercase leading-tight mb-6">
-                                            {name}
+                                        <h1 className="text-3xl lg:text-4xl font-black uppercase leading-tight mb-6">
+                                            {displayData.name}
                                         </h1>
 
                                         <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-8">
@@ -110,8 +111,8 @@ export default function ExerciseShow({
                                                 <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mb-1">
                                                     {t("Primary Muscle")}
                                                 </p>
-                                                <p className="text-sm font-bold text-zinc-800 dark:text-zinc-200">
-                                                    {muscleGroup}
+                                                <p className="text-sm font-bold">
+                                                    {displayData.muscleGroup}
                                                 </p>
                                             </div>
 
@@ -120,9 +121,10 @@ export default function ExerciseShow({
                                                     {t("Secondary Focus")}
                                                 </p>
                                                 <div className="flex flex-wrap gap-1.5">
-                                                    {secondaryMuscles.length >
-                                                    0 ? (
-                                                        secondaryMuscles.map(
+                                                    {displayData
+                                                        .secondaryMuscles
+                                                        .length > 0 ? (
+                                                        displayData.secondaryMuscles.map(
                                                             (m, i) => (
                                                                 <span
                                                                     key={i}
@@ -153,7 +155,7 @@ export default function ExerciseShow({
                                         {t("Technical Instructions")}
                                     </h3>
                                     <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm lg:text-base font-medium whitespace-pre-line">
-                                        {description}
+                                        {displayData.description}
                                     </p>
                                 </div>
                             </div>
@@ -171,6 +173,7 @@ export default function ExerciseShow({
                                         isLv && related.muscle_group_lv
                                             ? related.muscle_group_lv
                                             : related.muscle_group;
+
                                     return (
                                         <Link
                                             key={related.id}
@@ -188,7 +191,7 @@ export default function ExerciseShow({
                                                 />
                                             </div>
                                             <div className="overflow-hidden">
-                                                <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate uppercase tracking-tight">
+                                                <h4 className="text-xs font-bold truncate uppercase tracking-tight">
                                                     {relatedName}
                                                 </h4>
                                                 <p className="text-[10px] text-zinc-500 font-bold uppercase">

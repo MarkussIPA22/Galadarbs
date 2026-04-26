@@ -99,7 +99,7 @@ class WorkoutController extends Controller
             ->with('exerciseSets')
             ->first();
 
-       return Inertia::render('Workouts/StartWorkout', [ // <--- CHECK THIS STRING
+       return Inertia::render('Workouts/StartWorkout', [ 
         'workout' => $workout,
         'latest_log' => $latest_log,
         'locale' => app()->getLocale()
@@ -244,73 +244,72 @@ class WorkoutController extends Controller
         'completedLogs' => $completedLogs,
     ]);
 }
+public function mostTrainedMuscles(Request $request)
+{
+    $user = auth()->user();
+    $locale = app()->getLocale();
 
+    $logs = \App\Models\WorkoutLog::where('user_id', $user->id)
+        ->orderBy('created_at', 'asc')
+        ->get();
 
-  public function mostTrainedMuscles()
-    {
-        $user = auth()->user();
-        $locale = app()->getLocale(); 
+    $allExerciseIds = $logs->flatMap(function ($log) {
+        return collect($log->exercises)->pluck('id');
+    })->unique();
 
-        $logs = \App\Models\WorkoutLog::where('user_id', $user->id)
-            ->orderBy('created_at', 'asc')
-            ->get();
+    $exerciseMap = \App\Models\Exercise::whereIn('id', $allExerciseIds)
+        ->get()
+        ->keyBy('id');
 
-        $muscleCounts = [];
-        $personalRecords = [];
-        
+    $muscleCounts = [];
+    $personalRecords = [];
+    $lifetimeTotalWeight = 0;
 
-        foreach ($logs as $log) {
-            foreach ($log->exercises as $ex) {
-                $exId = $ex['id'] ?? null;
-                
-                $exName = $ex['name'] ?? null;
-                $muscleGroup = $ex['muscle_group'] ?? null;
+    foreach ($logs as $log) {
+        $exercises = $log->exercises; 
+        if (!$exercises) continue;
 
-                if ((!$exName || !$muscleGroup) && $exId) {
-                    if (!isset($exerciseCache[$exId])) {
-                        $exerciseCache[$exId] = \App\Models\Exercise::find($exId);
-                    }
+        foreach ($exercises as $ex) {
+            $exId = $ex['id'] ?? null;
+            $exerciseModel = $exerciseMap[$exId] ?? null;
+            if (!$exerciseModel) continue;
+
+            $displayName = ($locale === 'lv' && !empty($exerciseModel->name_lv)) 
+                ? $exerciseModel->name_lv 
+                : $exerciseModel->name;
+
+            $mg = $exerciseModel->muscle_group ?? 'Other';
+            $muscleCounts[$mg] = ($muscleCounts[$mg] ?? 0) + 1;
+
+            if (isset($ex['sets'])) {
+                foreach ($ex['sets'] as $set) {
+                    $weight = floatval($set['weight'] ?? 0);
+                    $reps = intval($set['reps'] ?? 0);
                     
-                    $exerciseModel = $exerciseCache[$exId];
+                    $lifetimeTotalWeight += ($weight * $reps);
 
-                    if ($exerciseModel) {
-                        if (!$exName) {
-                            $exName = ($locale === 'lv' && $exerciseModel->name_lv) 
-                                ? $exerciseModel->name_lv 
-                                : $exerciseModel->name;
-                        }
-                        if (!$muscleGroup) {
-                            $muscleGroup = $exerciseModel->muscle_group;
-                        }
-                    }
-                }
-
-                $exName = $exName ?: 'Unknown Exercise';
-                $muscleGroup = $muscleGroup ?: 'Unknown';
-
-                $muscleCounts[$muscleGroup] = ($muscleCounts[$muscleGroup] ?? 0) + 1;
-
-                if (isset($ex['sets']) && is_array($ex['sets'])) {
-                    foreach ($ex['sets'] as $set) {
-                        $weight = floatval($set['weight'] ?? 0);
-                        
-                        if ($weight > 0) {
-                            if (!isset($personalRecords[$exName]) || $weight > $personalRecords[$exName]) {
-                                $personalRecords[$exName] = $weight;
-                            }
-                        }
+                    if ($weight > 0) {
+                       if (!isset($personalRecords[$exId]) || $weight > $personalRecords[$exId]['weight']) {
+    $personalRecords[$exId] = [
+        'name_en' => $exerciseModel->name,    
+        'name_lv' => $exerciseModel->name_lv, 
+        'weight'  => $weight
+    ];
+}
                     }
                 }
             }
         }
-
-        arsort($personalRecords);
-        $topPRs = array_slice($personalRecords, 0, 10);
-
-        return \Inertia\Inertia::render('Profile/MuscleStats', [
-            'auth' => ['user' => $user],
-            'muscleCounts' => $muscleCounts,
-            'personalRecords' => $topPRs,
-        ]);
     }
+
+    uasort($personalRecords, fn($a, $b) => $b['weight'] <=> $a['weight']);
+
+    return \Inertia\Inertia::render('Profile/MuscleStats', [
+        'auth' => ['user' => $user],
+        'muscleCounts' => $muscleCounts,
+        'personalRecords' => array_values(array_slice($personalRecords, 0, 10)),
+        'lifetimeTotalWeight' => round($lifetimeTotalWeight, 2),
+        'currentLocale' => $locale 
+    ]);
+}
 }

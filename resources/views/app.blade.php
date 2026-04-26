@@ -5,33 +5,29 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <title inertia>{{ $page['props']['title'] ?? '' }}</title>
 
-<title inertia>{{ $page['props']['title'] ?? '' }}</title>
-        <!-- Fonts -->
+        <link rel="icon" type="image/png" href="/icon.png">
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @routes
         @viteReactRefresh
-@viteReactRefresh
-@vite('resources/js/app.jsx')
+        @vite('resources/js/app.jsx')
         @inertiaHead
 
-    <script>
-  // Instantly apply theme before React mounts
-  if (
-    localStorage.theme === 'dark' ||
-    (!('theme' in localStorage) &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    document.documentElement.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-  }
-</script>
-
-
+        <script>
+            if (
+                localStorage.theme === 'dark' ||
+                (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia

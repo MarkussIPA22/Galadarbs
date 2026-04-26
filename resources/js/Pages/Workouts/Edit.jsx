@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useForm, Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import WorkoutFormFields from "@/Components/Workouts/WorkoutFormFields";
 import { useTranslation } from "react-i18next";
-import { Plus, X, Upload, Info } from "lucide-react";
+import { Plus, X, Upload, Info, Search, Check } from "lucide-react";
 
 function CreateExerciseModal({ isOpen, onClose, t }) {
     if (!isOpen) return null;
@@ -88,7 +88,7 @@ function CreateExerciseModal({ isOpen, onClose, t }) {
 
                     <div>
                         <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">
-                            {t("exercise_image")}
+                            {t("Exercise image")}
                         </label>
                         <div className="relative">
                             <input
@@ -110,7 +110,7 @@ function CreateExerciseModal({ isOpen, onClose, t }) {
                                 <span className="text-sm font-bold text-zinc-500">
                                     {data.image
                                         ? data.image.name
-                                        : t("click_to_upload")}
+                                        : t("Click to upload")}
                                 </span>
                             </label>
                         </div>
@@ -149,23 +149,17 @@ export default function EditWorkout({
 
     const toggleMuscleGroup = (group) => {
         const lowerGroup = group.toLowerCase();
-        const current = [...data.muscle_groups];
-        setData(
-            "muscle_groups",
-            current.includes(lowerGroup)
-                ? current.filter((g) => g !== lowerGroup)
-                : [...current, lowerGroup],
-        );
+        const nextGroups = data.muscle_groups.includes(lowerGroup)
+            ? data.muscle_groups.filter((g) => g !== lowerGroup)
+            : [...data.muscle_groups, lowerGroup];
+        setData("muscle_groups", nextGroups);
     };
 
     const toggleExercise = (id) => {
-        const current = [...data.exercises];
-        setData(
-            "exercises",
-            current.includes(id)
-                ? current.filter((i) => i !== id)
-                : [...current, id],
-        );
+        const nextExercises = data.exercises.includes(id)
+            ? data.exercises.filter((i) => i !== id)
+            : [...data.exercises, id];
+        setData("exercises", nextExercises);
     };
 
     const filteredExercises = useMemo(() => {
@@ -180,7 +174,6 @@ export default function EditWorkout({
                 data.muscle_groups.includes(ex.muscle_group.toLowerCase());
             const matchesFav =
                 !showFavorites || favoriteExercises.includes(ex.id);
-
             return matchesSearch && matchesGroup && matchesFav;
         });
     }, [
@@ -210,12 +203,9 @@ export default function EditWorkout({
                 <main className="flex-1 p-4 sm:p-8 lg:p-12 max-w-[1600px] mx-auto w-full pb-32">
                     <form onSubmit={handleSubmit} className="space-y-12">
                         <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
-                            <div className="mb-8">
-                                <h2 className="text-3xl font-black tracking-tight dark:text-white mb-2">
-                                    {t("edit_workout")}
-                                </h2>
-                            </div>
-
+                            <h2 className="text-3xl font-black tracking-tight dark:text-white mb-8">
+                                {t("edit_workout")}
+                            </h2>
                             <WorkoutFormFields
                                 data={data}
                                 setData={setData}
@@ -237,10 +227,7 @@ export default function EditWorkout({
                                 <h3 className="text-2xl font-black dark:text-white flex items-center gap-3">
                                     {t("select_exercises")}
                                     <span className="text-sm font-bold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full">
-                                        {data.exercises.length}{" "}
-                                        {t("selected", {
-                                            count: data.exercises.length,
-                                        })}
+                                        {data.exercises.length} {t("selected")}
                                     </span>
                                 </h3>
 
@@ -248,7 +235,7 @@ export default function EditWorkout({
                                     <button
                                         type="button"
                                         onClick={() => setIsModalOpen(true)}
-                                        className="flex items-center gap-2 px-5 py-3 bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800  dark:text-white  rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg active:scale-95"
+                                        className="flex items-center gap-2 px-5 py-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 dark:text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg active:scale-95"
                                     >
                                         <Plus size={16} strokeWidth={3} />
                                         {t("create_exercise")}
@@ -264,19 +251,9 @@ export default function EditWorkout({
                                             }
                                             className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 dark:text-white focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm"
                                         />
-                                        <svg
-                                            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                            />
-                                        </svg>
+                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
+                                            <Search size={20} />{" "}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -357,14 +334,11 @@ function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
 
     return (
         <div
-            className={`
-                group relative flex flex-col rounded-[2.5rem] border-4 transition-all duration-300 overflow-hidden
-                ${
-                    isSelected
-                        ? "border-emerald-500 bg-white dark:bg-zinc-900 shadow-xl scale-[1.02]"
-                        : "border-transparent bg-white dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-800 shadow-sm"
-                }
-            `}
+            className={`group relative flex flex-col rounded-[2.5rem] border-4 transition-all duration-300 overflow-hidden ${
+                isSelected
+                    ? "border-emerald-500 bg-white dark:bg-zinc-900 shadow-xl scale-[1.02]"
+                    : "border-transparent bg-white dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-800 shadow-sm"
+            }`}
         >
             <div
                 onClick={onToggle}
@@ -383,29 +357,19 @@ function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
                 )}
 
                 <div
-                    className={`
-                    absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
-                    ${isSelected ? "bg-emerald-500 text-white scale-100" : "bg-white/50 dark:bg-zinc-800/50 text-transparent scale-0"}
-                `}
+                    className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isSelected
+                            ? "bg-emerald-500 text-white scale-100"
+                            : "bg-white/50 dark:bg-zinc-800/50 text-transparent scale-0"
+                    }`}
                 >
-                    <svg
-                        className="w-6 h-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="4"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M5 13l4 4L19 7"
-                        />
-                    </svg>
+                    <Check size={24} strokeWidth={4} />{" "}
                 </div>
 
                 <Link
                     href={route("exercises.show", exercise.id)}
                     target="_blank"
+                    rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
                     className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-zinc-900/80 dark:bg-zinc-100/80 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
                 >
@@ -417,7 +381,12 @@ function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
                 <Link
                     href={route("exercises.show", exercise.id)}
                     target="_blank"
-                    className={`font-black text-lg mb-1 truncate block transition-colors ${isSelected ? "text-emerald-600 dark:text-emerald-400" : "dark:text-white hover:text-emerald-500"}`}
+                    rel="noopener noreferrer"
+                    className={`font-black text-lg mb-1 truncate block transition-colors ${
+                        isSelected
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "dark:text-white hover:text-emerald-500"
+                    }`}
                 >
                     {name}
                 </Link>

@@ -179,7 +179,7 @@ export default function Dashboard({
                     ) : (
                         <div className="inline-flex items-center gap-2 rounded-xl bg-lime-50 dark:bg-lime-400/10 border border-lime-300 dark:border-lime-400/30 px-5 py-3 text-sm font-bold text-lime-700 dark:text-lime-400">
                             <span>✓</span>
-                            {t("workout_done_today") || "Workout done today!"}
+                            {t("Workout completed today")}
                         </div>
                     )}
                 </div>

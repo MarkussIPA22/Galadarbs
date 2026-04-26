@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
+import { PlayCircle, Pencil, Trash2 } from "lucide-react";
 import MuscleGroupBadge from "@/Components/Muscles/MuscleGroupBadge";
 
 export default function WorkoutCard({ workout, t, onDelete }) {
@@ -45,75 +46,50 @@ export default function WorkoutCard({ workout, t, onDelete }) {
                     )}
                 </div>
 
-                <div className="flex flex-row lg:flex-col gap-2.5 lg:w-48 shrink-0">
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 lg:w-48 shrink-0">
                     <Link
                         href={route("workouts.start", workout.id)}
-                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-lime-400 px-5 py-3 text-sm font-bold text-black shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:bg-lime-300 hover:shadow-[0_0_28px_rgba(163,230,53,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden group/start"
+                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-lime-400 px-5 py-3 text-sm font-bold text-black shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:bg-lime-300 hover:shadow-[0_0_28px_rgba(163,230,53,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 overflow-hidden group/start min-w-fit"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-lime-300/0 via-white/40 to-lime-300/0 translate-x-[-100%] group-hover/start:translate-x-[100%] transition-transform duration-700"></div>
-                        <svg
-                            className="w-4 h-4 relative z-10"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <PlayCircle
+                            size={18}
                             strokeWidth={2.5}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                            />
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                        <span className="relative z-10">
+                            className="relative z-10 shrink-0"
+                        />
+                        <span className="relative z-10 truncate">
                             {t("Start_Workout")}
                         </span>
                     </Link>
 
                     <Link
                         href={route("workouts.edit", workout.id)}
-                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-white hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group/edit overflow-hidden"
+                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-white hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group/edit overflow-hidden min-w-fit"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-zinc-100/0 via-zinc-200/50 to-zinc-100/0 dark:from-zinc-700/0 dark:via-zinc-600/50 dark:to-zinc-700/0 opacity-0 group-hover/edit:opacity-100 transition-opacity duration-300"></div>
-                        <svg
-                            className="w-4 h-4 relative z-10 group-hover/edit:rotate-3 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <Pencil
+                            size={18}
                             strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                        </svg>
-                        <span className="relative z-10">{t("edit")}</span>
+                            className="relative z-10 group-hover/edit:rotate-3 transition-transform shrink-0"
+                        />
+                        <span className="relative z-10 truncate">
+                            {t("edit")}
+                        </span>
                     </Link>
 
                     <button
                         onClick={() => onDelete(workout.id)}
-                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-300 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group/delete overflow-hidden"
+                        className="relative flex-1 lg:w-full inline-flex items-center justify-center gap-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-red-50 dark:hover:bg-red-950/30 hover:border-red-300 dark:hover:border-red-800 hover:text-red-600 dark:hover:text-red-400 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group/delete overflow-hidden min-w-fit"
                     >
                         <div className="absolute inset-0 bg-gradient-to-br from-red-100/0 via-red-200/50 to-red-100/0 dark:from-red-900/0 dark:via-red-800/50 dark:to-red-900/0 opacity-0 group-hover/delete:opacity-100 transition-opacity duration-300"></div>
-                        <svg
-                            className="w-4 h-4 relative z-10 group-hover/delete:scale-110 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <Trash2
+                            size={18}
                             strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                        </svg>
-                        <span className="relative z-10">{t("delete")}</span>
+                            className="relative z-10 group-hover/delete:scale-110 transition-transform shrink-0"
+                        />
+                        <span className="relative z-10 truncate">
+                            {t("delete")}
+                        </span>
                     </button>
                 </div>
             </div>

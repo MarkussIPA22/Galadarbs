@@ -1,5 +1,6 @@
 import React from "react";
 import MuscleGroupButton from "../Muscles/MuscleGroupButton";
+import { CheckCircle2 } from "lucide-react";
 
 export default function WorkoutFormFields({
     data,
@@ -33,31 +34,19 @@ export default function WorkoutFormFields({
                     />
                     {data.name && (
                         <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                            <svg
-                                className="w-5 h-5 text-emerald-500"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 12l2 2 4-4"
-                                />
-                            </svg>
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                         </div>
                     )}
                 </div>
                 {errors.name && (
-                    <p className="text-red-500 mt-2">{errors.name}</p>
+                    <p className="text-red-500 mt-2 text-sm">{errors.name}</p>
                 )}
             </div>
 
             <div className="group">
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3 uppercase tracking-wider">
                     {t("description")}{" "}
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 italic">
                         ({t("optional")})
                     </span>
                 </label>
@@ -73,7 +62,7 @@ export default function WorkoutFormFields({
                 />
 
                 {!editMode && (
-                    <div>
+                    <div className="mt-8">
                         <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4 uppercase tracking-wider">
                             {t("muscle_groups")}
                             {data.muscle_groups.length > 0 && (
@@ -88,7 +77,7 @@ export default function WorkoutFormFields({
                                     key={group}
                                     group={group}
                                     isActive={data.muscle_groups.includes(
-                                        group
+                                        group,
                                     )}
                                     isFavorite={group === "favorites"}
                                     toggle={() =>
@@ -101,7 +90,7 @@ export default function WorkoutFormFields({
                             ))}
                         </div>
                         {errors.muscle_groups && (
-                            <p className="text-red-500 mt-2">
+                            <p className="text-red-500 mt-3 text-sm font-medium">
                                 {errors.muscle_groups}
                             </p>
                         )}

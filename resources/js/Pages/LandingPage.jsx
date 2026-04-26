@@ -34,9 +34,7 @@ const LandingPage = ({ auth }) => {
                 </h1>
 
                 <p className="text-slate-500 dark:text-zinc-400 text-lg md:text-xl max-w-xl mx-auto font-medium leading-tight mb-10">
-                    {t(
-                        "The fastest way to log a set ever built. Liftify strips away the noise of traditional apps to provide a high-speed, high-contrast environment for your PRs.",
-                    )}
+                    {t("land_description")}
                 </p>
 
                 <div className="flex flex-col sm:flex-row justify-center gap-4">

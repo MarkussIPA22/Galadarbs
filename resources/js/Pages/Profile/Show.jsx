@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
@@ -6,24 +6,30 @@ import { useTranslation } from "react-i18next";
 export default function Show({
     auth,
     profileUser,
-    workouts,
-    completedLogs,
+    workouts = [],
+    completedLogs = [],
     tasks = [],
 }) {
-    const { t } = useTranslation();
-    const getRecentWorkouts = () => completedLogs.slice(0, 5);
+    const { t, i18n } = useTranslation();
 
-    const totalStreak = tasks.reduce(
-        (sum, task) => sum + (task.streak || 0),
-        0,
+    // Memoize stats to avoid recalculating on every re-render
+    const totalStreak = useMemo(
+        () => tasks.reduce((sum, task) => sum + (task.streak || 0), 0),
+        [tasks],
+    );
+
+    const recentLogs = useMemo(
+        () => completedLogs.filter((log) => log?.workout).slice(0, 5),
+        [completedLogs],
     );
 
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title={`${profileUser.name}'s ${t("Profile")}`} />
 
-            <div className="min-h-screen bg-[#f8f9fa] dark:bg-zinc-950 transition-colors duration-300">
+            <div className="min-h-screen bg-[#f8f9fa] dark:bg-zinc-950 transition-colors duration-300 pb-20">
                 <main className="max-w-5xl mx-auto p-6 lg:p-10">
+                    {/* Top Navigation */}
                     <nav className="flex items-center justify-between mb-8">
                         <Link
                             href={route("users.index")}
@@ -33,6 +39,7 @@ export default function Show({
                         </Link>
                     </nav>
 
+                    {/* Profile Header Section */}
                     <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
                         <div className="relative">
                             <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-3xl overflow-hidden bg-zinc-200 dark:bg-zinc-900 border-2 border-white dark:border-zinc-800 flex items-center justify-center shadow-2xl">
@@ -63,9 +70,9 @@ export default function Show({
                             )}
                         </div>
 
-                        <div className="text-center md:text-left">
-                            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-2">
-                                <h1 className="text-4xl lg:text-5xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter leading-none">
+                        <div className="flex-1 text-center md:text-left">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-2">
+                                <h1 className="text-4xl lg:text-6xl font-black text-zinc-900 dark:text-white uppercase tracking-tighter leading-none">
                                     {profileUser.name}
                                 </h1>
 
@@ -75,11 +82,10 @@ export default function Show({
                                             "chat.with",
                                             profileUser.id,
                                         )}
-                                        className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-[#bef264] hover:bg-[#a3d942] text-zinc-900 text-xs font-black uppercase tracking-widest rounded-lg transition-all active:scale-95 shadow-md"
+                                        className="inline-flex items-center justify-center gap-3 px-6 py-3 bg-[#bef264] hover:bg-[#a3d942] text-zinc-900 text-[10px] font-black uppercase tracking-[0.15em] rounded-2xl transition-all active:scale-95 shadow-xl shadow-lime-500/10 group"
                                     >
                                         <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="w-4 h-4"
+                                            className="w-4 h-4 transition-transform group-hover:-rotate-12"
                                             viewBox="0 0 24 24"
                                             fill="currentColor"
                                         >
@@ -89,35 +95,36 @@ export default function Show({
                                     </Link>
                                 )}
                             </div>
+                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">
+                                {profileUser.email}
+                            </p>
                         </div>
                     </div>
 
+                    {/* Stats Grid */}
                     <div className="grid grid-cols-2 gap-4 lg:gap-8 mb-12">
-                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-2xl shadow-sm relative overflow-hidden">
-                            <div className="relative z-10">
-                                <p className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2">
-                                    {t("Workouts Created")}
-                                </p>
-                                <p className="text-5xl lg:text-6xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                                    {workouts?.length || 0}
-                                </p>
-                            </div>
-                            <div className="absolute top-0 right-0 p-4 opacity-10 dark:opacity-5"></div>
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-3xl shadow-sm">
+                            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">
+                                {t("Workouts Created")}
+                            </p>
+                            <p className="text-5xl lg:text-7xl font-black text-zinc-900 dark:text-white tracking-tighter">
+                                {workouts.length}
+                            </p>
                         </div>
 
-                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-2xl shadow-sm relative overflow-hidden">
-                            <div className="relative z-10">
-                                <p className="text-[10px] font-black text-zinc-400 dark:text-zinc-500 uppercase tracking-widest mb-2">
-                                    {t("Completed_Workouts")}
-                                </p>
-                                <p className="text-5xl lg:text-6xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                                    {completedLogs?.length || 0}
-                                </p>
-                            </div>
+                        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 rounded-3xl shadow-sm">
+                            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">
+                                {t("Completed_Workouts")}
+                            </p>
+                            <p className="text-5xl lg:text-7xl font-black text-zinc-900 dark:text-white tracking-tighter">
+                                {completedLogs.length}
+                            </p>
                         </div>
                     </div>
 
+                    {/* Content Columns */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                        {/* Workouts List */}
                         <div>
                             <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mb-6 flex items-center gap-2">
                                 <span className="w-1.5 h-4 bg-zinc-900 dark:bg-zinc-100"></span>
@@ -125,36 +132,47 @@ export default function Show({
                             </h3>
 
                             <div className="space-y-3">
-                                {workouts?.length > 0 ? (
-                                    workouts.map((workout) =>
-                                        workout ? (
-                                            <Link
-                                                key={workout.id}
-                                                href={route(
-                                                    "workouts.show",
-                                                    workout.id,
-                                                )}
-                                                className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
+                                {workouts.length > 0 ? (
+                                    workouts.filter(Boolean).map((workout) => (
+                                        <Link
+                                            key={workout.id}
+                                            href={route(
+                                                "workouts.show",
+                                                workout.id,
+                                            )}
+                                            className="flex items-center gap-4 p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
+                                        >
+                                            <div className="flex-1 overflow-hidden">
+                                                <h4 className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate">
+                                                    {workout.name}
+                                                </h4>
+                                            </div>
+                                            <svg
+                                                className="w-4 h-4 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
                                             >
-                                                <div className="flex-1 overflow-hidden">
-                                                    <h4 className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate">
-                                                        {workout.name}
-                                                    </h4>
-                                                </div>
-                                            </Link>
-                                        ) : null,
-                                    )
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M9 5l7 7-7 7"
+                                                />
+                                            </svg>
+                                        </Link>
+                                    ))
                                 ) : (
                                     <div className="p-8 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-center">
                                         <p className="text-xs text-zinc-500 font-bold uppercase">
-                                            {t("No active plans")}
+                                            {t("No workouts created")}
                                         </p>
                                     </div>
                                 )}
                             </div>
                         </div>
 
-                        {/* Recent Completed */}
+                        {/* Recent Logs List */}
                         <div>
                             <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mb-6 flex items-center gap-2">
                                 <span className="w-1.5 h-4 bg-[#bef264]"></span>
@@ -162,40 +180,37 @@ export default function Show({
                             </h3>
 
                             <div className="space-y-3">
-                                {completedLogs?.length > 0 ? (
-                                    getRecentWorkouts().map((log) =>
-                                        log.workout ? (
-                                            <Link
-                                                key={log.id}
-                                                href={route(
-                                                    "workouts.show",
-                                                    log.workout.id,
-                                                )}
-                                                className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
-                                            >
-                                                <div className="flex items-center gap-4 overflow-hidden">
-                                                    <div className="w-2 h-2 rounded-full bg-[#bef264] animate-pulse"></div>
-                                                    <div className="overflow-hidden">
-                                                        <span className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate block">
-                                                            {log.workout.name}
-                                                        </span>
-                                                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                                                            {new Date(
-                                                                log.created_at,
-                                                            ).toLocaleDateString(
-                                                                "lv-LV",
-                                                            )}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="bg-zinc-50 dark:bg-zinc-800 px-3 py-1 rounded-md">
-                                                    <span className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-tighter">
-                                                        Done
+                                {recentLogs.length > 0 ? (
+                                    recentLogs.map((log) => (
+                                        <Link
+                                            key={log.id}
+                                            href={route(
+                                                "workouts.show",
+                                                log.workout.id,
+                                            )}
+                                            className="flex items-center justify-between p-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group shadow-sm"
+                                        >
+                                            <div className="flex items-center gap-4 overflow-hidden">
+                                                <div className="w-2 h-2 rounded-full bg-[#bef264] animate-pulse"></div>
+                                                <div className="overflow-hidden">
+                                                    <span className="text-sm font-black text-zinc-800 dark:text-zinc-100 uppercase truncate block">
+                                                        {log.workout.name}
                                                     </span>
+                                                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
+                                                        {new Date(
+                                                            log.created_at,
+                                                        ).toLocaleDateString(
+                                                            i18n.language ===
+                                                                "lv"
+                                                                ? "lv-LV"
+                                                                : "en-GB",
+                                                        )}
+                                                    </p>
                                                 </div>
-                                            </Link>
-                                        ) : null,
-                                    )
+                                            </div>
+                                            <div className="bg-zinc-50 dark:bg-zinc-800 px-3 py-1 rounded-md"></div>
+                                        </Link>
+                                    ))
                                 ) : (
                                     <div className="p-8 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl text-center">
                                         <p className="text-xs text-zinc-500 font-bold uppercase">

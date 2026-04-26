@@ -6,7 +6,7 @@ import MuscleGroupButton from "@/Components/Muscles/MuscleGroupButton";
 import { Lock, Globe, CheckCircle2 } from "lucide-react";
 
 export default function CreateWorkout({ auth }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const { data, setData, post, processing, errors } = useForm({
         name: "",
@@ -38,7 +38,13 @@ export default function CreateWorkout({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("workouts.store"));
+
+        post(route("workouts.store"), {
+            data: {
+                ...data,
+                locale: i18n.language,
+            },
+        });
     };
 
     return (
@@ -127,6 +133,12 @@ export default function CreateWorkout({ auth }) {
                                             />
                                         ))}
                                     </div>
+
+                                    {errors.muscle_groups && (
+                                        <p className="mt-3 text-sm text-rose-500">
+                                            {errors.muscle_groups}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
@@ -174,7 +186,6 @@ export default function CreateWorkout({ auth }) {
                                     </div>
                                 </div>
 
-                                <div className="flex items-start gap-3 mb-6"></div>
                                 <button
                                     disabled={processing}
                                     className="w-full py-4 bg-lime-400 hover:bg-lime-300 disabled:opacity-50 text-black font-black rounded-2xl transition-all duration-200 shadow-[0_4px_20px_rgba(163,230,53,0.3)] hover:scale-[1.02] active:scale-[0.98] uppercase tracking-wider"

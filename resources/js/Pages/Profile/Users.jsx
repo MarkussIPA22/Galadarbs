@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, Head } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,9 @@ export default function Users({ auth, users }) {
     }, [search, users.data]); // Atjauno filtrētos lietotājus, kad mainās meklēšana vai dati
 
     return (
-        <AuthenticatedLayout auth={auth} header={t("Members")}>
+        <AuthenticatedLayout auth={auth}>
+            <Head title={t("users")} />
+
             <div className="min-h-screen bg-white dark:bg-[#09090b]">
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     {/* Meklēšanas ievades lauks */}

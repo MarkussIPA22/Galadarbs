@@ -10,23 +10,43 @@ use Inertia\Inertia;
 
 class TaskController extends Controller
 {
-    public function index()
-    {
-        $exercises = Exercise::all([
-            'id', 'name', 'name_lv', 'muscle_group', 'muscle_group_lv', 'image_path'
-        ]);
+   public function index()
+{
+    $userId = Auth::id();
 
-        $task = Task::with('exercise')
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->first();
+    $task = Task::with('exercise')
+        ->where('user_id', $userId)
+        ->latest()
+        ->first();
 
-        return Inertia::render('Tasks/Index', [
-            'task' => $task,
-            'exercises' => $exercises,
-            'auth' => auth()->user(),
-        ]);
+    if (!$task) {
+        $randomExercise = Exercise::inRandomOrder()->first();
+
+        if ($randomExercise) {
+            $randomTarget = rand(8, 20) * 5; 
+
+            $task = Task::create([
+                'user_id' => $userId,
+                'exercise_id' => $randomExercise->id,
+                'name' => $randomExercise->name,
+                'target' => $randomTarget,
+                'progress' => 0,
+                'completed' => false,
+                'streak' => 0,
+                'date' => now(),
+            ]);
+            
+            $task->load('exercise');
+        }
     }
+
+    return Inertia::render('Tasks/Index', [
+        'task' => $task,
+        'auth' => [
+            'user' => auth()->user(), 
+        ],
+    ]);
+}
 
     public function store(Request $request)
 {

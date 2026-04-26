@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Message;
@@ -14,6 +15,21 @@ class ChatController extends Controller
         $authId = auth()->id();
         $messages = [];
 
+        $chatUsers = User::where('id', '!=', $authId)
+            ->where(function($query) use ($authId) {
+                $query->whereHas('sentMessages', function($q) use ($authId) {
+                    $q->where('receiver_id', $authId);
+                })
+                ->orWhereHas('receivedMessages', function($q) use ($authId) {
+                    $q->where('sender_id', $authId);
+                });
+            })
+            ->get();
+
+        if ($receiver && !$chatUsers->contains('id', $receiver->id)) {
+            $chatUsers->push($receiver);
+        }
+
         if ($receiver) {
             $messages = Message::where(function($q) use ($authId, $receiver) {
                 $q->where('sender_id', $authId)->where('receiver_id', $receiver->id);
@@ -27,7 +43,7 @@ class ChatController extends Controller
         return Inertia::render('Chat/Index', [
             'receiver' => $receiver,
             'initialMessages' => $messages,
-            'users' => User::where('id', '!=', $authId)->get(),
+            'users' => $chatUsers,
         ]);
     }
 
@@ -43,6 +59,8 @@ class ChatController extends Controller
             'receiver_id' => $request->receiverId,
             'message' => $request->message,
         ]);
+
+        $message->load('sender');
 
         broadcast(new MessageSent($message))->toOthers();
 

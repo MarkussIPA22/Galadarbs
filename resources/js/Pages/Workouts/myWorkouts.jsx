@@ -1,8 +1,9 @@
 import React from "react";
-import { usePage, router } from "@inertiajs/react";
+import { usePage, router, Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import WorkoutCard from "@/Components/Workouts/WorkoutCard";
 import { useTranslation } from "react-i18next";
+import { Plus } from "lucide-react";
 
 export default function MyWorkouts({ auth }) {
     const { t } = useTranslation();
@@ -16,9 +17,9 @@ export default function MyWorkouts({ auth }) {
 
     return (
         <AuthenticatedLayout auth={auth}>
+            <Head title={t("Your Workouts")} />
             <div className="flex flex-col md:flex-row min-h-screen bg-zinc-100 dark:bg-zinc-950 transition-colors duration-200">
                 <main className="flex-1 p-5 lg:p-8 overflow-hidden">
-                    {/* Header */}
                     <div className="mb-8">
                         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                             <div>
@@ -79,19 +80,13 @@ export default function MyWorkouts({ auth }) {
                                     className="group relative inline-flex items-center gap-2 rounded-xl bg-lime-400 px-6 py-3 text-sm font-bold text-black shadow-[0_0_20px_rgba(163,230,53,0.3)] hover:bg-lime-300 hover:shadow-[0_0_28px_rgba(163,230,53,0.45)] transition-all duration-200 overflow-hidden"
                                 >
                                     <div className="absolute inset-0 bg-gradient-to-r from-lime-300/0 via-white/30 to-lime-300/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                                    <svg
-                                        className="w-4 h-4 relative z-10"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2.5}
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 4v16m8-8H4"
-                                        />
-                                    </svg>
+
+                                    <Plus
+                                        size={18}
+                                        strokeWidth={3}
+                                        className="relative z-10"
+                                    />
+
                                     <span className="relative z-10">
                                         {t("Create_Your_First_Workout")}
                                     </span>

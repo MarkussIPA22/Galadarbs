@@ -1,6 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Head } from "@inertiajs/react";
 
 export default function OneRepMaxCalculator({ auth }) {
     const { t } = useTranslation();
@@ -32,6 +33,7 @@ export default function OneRepMaxCalculator({ auth }) {
 
     return (
         <AuthenticatedLayout auth={auth}>
+            <Head title={t("oneRepMaxCalculator")} />
             <div className="min-h-screen bg-white dark:bg-black p-4 sm:p-6 flex items-center justify-center">
                 <div className="w-full max-w-md">
                     <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm">
