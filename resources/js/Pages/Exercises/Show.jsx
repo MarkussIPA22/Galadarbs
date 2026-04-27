@@ -2,12 +2,14 @@ import React, { useMemo } from "react";
 import { Head, Link, router } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
+import { Heart } from "lucide-react";
 
 export default function ExerciseShow({
     auth,
     exercise,
     relatedExercises = [],
     isFavorite = false,
+    workout_id = null,
 }) {
     const { t, i18n } = useTranslation();
     const isLv = i18n.language === "lv";
@@ -49,7 +51,11 @@ export default function ExerciseShow({
                     <div className="max-w-5xl mx-auto">
                         <nav className="flex items-center justify-between mb-6">
                             <Link
-                                href={route("workouts.create")}
+                                href={
+                                    workout_id
+                                        ? route("workouts.edit", workout_id)
+                                        : route("workouts.index")
+                                }
                                 className="text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
                             >
                                 ← {t("BACK")}
@@ -63,14 +69,15 @@ export default function ExerciseShow({
                                         : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50"
                                 }`}
                             >
-                                <svg
-                                    className={`w-4 h-4 ${isFavorite ? "fill-current" : "fill-none"}`}
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
+                                <Heart
+                                    size={16}
+                                    strokeWidth={2.5}
+                                    className={
+                                        isFavorite
+                                            ? "fill-emerald-500 text-emerald-500"
+                                            : "text-zinc-400"
+                                    }
+                                />
                                 {isFavorite ? t("Saved") : t("Save")}
                             </button>
                         </nav>
@@ -177,10 +184,10 @@ export default function ExerciseShow({
                                     return (
                                         <Link
                                             key={related.id}
-                                            href={route(
-                                                "exercises.show",
-                                                related.id,
-                                            )}
+                                            href={route("exercises.show", {
+                                                exercise: related.id,
+                                                workout_id: workout_id,
+                                            })}
                                             className="flex items-center gap-4 p-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:border-zinc-400 dark:hover:border-zinc-600 transition-all group"
                                         >
                                             <div className="w-14 h-14 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex-shrink-0">

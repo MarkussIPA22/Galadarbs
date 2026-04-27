@@ -3,6 +3,8 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import MuscleGroupButton from "@/Components/Muscles/MuscleGroupButton";
+
+// Importē noteiktās ikonas no lucide-react
 import { Lock, Globe, CheckCircle2 } from "lucide-react";
 
 export default function CreateWorkout({ auth }) {
@@ -148,8 +150,10 @@ export default function CreateWorkout({ auth }) {
                                                 className={`p-2 rounded-xl ${data.is_private ? "bg-amber-500/10 text-amber-500" : "bg-lime-500/10 text-lime-500"}`}
                                             >
                                                 {data.is_private ? (
+                                                    // Izsauc un pievieno Lock ikonu
                                                     <Lock size={18} />
                                                 ) : (
+                                                    // Izsauc un pievieno Globe ikonu
                                                     <Globe size={18} />
                                                 )}
                                             </div>

@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useForm, Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import WorkoutFormFields from "@/Components/Workouts/WorkoutFormFields";
 import { useTranslation } from "react-i18next";
-import { Plus, X, Upload, Info, Search, Check } from "lucide-react";
+import { Plus, X, Upload, Info, Search, Check, ArrowDown } from "lucide-react";
 
 function CreateExerciseModal({ isOpen, onClose, t }) {
     if (!isOpen) return null;
@@ -107,7 +107,7 @@ function CreateExerciseModal({ isOpen, onClose, t }) {
                                 <div className="p-4 rounded-full bg-zinc-100 dark:bg-zinc-800 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                                     <Upload size={24} />
                                 </div>
-                                <span className="text-sm font-bold text-zinc-500">
+                                <span className="text-sm font-bold text-zinc-500 text-center">
                                     {data.image
                                         ? data.image.name
                                         : t("Click to upload")}
@@ -129,200 +129,7 @@ function CreateExerciseModal({ isOpen, onClose, t }) {
     );
 }
 
-export default function EditWorkout({
-    auth,
-    workout,
-    exercises,
-    favoriteExercises,
-}) {
-    const { t, i18n } = useTranslation();
-    const [showFavorites, setShowFavorites] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const { data, setData, put, processing, errors } = useForm({
-        name: workout.name || "",
-        description: workout.description || "",
-        muscle_groups: workout.muscle_groups || [],
-        exercises: workout.exercises.map((e) => e.id) || [],
-    });
-
-    const toggleMuscleGroup = (group) => {
-        const lowerGroup = group.toLowerCase();
-        const nextGroups = data.muscle_groups.includes(lowerGroup)
-            ? data.muscle_groups.filter((g) => g !== lowerGroup)
-            : [...data.muscle_groups, lowerGroup];
-        setData("muscle_groups", nextGroups);
-    };
-
-    const toggleExercise = (id) => {
-        const nextExercises = data.exercises.includes(id)
-            ? data.exercises.filter((i) => i !== id)
-            : [...data.exercises, id];
-        setData("exercises", nextExercises);
-    };
-
-    const filteredExercises = useMemo(() => {
-        return exercises.filter((ex) => {
-            const name =
-                i18n.language === "lv" ? ex.name_lv || ex.name : ex.name;
-            const matchesSearch = name
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase());
-            const matchesGroup =
-                data.muscle_groups.length === 0 ||
-                data.muscle_groups.includes(ex.muscle_group.toLowerCase());
-            const matchesFav =
-                !showFavorites || favoriteExercises.includes(ex.id);
-            return matchesSearch && matchesGroup && matchesFav;
-        });
-    }, [
-        exercises,
-        searchQuery,
-        data.muscle_groups,
-        showFavorites,
-        i18n.language,
-    ]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        put(route("workouts.update", workout.id));
-    };
-
-    return (
-        <AuthenticatedLayout auth={auth}>
-            <Head title={t("edit_workout")} />
-
-            <CreateExerciseModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                t={t}
-            />
-
-            <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors">
-                <main className="flex-1 p-4 sm:p-8 lg:p-12 max-w-[1600px] mx-auto w-full pb-32">
-                    <form onSubmit={handleSubmit} className="space-y-12">
-                        <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
-                            <h2 className="text-3xl font-black tracking-tight dark:text-white mb-8">
-                                {t("edit_workout")}
-                            </h2>
-                            <WorkoutFormFields
-                                data={data}
-                                setData={setData}
-                                errors={errors}
-                                muscleGroups={data.muscle_groups}
-                                showFavorites={showFavorites}
-                                toggleMuscleGroup={toggleMuscleGroup}
-                                toggleFavorites={() =>
-                                    setShowFavorites(!showFavorites)
-                                }
-                                t={t}
-                                displayMuscleGroup={(g) => t(g)}
-                                editMode={true}
-                            />
-                        </section>
-
-                        <section className="space-y-6">
-                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-2">
-                                <h3 className="text-2xl font-black dark:text-white flex items-center gap-3">
-                                    {t("select_exercises")}
-                                    <span className="text-sm font-bold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full">
-                                        {data.exercises.length} {t("selected")}
-                                    </span>
-                                </h3>
-
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsModalOpen(true)}
-                                        className="flex items-center gap-2 px-5 py-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 dark:text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg active:scale-95"
-                                    >
-                                        <Plus size={16} strokeWidth={3} />
-                                        {t("create_exercise")}
-                                    </button>
-
-                                    <div className="relative w-full md:w-80">
-                                        <input
-                                            type="text"
-                                            placeholder={t("search_exercises")}
-                                            value={searchQuery}
-                                            onChange={(e) =>
-                                                setSearchQuery(e.target.value)
-                                            }
-                                            className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 dark:text-white focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm"
-                                        />
-                                        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
-                                            <Search size={20} />{" "}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-                                {filteredExercises.map((exercise) => (
-                                    <ExerciseCard
-                                        key={exercise.id}
-                                        exercise={exercise}
-                                        isSelected={data.exercises.includes(
-                                            exercise.id,
-                                        )}
-                                        onToggle={() =>
-                                            toggleExercise(exercise.id)
-                                        }
-                                        t={t}
-                                        i18n={i18n}
-                                    />
-                                ))}
-                            </div>
-
-                            {filteredExercises.length === 0 && (
-                                <div className="text-center py-20 bg-zinc-100 dark:bg-zinc-900/50 rounded-[2rem] border-2 border-dashed border-zinc-300 dark:border-zinc-800">
-                                    <p className="text-zinc-500 font-bold">
-                                        {t("no_exercises_found")}
-                                    </p>
-                                </div>
-                            )}
-                        </section>
-
-                        <div className="fixed bottom-8 left-0 right-0 z-[50] flex items-center justify-center pointer-events-none px-4">
-                            <div className="flex flex-wrap justify-center gap-4 p-4 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] shadow-2xl pointer-events-auto">
-                                <button
-                                    type="submit"
-                                    disabled={processing}
-                                    className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-95 disabled:opacity-50"
-                                >
-                                    {t("save_changes")}
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        (window.location.href = route(
-                                            "workouts.start",
-                                            workout.id,
-                                        ))
-                                    }
-                                    className="px-8 py-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
-                                >
-                                    {t("start_workout")}
-                                </button>
-
-                                <Link
-                                    href={route("workouts.index")}
-                                    className="px-8 py-4 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-2xl font-bold text-sm hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-all"
-                                >
-                                    {t("cancel")}
-                                </Link>
-                            </div>
-                        </div>
-                    </form>
-                </main>
-            </div>
-        </AuthenticatedLayout>
-    );
-}
-
-function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
+function ExerciseCard({ exercise, workout, isSelected, onToggle, t, i18n }) {
     const name =
         i18n.language === "lv"
             ? exercise.name_lv || exercise.name
@@ -363,15 +170,18 @@ function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
                             : "bg-white/50 dark:bg-zinc-800/50 text-transparent scale-0"
                     }`}
                 >
-                    <Check size={24} strokeWidth={4} />{" "}
+                    <Check size={24} strokeWidth={4} />
                 </div>
 
                 <Link
-                    href={route("exercises.show", exercise.id)}
+                    href={route("exercises.show", {
+                        exercise: exercise.id,
+                        workout_id: workout.id,
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-zinc-900/80 dark:bg-zinc-100/80 hover:bg-zinc-900 dark:hover:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 hover:scale-110"
+                    className="absolute bottom-4 right-4 p-3 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-full text-zinc-500 hover:text-emerald-500 transition-colors shadow-lg"
                 >
                     <Info size={18} />
                 </Link>
@@ -379,21 +189,225 @@ function ExerciseCard({ exercise, isSelected, onToggle, t, i18n }) {
 
             <div className="p-6 text-center">
                 <Link
-                    href={route("exercises.show", exercise.id)}
+                    href={route("exercises.show", {
+                        exercise: exercise.id,
+                        workout_id: workout.id,
+                    })}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`font-black text-lg mb-1 truncate block transition-colors ${
-                        isSelected
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "dark:text-white hover:text-emerald-500"
-                    }`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="block text-lg font-black dark:text-white hover:text-emerald-500 transition-colors truncate"
                 >
                     {name}
                 </Link>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mt-1">
                     {muscle}
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function EditWorkout({
+    auth,
+    workout,
+    exercises,
+    favoriteExercises,
+}) {
+    const { t, i18n } = useTranslation();
+    const [showFavorites, setShowFavorites] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const saveSectionRef = useRef(null);
+
+    const { data, setData, put, processing, errors } = useForm({
+        name: workout.name || "",
+        description: workout.description || "",
+        muscle_groups: workout.muscle_groups || [],
+        exercises: workout.exercises.map((e) => e.id) || [],
+    });
+
+    const toggleMuscleGroup = (group) => {
+        const lowerGroup = group.toLowerCase();
+        const nextGroups = data.muscle_groups.includes(lowerGroup)
+            ? data.muscle_groups.filter((g) => g !== lowerGroup)
+            : [...data.muscle_groups, lowerGroup];
+        setData("muscle_groups", nextGroups);
+    };
+
+    const toggleExercise = (id) => {
+        const nextExercises = data.exercises.includes(id)
+            ? data.exercises.filter((i) => i !== id)
+            : [...data.exercises, id];
+        setData("exercises", nextExercises);
+    };
+
+    const scrollToSave = () => {
+        saveSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const filteredExercises = useMemo(() => {
+        return exercises.filter((ex) => {
+            const name =
+                i18n.language === "lv" ? ex.name_lv || ex.name : ex.name;
+            const matchesSearch = name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+            const matchesGroup =
+                data.muscle_groups.length === 0 ||
+                data.muscle_groups.includes(ex.muscle_group.toLowerCase());
+            const matchesFav =
+                !showFavorites || favoriteExercises.includes(ex.id);
+            return matchesSearch && matchesGroup && matchesFav;
+        });
+    }, [
+        exercises,
+        searchQuery,
+        data.muscle_groups,
+        showFavorites,
+        i18n.language,
+        favoriteExercises,
+    ]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        put(route("workouts.update", workout.id));
+    };
+
+    return (
+        <AuthenticatedLayout auth={auth}>
+            <Head title={t("edit_workout")} />
+
+            <CreateExerciseModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                t={t}
+            />
+
+            <div className="flex min-h-screen bg-zinc-50 dark:bg-zinc-950 transition-colors">
+                <main className="flex-1 p-4 sm:p-8 lg:p-12 max-w-[1600px] mx-auto w-full">
+                    <form onSubmit={handleSubmit} className="space-y-12">
+                        <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
+                            <h2 className="text-3xl font-black tracking-tight dark:text-white mb-8">
+                                {t("edit_workout")}
+                            </h2>
+                            <WorkoutFormFields
+                                data={data}
+                                setData={setData}
+                                errors={errors}
+                                muscleGroups={data.muscle_groups}
+                                showFavorites={showFavorites}
+                                toggleMuscleGroup={toggleMuscleGroup}
+                                toggleFavorites={() =>
+                                    setShowFavorites(!showFavorites)
+                                }
+                                t={t}
+                                displayMuscleGroup={(g) => t(g)}
+                                editMode={true}
+                            />
+                        </section>
+
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                                <button
+                                    type="button"
+                                    onClick={scrollToSave}
+                                    className="flex items-center gap-2 px-4 py-3 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest hover:scale-105 transition-all active:scale-95 border border-transparent whitespace-nowrap"
+                                >
+                                    <ArrowDown size={16} strokeWidth={3} />
+                                    {t("Jump to Save")}
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 dark:text-white rounded-2xl font-black text-[10px] sm:text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-lg active:scale-95 whitespace-nowrap"
+                                >
+                                    <Plus size={16} strokeWidth={3} />
+                                    {t("create_exercise")}
+                                </button>
+                            </div>
+
+                            <div className="relative w-full lg:w-80">
+                                <input
+                                    type="text"
+                                    placeholder={t("search_exercises")}
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                        setSearchQuery(e.target.value)
+                                    }
+                                    className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 dark:text-white focus:ring-2 focus:ring-emerald-500 transition-all shadow-sm"
+                                />
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400">
+                                    <Search size={20} />
+                                </div>
+                            </div>
+                        </div>
+
+                        <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-zinc-200 dark:border-zinc-800">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                                {filteredExercises.map((exercise) => (
+                                    <ExerciseCard
+                                        key={exercise.id}
+                                        exercise={exercise}
+                                        workout={workout}
+                                        isSelected={data.exercises.includes(
+                                            exercise.id,
+                                        )}
+                                        onToggle={() =>
+                                            toggleExercise(exercise.id)
+                                        }
+                                        t={t}
+                                        i18n={i18n}
+                                    />
+                                ))}
+                            </div>
+
+                            {filteredExercises.length === 0 && (
+                                <div className="text-center py-20 bg-zinc-100 dark:bg-zinc-900/50 rounded-[2rem] border-2 border-dashed border-zinc-300 dark:border-zinc-800">
+                                    <p className="text-zinc-500 font-bold">
+                                        {t("no_exercises_found")}
+                                    </p>
+                                </div>
+                            )}
+                        </section>
+
+                        <div
+                            ref={saveSectionRef}
+                            className="flex flex-wrap justify-center gap-4 p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2.5rem] shadow-sm"
+                        >
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all shadow-lg shadow-emerald-500/20 active:scale-95 disabled:opacity-50"
+                            >
+                                {processing ? t("saving") : t("save_changes")}
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    (window.location.href = route(
+                                        "workouts.start",
+                                        workout.id,
+                                    ))
+                                }
+                                className="px-8 py-4 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
+                            >
+                                {t("start_workout")}
+                            </button>
+
+                            <Link
+                                href={route("workouts.index")}
+                                className="px-8 py-4 bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded-2xl font-bold text-sm hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-all"
+                            >
+                                {t("cancel")}
+                            </Link>
+                        </div>
+                    </form>
+                </main>
+            </div>
+        </AuthenticatedLayout>
     );
 }

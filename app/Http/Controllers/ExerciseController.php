@@ -41,7 +41,7 @@ class ExerciseController extends Controller
         return [];
     }
 
-    public function show(Exercise $exercise)
+   public function show(Request $request, Exercise $exercise)
     {
         $normalizedPath = $this->resolveImagePath($exercise);
 
@@ -86,6 +86,7 @@ class ExerciseController extends Controller
             ],
             'relatedExercises' => $relatedExercises,
             'isFavorite'       => $isFavorite,
+            'workout_id'       => $request->query('workout_id'), // Captures ?workout_id=X from URL
             'auth'             => [
                 'user' => auth()->user(),
             ],

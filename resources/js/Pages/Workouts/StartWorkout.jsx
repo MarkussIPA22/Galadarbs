@@ -4,6 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { useTranslation } from "react-i18next";
 import jsPDF from "jspdf";
 import "@/fonts/Roboto-Regular-normal.js";
+import { X } from "lucide-react";
 
 function WorkoutHeader({ name, exerciseCount, t }) {
     const [elapsed, setElapsed] = useState(0);
@@ -110,9 +111,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
 
     const downloadPDF = () => {
         const doc = new jsPDF();
-
         doc.setFont("Roboto-Regular", "normal");
-
         doc.setFontSize(18);
         doc.text(`${t("workout")}: ${workout.name}`, 10, 20);
 
@@ -150,7 +149,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
 
     return (
         <AuthenticatedLayout auth={auth}>
-            <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 p-5 lg:p-8">
+            <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 p-4 lg:p-8">
                 <div className="max-w-5xl mx-auto">
                     <WorkoutHeader
                         name={workout.name}
@@ -170,33 +169,44 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                                     className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden"
                                 >
                                     <div className="flex items-center gap-3 px-5 py-4 bg-zinc-50/50 dark:bg-zinc-800/50 border-b border-zinc-100 dark:border-zinc-800">
-                                        <div className="w-8 h-8 rounded-lg bg-lime-400 flex items-center justify-center text-black font-black text-sm">
+                                        <div className="w-8 h-8 rounded-lg bg-lime-400 flex items-center justify-center text-black font-black text-sm shrink-0">
                                             {exIndex + 1}
                                         </div>
-                                        <div>
-                                            <h3 className="font-bold text-zinc-900 dark:text-white">
-                                                {i18n.language === "lv"
-                                                    ? ex.name_lv || ex.name
-                                                    : ex.name}
-                                            </h3>
-                                        </div>
+                                        <h3 className="font-bold text-zinc-900 dark:text-white">
+                                            {i18n.language === "lv"
+                                                ? ex.name_lv || ex.name
+                                                : ex.name}
+                                        </h3>
                                     </div>
 
-                                    <div className="p-5">
-                                        <div className="grid grid-cols-12 gap-4 mb-3 px-1 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                                            <span className="col-span-1">
+                                    <div className="p-4 sm:p-6">
+                                        <div className="hidden sm:grid grid-cols-12 gap-4 mb-4 px-1 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                                            <div className="col-span-1 text-center">
                                                 {t("set")}
-                                            </span>
-                                            <span className="col-span-4">
+                                            </div>
+                                            <div className="col-span-4">
                                                 {t("previous_workout")}
-                                            </span>
-                                            <span className="col-span-3">
+                                            </div>
+                                            <div className="col-span-3 text-center">
                                                 KG
-                                            </span>
-                                            <span className="col-span-3">
+                                            </div>
+                                            <div className="col-span-3 text-center">
+                                                {t("reps")}
+                                            </div>
+                                            <div className="col-span-1"></div>
+                                        </div>
+
+                                        <div className="sm:hidden grid grid-cols-12 gap-2 mb-2 px-1 text-[9px] font-black uppercase text-zinc-400">
+                                            <div className="col-span-1">#</div>
+                                            <div className="col-span-4 text-center">
+                                                {t("previous_workout")}
+                                            </div>
+                                            <div className="col-span-3 text-center">
+                                                KG
+                                            </div>
+                                            <div className="col-span-3 text-center">
                                                 REPS
-                                            </span>
-                                            <span className="col-span-1"></span>
+                                            </div>
                                         </div>
 
                                         <div className="space-y-3">
@@ -208,13 +218,13 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                                                 return (
                                                     <div
                                                         key={setIndex}
-                                                        className="grid grid-cols-12 gap-3 items-center"
+                                                        className="grid grid-cols-12 gap-2 sm:gap-4 items-center"
                                                     >
-                                                        <span className="col-span-1 text-xs font-bold text-zinc-400">
+                                                        <div className="col-span-1 text-center text-xs font-bold text-zinc-400">
                                                             {setIndex + 1}
-                                                        </span>
+                                                        </div>
 
-                                                        <div className="col-span-4 text-xs text-zinc-500 italic">
+                                                        <div className="col-span-4 text-[10px] sm:text-xs text-zinc-500 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg py-2 px-1 text-center border border-transparent">
                                                             {prev
                                                                 ? `${prev.weight}kg × ${prev.reps}`
                                                                 : "—"}
@@ -239,11 +249,8 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                                                                 disabled={
                                                                     finished
                                                                 }
-                                                                className="w-full px-3 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-sm focus:ring-lime-400"
-                                                                placeholder={
-                                                                    prev?.weight ||
-                                                                    "0"
-                                                                }
+                                                                className="w-full px-1 py-2 text-center rounded-lg bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:ring-lime-400"
+                                                                placeholder="0"
                                                             />
                                                         </div>
 
@@ -263,32 +270,36 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                                                                 disabled={
                                                                     finished
                                                                 }
-                                                                className="w-full px-3 py-2 rounded-lg bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-sm focus:ring-lime-400"
-                                                                placeholder={
-                                                                    prev?.reps ||
-                                                                    "0"
-                                                                }
+                                                                className="w-full px-1 py-2 text-center rounded-lg bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-sm font-bold focus:ring-lime-400"
+                                                                placeholder="0"
                                                             />
                                                         </div>
 
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                handleRemoveSet(
-                                                                    exIndex,
-                                                                    setIndex,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                finished ||
-                                                                ex.sets
-                                                                    .length ===
-                                                                    1
-                                                            }
-                                                            className="col-span-1 text-zinc-400 hover:text-red-500 disabled:opacity-0 transition-colors"
-                                                        >
-                                                            ✕
-                                                        </button>
+                                                        <div className="col-span-1 flex justify-center">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleRemoveSet(
+                                                                        exIndex,
+                                                                        setIndex,
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    finished ||
+                                                                    ex.sets
+                                                                        .length ===
+                                                                        1
+                                                                }
+                                                                className="text-zinc-300 hover:text-red-500 disabled:opacity-0"
+                                                            >
+                                                                <X
+                                                                    size={16}
+                                                                    strokeWidth={
+                                                                        2
+                                                                    }
+                                                                />
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 );
                                             })}
@@ -300,7 +311,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                                                 onClick={() =>
                                                     handleAddSet(exIndex)
                                                 }
-                                                className="mt-4 w-full py-2 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-bold text-zinc-400 hover:border-lime-400 hover:text-lime-500 transition-all"
+                                                className="mt-5 w-full py-2.5 border-2 border-dashed border-zinc-100 dark:border-zinc-800 rounded-xl text-xs font-bold text-zinc-400 hover:border-lime-400/50 hover:text-lime-500 transition-all uppercase tracking-widest"
                                             >
                                                 + {t("add_set")}
                                             </button>
@@ -310,11 +321,11 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                             );
                         })}
 
-                        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                        <div className="flex flex-col sm:flex-row gap-4 pt-6">
                             {!finished ? (
                                 <button
                                     type="submit"
-                                    className="flex-1 bg-lime-400 hover:bg-lime-300 text-black font-bold py-4 rounded-2xl shadow-lg shadow-lime-400/20 transition-all"
+                                    className="flex-1 bg-lime-400 hover:bg-lime-300 text-black font-black py-4 rounded-2xl shadow-lg shadow-lime-400/20 transition-all uppercase tracking-tight"
                                 >
                                     {t("save_workout")}
                                 </button>
@@ -326,7 +337,7 @@ export default function StartWorkout({ auth, workout, latest_log }) {
                             <button
                                 type="button"
                                 onClick={downloadPDF}
-                                className="px-8 py-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl font-bold dark:text-white"
+                                className="px-8 py-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl font-bold dark:text-white hover:bg-zinc-50 transition-colors"
                             >
                                 {t("download_pdf")}
                             </button>
